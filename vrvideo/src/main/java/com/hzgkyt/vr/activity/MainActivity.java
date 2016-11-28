@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hzgkyt.vr.R;
 
@@ -19,6 +20,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView mImageView;
 
     private ViewPager mViewPager;
+
+    private TextView mTextView;
 
     int[] pics = {R.drawable.test,R.drawable.test,R.drawable.test,R.drawable.test,R.drawable.test};
 
@@ -38,6 +41,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
+
+        mTextView = (TextView) findViewById(R.id.textview_main_group);
+
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityOriginal(MainActivity.this,VRVideoActivity.class);
+            }
+        });
 
         mImageView = (ImageView) findViewById(R.id.imageview_main_personal_center);
 

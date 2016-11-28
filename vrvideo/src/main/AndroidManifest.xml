@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.hzgkyt.vr">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".VRApplication"
         android:allowBackup="true"
@@ -39,6 +42,9 @@
         <activity android:name=".activity.ChangePasswordActivity"
                   android:screenOrientation="portrait"
 
+        />
+        <activity android:name=".activity.VRVideoActivity"
+        android:screenOrientation="portrait"
         />
     </application>
 
