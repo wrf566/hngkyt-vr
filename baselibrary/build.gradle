@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.config.compileSdkVersion
+    buildToolsVersion rootProject.ext.config.buildToolsVersion
+
+    defaultConfig {
+
+        minSdkVersion rootProject.ext.config.minSdkVersion
+        targetSdkVersion rootProject.ext.config.targetSdkVersion
+        versionCode rootProject.ext.config.versionCode
+        versionName rootProject.ext.config.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled rootProject.ext.config.minifyEnabled
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile rootProject.ext.dependencies["android_support_appcompat-v7"]
+    compile rootProject.ext.dependencies["android_support-v4"]
+    compile rootProject.ext.dependencies["android_support_design"]
+    compile rootProject.ext.dependencies["com_orhanobut_logger"]
+    compile rootProject.ext.dependencies["com_elvishew_xlog"]
+
+    testCompile rootProject.ext.dependencies["junit"]
+    testCompile 'org.mockito:mockito-core:2.2.22'
+
+}

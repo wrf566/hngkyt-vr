@@ -1,0 +1,28 @@
+<resources>
+
+    <dimen name="text_22px">12sp</dimen>
+    <dimen name="text_28px">14sp</dimen>
+    <dimen name="text_30px">16sp</dimen>
+    <dimen name="text_34px">18sp</dimen>
+
+
+    <dimen name="dip_4px">2dp</dimen>
+    <dimen name="dip_8px">4dp</dimen>
+    <dimen name="dip_10px">5dp</dimen>
+    <dimen name="dip_15px">7.5dp</dimen>
+    <dimen name="dip_20px">10dp</dimen>
+    <dimen name="dip_24px">12dp</dimen>
+    <dimen name="dip_30px">15dp</dimen>
+    <dimen name="dip_40px">20dp</dimen>
+    <dimen name="dip_50px">25dp</dimen>
+    <dimen name="dip_60px">30dp</dimen>
+    <dimen name="dip_70px">35dp</dimen>
+    <dimen name="dip_92px">46dp</dimen>
+    <dimen name="dip_100px">50dp</dimen>
+    <dimen name="dip_112px">56dp</dimen>
+    <dimen name="dip_180px">90dp</dimen>
+    <dimen name="dip_300px">150dp</dimen>
+    <dimen name="dip_350px">175dp</dimen>
+    <dimen name="dip_360px">180dp</dimen>
+
+</resources>

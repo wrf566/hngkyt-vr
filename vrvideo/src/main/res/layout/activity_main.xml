@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_360px">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/imageview_main_personal_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/text_30px"
+            android:layout_marginTop="@dimen/text_30px"
+            android:src="@drawable/personal_center"/>
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout_main_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dip_20px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dip_20px"
+            android:layout_marginRight="@dimen/dip_20px"
+            app:tabBackground="@drawable/indicator"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingBottom="0dp"
+            app:tabPaddingEnd="@dimen/dip_15px"
+            app:tabPaddingStart="@dimen/dip_15px"
+        />
+
+    
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_180px"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextView_main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/newest"
+            android:text="最新视频"/>
+
+        <TextView
+            style="@style/TextView_main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/religious"
+            android:text="宗教文化"/>
+
+        <TextView
+            style="@style/TextView_main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/landscape"
+            android:text="自然风景"/>
+
+        <TextView
+            style="@style/TextView_main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/history_related"
+            android:text="历史人文"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dip_40px"
+        android:layout_marginTop="@dimen/dip_40px"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/dip_30px"
+            android:layout_height="@dimen/dip_4px"
+            android:background="@color/colorAccent"
+        />
+
+        <TextView
+            android:id="@+id/textview_main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dip_24px"
+            android:layout_marginRight="@dimen/dip_24px"
+            android:text="最新视频"
+            android:textColor="@color/text3"
+            android:textSize="@dimen/text_34px"/>
+
+        <View
+            android:layout_width="@dimen/dip_30px"
+            android:layout_height="@dimen/dip_4px"
+            android:background="@color/colorAccent"
+        />
+
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <include
+            layout="@layout/include_framelayout_fragment"
+        />
+
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,57 @@
+<resources>
+
+    <style name="TextView_personal_center_setting_group" parent="personal_center">
+        <item name="android:textColor">@color/text1</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+
+    <style name="personal_center">
+        <item name="android:textSize">@dimen/text_30px</item>
+        <item name="android:paddingLeft">@dimen/dip_30px</item>
+    </style>
+
+
+    <style name="personal_center_setting_item" parent="personal_center">
+        <item name="android:textColor">@color/text2</item>
+        <item name="android:paddingRight">@dimen/dip_30px</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="TextView_main_group">
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">@dimen/dip_20px</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/text_22px</item>
+        <item name="android:textColor">@color/text1</item>
+
+    </style>
+
+    <style name="Edittext">
+        <item name="android:textSize">@dimen/text_28px</item>
+        <item name="android:textColorHint">@color/text3</item>
+        <item name="android:paddingBottom">@dimen/dip_20px</item>
+        <item name="android:background">@drawable/edittext_line</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Edittext_signup" parent="Edittext">
+        <item name="android:layout_marginTop">@dimen/dip_60px</item>
+        <item name="android:layout_marginLeft">@dimen/dip_50px</item>
+        <item name="android:layout_marginRight">@dimen/dip_50px</item>
+    </style>
+    <style name="Edittext_login" parent="Edittext">
+        <item name="android:layout_marginTop">33dp</item>
+        <item name="android:layout_marginLeft">55dp</item>
+        <item name="android:layout_marginRight">55dp</item>
+    </style>
+
+    <style name="Button" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/background_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_30px</item>
+
+    </style>
+
+</resources>

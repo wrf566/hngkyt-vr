@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/yellow</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">@color/yellow</color>
+
+
+    <color name="white">#ffffff</color>
+    <color name="white_transparent_70">#b2ffffff</color>
+    <color name="yellow">#ffc900</color>
+    <color name="gray_eeeeee">#EEEEEE</color>
+    <color name="gray_ecebeb">#ECEBEB</color>
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="text1">#333333</color>
+    <color name="text2">#666666</color>
+    <color name="text3">#999999</color>
+
+
+
+
+</resources>

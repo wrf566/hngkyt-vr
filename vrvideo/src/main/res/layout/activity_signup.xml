@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_eeeeee">
+    
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/include_titlebar"/>
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:scrollbars="none"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/dip_30px"
+        android:layout_marginRight="@dimen/dip_30px"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_rounded_rectangle_white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edittext_signup_username"
+                style="@style/Edittext_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+            />
+
+
+            <EditText
+                style="@style/Edittext_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+            />
+            <EditText
+                style="@style/Edittext_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/age"
+                android:inputType="number"
+            />
+            <EditText
+                style="@style/Edittext_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/job"
+            />
+
+            <EditText
+                style="@style/Edittext_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dip_50px"
+                android:hint="@string/phonenumber"
+                android:inputType="phone"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dip_112px"
+                android:layout_marginLeft="@dimen/dip_50px"
+                android:layout_marginRight="@dimen/dip_50px"
+                android:background="@drawable/edittext_line"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dip_20px">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/religion"
+                    android:textColor="@color/text3"
+                    android:textSize="@dimen/text_28px"/>
+
+                <Spinner
+                    android:id="@+id/spinner_signup_religion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:dropDownVerticalOffset="40dp"
+                    android:gravity="center"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_100px"
+        android:layout_below="@id/scrollview"
+        android:layout_marginLeft="@dimen/dip_100px"
+        android:layout_marginRight="@dimen/dip_100px"
+        android:layout_marginTop="-25dp"
+        android:text="@string/signup"/>
+
+</RelativeLayout>

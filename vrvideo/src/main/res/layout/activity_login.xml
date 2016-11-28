@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+    <include layout="@layout/include_titlebar"/>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:drawablePadding="30dp"
+                android:drawableTop="@drawable/userpic"
+                
+                android:gravity="bottom|center"
+                android:text="@string/appname"
+                android:textColor="@color/colorAccent"
+                android:textSize="28sp"/>
+            
+            <View
+                android:layout_width="90dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"/>
+            
+            <EditText
+                style="@style/Edittext_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dp"
+                android:hint="@string/username"/>
+            
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
+                android:layout_marginTop="23dp">
+                
+                <EditText
+                    style="@style/Edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"/>
+                <TextView
+                    android:id="@+id/textview_login_forget_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/froget_password"
+                    android:textColor="@color/text3"
+                    android:textSize="@dimen/dip_24px"/>
+            </RelativeLayout>
+            
+            
+            <Button
+                android:id="@+id/button_login_login"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
+                android:layout_marginTop="50dp"
+                android:text="@string/login"/>
+            
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/textview_login_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/signup"
+                android:textColor="@color/text3"
+                android:textSize="@dimen/text_28px"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

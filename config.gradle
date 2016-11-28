@@ -1,0 +1,35 @@
+//ext 是必须的,且只能用这个名字
+ext {
+
+    config = [
+            compileSdkVersion: 25,
+            buildToolsVersion: "25.0.0",
+
+            applicationId    : "com.hzgkyt.vr",
+            minSdkVersion    : 19,
+            targetSdkVersion : 25,
+            versionCode      : 1,
+            versionName      : "1.0.0",
+
+            minifyEnabled    : false
+
+    ]
+
+    dependencies = [
+            ///support包
+            "android_support_appcompat-v7": 'com.android.support:appcompat-v7:25.0.1',
+            "android_support-v4"          : 'com.android.support:support-v4:25.0.1',
+            "android_support_design"      : 'com.android.support:design:25.0.1',
+
+            //Log
+            "xLog"                        : 'com.elvishew:xlog:1.1.0',
+
+
+            "google_protobuf_nano"        : 'com.google.protobuf.nano:protobuf-javanano:3.1.0',
+            //Test
+            "junit"                       : 'junit:junit:4.12',
+            //Logger
+            "com_orhanobut_logger"        : 'com.orhanobut:logger:1.15',
+            "com_elvishew_xlog"        : 'com.elvishew:xlog:1.1.0'
+    ]
+}

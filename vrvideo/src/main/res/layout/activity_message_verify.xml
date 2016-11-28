@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray_eeeeee"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+
+>
+    <include layout="@layout/include_titlebar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dip_30px"
+        android:layout_marginRight="@dimen/dip_30px"
+        android:layout_marginTop="@dimen/dip_40px"
+        android:background="@drawable/background_rounded_rectangle_white"
+        android:orientation="vertical">
+        
+        <EditText
+            android:id="@+id/edittext_message_verify_phonenumber"
+            style="@style/Edittext_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="@string/signup_phonenumber"
+            android:inputType="phone"/>
+        
+        <EditText
+            android:id="@+id/edittext_message_verify_code"
+            style="@style/Edittext_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edittext_message_verify_phonenumber"
+            android:layout_marginBottom="61dp"
+            android:inputType="number"
+            android:hint="@string/input_verify_code"/>
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:textSize="@dimen/text_28px"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/dip_50px"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/frame_yellow"
+            android:gravity="center"
+            android:text="@string/send_verify_code"
+            android:textColor="@color/text_selector_yellow"/>
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/button_message_verify_ok"
+        style="@style/Button"
+        android:layout_width="260dp"
+        android:layout_height="@dimen/dip_100px"
+        android:layout_marginTop="-25dp"
+        android:text="@string/ok"/>
+</LinearLayout>

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">VRvideo</string>
+    <string name="play_mode">播放模式</string>
+    <string name="autoplay_next">自动播放下一个</string>
+    <string name="loop_play">循环播放</string>
+    <string name="setting">设置</string>
+    <string name="fullscreen_double_screen">全屏播放默认双屏</string>
+    <string name="version_update">版本更新</string>
+    <string name="personal_center">个人中心</string>
+    <string name="login_or_signup">登录 / 注册</string>
+    <string name="username">用户名：</string>
+    <string name="password">密码：</string>
+    <string name="signup">注册</string>
+    <string name="age">年龄：</string>
+    <string name="job">工作：</string>
+    <string name="phonenumber">手机号：</string>
+    <string name="religion">宗教信仰：</string>
+    <string name="appname">阅心VR</string>
+    <string name="froget_password">忘记密码</string>
+    <string name="login">登录</string>
+    <string name="signup_phonenumber">请输入注册时手机号</string>
+    <string name="input_verify_code">请输入验证码</string>
+    <string name="ok">确定</string>
+    <string name="send_verify_code">发送验证码</string>
+    <string name="message_verify">短信验证</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="change_password">修改密码</string>
+
+
+    <string-array  name="array_religions">
+        <item>佛教</item>
+        <item>道教</item>
+        <item>基督教</item>
+        <item>伊斯兰教</item>
+    </string-array>>
+</resources>

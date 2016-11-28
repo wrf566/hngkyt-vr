@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/gray_eeeeee"
+              android:orientation="vertical">
+    <include
+        layout="@layout/include_titlebar"/>
+
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_300px"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/textview_personal_center_login_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dip_70px"
+            android:textSize="@dimen/text_30px"
+            android:gravity="center"
+            android:drawablePadding="@dimen/dip_40px"
+            android:textColor="@color/white"
+            android:drawableTop="@drawable/profile_picture"
+            android:text="@string/login_or_signup"
+        />
+    
+    
+    </RelativeLayout>
+    
+    <TextView
+        style="@style/TextView_personal_center_setting_group"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dip_92px"
+        android:text="@string/play_mode"/>
+    
+    <RadioGroup
+        android:id="@+id/radiogroup_personal_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dip_30px">
+        
+        <RadioButton
+            android:id="@+id/radiobutton_personal_center_autoplay_next"
+            style="@style/personal_center_setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_100px"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/abc_btn_radio_material"
+            android:drawableTint="@color/yellow"
+            android:paddingStart="0dp"
+            android:text="@string/autoplay_next"/>
+        
+        <RadioButton
+            android:id="@+id/radiobutton_personal_center_loop"
+            style="@style/personal_center_setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_100px"
+            android:button="@null"
+            android:drawableRight="@drawable/abc_btn_radio_material"
+            android:drawableTint="@color/yellow"
+            android:paddingStart="0dp"
+            android:text="@string/loop_play"/>
+    
+    
+    </RadioGroup>
+    
+    <TextView
+        style="@style/TextView_personal_center_setting_group"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dip_92px"
+        android:text="@string/setting"/>
+    
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch1"
+        style="@style/personal_center_setting_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_100px"
+        android:checked="true"
+        android:text="@string/fullscreen_double_screen"/>
+    
+    <TextView
+        style="@style/personal_center_setting_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_100px"
+        android:gravity="center_vertical|start"
+        android:text="@string/version_update"/>
+
+</LinearLayout>
