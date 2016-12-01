@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * 基Fragment
  * Created by wrf on 2016/11/21.
  */
 
@@ -19,9 +20,23 @@ public abstract class BaseFragment extends Fragment{
         return inflater.inflate(intLayoutResId(), container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(view);
+    }
+
+    /**
+     * 初始化布局
+     * @return 布局资源id
+     */
     abstract protected int intLayoutResId();
 
-    abstract protected void initView();
+    /**
+     * 初始化View方法
+     * @param view 根V
+     */
+    abstract protected void initView(View view);
 
 
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/relativelayout_item_video_newest"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_marginRight="@dimen/dip_8px"
+                android:background="@drawable/ylsy">
+
+    <!--<ImageView-->
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scaleType="center"-->
+    <!--android:src="@drawable/ylsy"/>-->
+
+    <TextView
+        android:id="@+id/textview_item_video_newest_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white_transparent_70"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="岳麓书院"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_34px"/>
+
+</RelativeLayout>
