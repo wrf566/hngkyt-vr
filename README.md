@@ -1,3 +1,3 @@
 # VRVideo
 VR
-This is a VR project can play vr video 
+This is a VR project can play VR video 
