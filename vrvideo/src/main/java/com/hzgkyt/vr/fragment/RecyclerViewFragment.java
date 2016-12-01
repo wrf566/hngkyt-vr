@@ -39,9 +39,15 @@ public abstract class RecyclerViewFragment extends BaseFragment {
      */
     protected abstract RecyclerView.Adapter initRecyclerViewAdapter();
 
-
+    /**
+     *  分割器初始化
+     * @return 分割器
+     */
     protected abstract RecyclerView.ItemDecoration initRecyclerViewItemDecoration();
 
-
+    /**
+     * 布局初始化
+     * @return 布局
+     */
     protected abstract RecyclerView.LayoutManager initRecyclerViewLayoutManager();
 }

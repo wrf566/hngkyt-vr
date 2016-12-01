@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.hzgkyt.vr.R;
-import com.hzgkyt.vr.adapter.VideoNewestAdapter;
+import com.hzgkyt.vr.adapter.VideoItemAdapter;
 import com.hzgkyt.vr.decoration.VideoItemNewestDecoration;
 import com.hzgkyt.vr.model.ViedoGroupModel;
 
@@ -35,12 +35,12 @@ public class ViedeoNewestFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoNewestAdapter(getActivity(),getVideoItemList());
+        return new VideoItemAdapter(getActivity(),R.layout.item_video,getVideoItemList());
     }
 
     @Override
     protected RecyclerView.ItemDecoration initRecyclerViewItemDecoration() {
-        return new VideoItemNewestDecoration(ITEM_SPACE,ITEM_SPACE);
+        return new VideoItemNewestDecoration(ITEM_SPACE);
     }
 
     @Override

@@ -11,20 +11,19 @@ import android.view.View;
 
 public class VideoItemNewestDecoration extends RecyclerView.ItemDecoration {
 
-    private int mBottomSpace;
-    private int mRightSpace;
+    private int mSpace;
 
-    public VideoItemNewestDecoration(int bottomSpace,int rightSpace) {
-        mBottomSpace = bottomSpace;
-        mRightSpace = rightSpace;
+    public VideoItemNewestDecoration(int space) {
+        mSpace = space;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
-        outRect.bottom = mBottomSpace;
-        outRect.right = mRightSpace;
+        outRect.bottom = mSpace;
+        outRect.right = mSpace/2;
+        outRect.left = mSpace/2;
 
 
     }

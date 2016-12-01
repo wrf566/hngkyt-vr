@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.model.ViedoGroupModel;
@@ -17,29 +15,31 @@ import java.util.List;
  * Created by wrf on 2016/12/1.
  */
 
-public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.ViewHolder> {
+public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemViewHolder> {
 
 
     private Context mContext;
     private List<ViedoGroupModel.VideoItem> mGroupItemModelList;
+    private int mLayoutRes;
 
-    public VideoItemAdapter(Context context, List<ViedoGroupModel.VideoItem> groupItemModelList) {
+    public VideoItemAdapter(Context context, int layoutRes,List<ViedoGroupModel.VideoItem> groupItemModelList ) {
         mContext = context;
+        mLayoutRes = layoutRes;
         mGroupItemModelList = groupItemModelList;
     }
 
     @Override
-    public VideoItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VideoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_video, parent, false);
+        View itemView = layoutInflater.inflate(mLayoutRes, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(itemView);
+        VideoItemViewHolder viewHolder = new VideoItemViewHolder(itemView);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(VideoItemViewHolder holder, int position) {
         ViedoGroupModel.VideoItem groupItemModel= mGroupItemModelList.get(position);
 
         holder.mTextViewName.setText(groupItemModel.getName());
@@ -52,18 +52,5 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.View
         return mGroupItemModelList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView mTextViewName;
-        RelativeLayout mRelativeLayoutItem;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            mRelativeLayoutItem = (RelativeLayout) itemView.findViewById(R.id.relativelayout_item_video);
-            mTextViewName = (TextView) itemView.findViewById(R.id.textview_item_video_name);
-        }
-    }
 
 }

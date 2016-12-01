@@ -57,7 +57,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         RecyclerView recyclerView = holder.mRecyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         addVideoItems();
-        VideoItemAdapter videoItemAdapter = new VideoItemAdapter(mContext,mVideoItemList);
+        VideoItemAdapter videoItemAdapter = new VideoItemAdapter(mContext,R.layout.item_video,mVideoItemList);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(videoItemAdapter);
