@@ -19,7 +19,8 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="TextView_main_group">
+    <style name="RadioButton_main_group">
+        <item name="android:button">@null</item>
         <item name="android:layout_weight">1</item>
         <item name="android:drawablePadding">@dimen/dip_20px</item>
         <item name="android:gravity">center_horizontal</item>

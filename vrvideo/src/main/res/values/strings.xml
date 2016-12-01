@@ -26,12 +26,18 @@
     <string name="new_password">新密码</string>
     <string name="confirm_password">确认密码</string>
     <string name="change_password">修改密码</string>
+    <string name="more">更多</string>
+    <string name="newest_video">最新视频</string>
+    <string name="religionary">宗教文化</string>
+    <string name="landscaoe">自然风景</string>
+    <string name="history">历史人文</string>
 
 
-    <string-array  name="array_religions">
+    <string-array name="array_religions">
         <item>佛教</item>
         <item>道教</item>
         <item>基督教</item>
         <item>伊斯兰教</item>
-    </string-array>>
+    </string-array>
+    >
 </resources>

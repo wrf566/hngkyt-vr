@@ -37,7 +37,7 @@ dependencies {
     compile project(':videowidget')
     compile project(':baselibrary')
     compile rootProject.ext.dependencies["google_protobuf_nano"]
-    //这个东西不能用最新版
+    //播放VR视频的播放器，这个东西不能用最新版，用了报错.
     compile 'com.google.android.exoplayer:exoplayer:r1.5.10'
 
 
