@@ -43,8 +43,8 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemViewHolder> 
         ViedoGroupModel.VideoItem groupItemModel= mGroupItemModelList.get(position);
 
         holder.mTextViewName.setText(groupItemModel.getName());
-        holder.mRelativeLayoutItem.setBackgroundResource(R.drawable.ylsy);
-
+//        holder.mRelativeLayoutItem.setBackgroundResource(R.drawable.ylsy);
+        holder.mImageViewCover.setImageResource(R.drawable.ylsy);
     }
 
     @Override

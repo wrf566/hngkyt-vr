@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VRvideo</string>
+    <string name="app_name">阅心VR</string>
     <string name="play_mode">播放模式</string>
     <string name="autoplay_next">自动播放下一个</string>
     <string name="loop_play">循环播放</string>

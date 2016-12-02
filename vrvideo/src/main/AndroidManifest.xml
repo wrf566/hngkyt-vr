@@ -44,6 +44,10 @@
         <activity android:name=".activity.VRVideoActivity"
         android:screenOrientation="portrait"
         />
+        <activity android:name=".activity.MoreActivity"
+                  android:screenOrientation="portrait"
+        />
+
     </application>
 
 </manifest>

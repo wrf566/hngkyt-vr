@@ -14,31 +14,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wrf on 2016/12/1.
+ * 更多页面
+ *
+ * Created by wrf on 2016/12/2.
  */
 
-public class ViedeoNewestFragment extends RecyclerViewFragment {
+public class MoreFragment extends RecyclerViewFragment {
 
-    private static final int SPAN_COUNT = 2;//列数
     private static final int ITEM_SPACE = 20;//item之间的距离
 
-
-    @Override
-    protected int intLayoutResId() {
-        return R.layout.include_recyclerview;
-    }
 
     @Override
     protected void initView(View view) {
         super.initView(view);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mRecyclerView.getLayoutParams();
-        layoutParams.setMargins(10, 10, 10, 10);
+        layoutParams.setMargins(30, 30, 30, 30);
         mRecyclerView.setLayoutParams(layoutParams);
     }
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoItemAdapter(getActivity(),R.layout.item_video,getVideoItemList());
+        return new VideoItemAdapter(getActivity(), R.layout.item_video, getVideoItemList());
     }
 
     @Override
@@ -48,14 +44,19 @@ public class ViedeoNewestFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.LayoutManager initRecyclerViewLayoutManager() {
-        return new GridLayoutManager(getActivity(),SPAN_COUNT);
+        return new GridLayoutManager(getActivity(), 2);
     }
 
-    private List<ViedoGroupModel.VideoItem> getVideoItemList(){
-       List<ViedoGroupModel.VideoItem> mVideoItemList = new ArrayList<>();
-        for (int i = 0;i<20;i++){
+    @Override
+    protected int intLayoutResId() {
+        return R.layout.include_recyclerview;
+    }
+
+    private List<ViedoGroupModel.VideoItem> getVideoItemList() {
+        List<ViedoGroupModel.VideoItem> mVideoItemList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
             ViedoGroupModel.VideoItem videoItem = new ViedoGroupModel.VideoItem();
-            videoItem.setName("item "+i);
+            videoItem.setName("item " + i);
             mVideoItemList.add(videoItem);
         }
         return mVideoItemList;

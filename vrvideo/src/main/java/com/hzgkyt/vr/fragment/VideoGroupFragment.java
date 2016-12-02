@@ -2,7 +2,6 @@ package com.hzgkyt.vr.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoGroupAdapter;
@@ -26,13 +25,9 @@ public class VideoGroupFragment extends RecyclerViewFragment {
 
     @Override
     protected int intLayoutResId() {
-        return R.layout.fragment_videogroup;
+        return R.layout.include_recyclerview;
     }
 
-    @Override
-    protected void initView(View view) {
-        super.initView(view);
-    }
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {

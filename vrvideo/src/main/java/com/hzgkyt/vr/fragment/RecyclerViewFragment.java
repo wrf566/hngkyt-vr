@@ -30,6 +30,7 @@ public abstract class RecyclerViewFragment extends BaseFragment {
         mRecyclerView.setAdapter(initRecyclerViewAdapter());
         mRecyclerView.addItemDecoration(initRecyclerViewItemDecoration());
         mRecyclerView.setLayoutManager(initRecyclerViewLayoutManager());
+
     }
 
 

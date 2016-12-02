@@ -44,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    protected void startActivityOriginal(Context context, Class<?> cls){
+    public void startActivityOriginal(Context context, Class<?> cls){
         startActivity(new Intent(context,cls));
     }
 }

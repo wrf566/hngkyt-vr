@@ -20,7 +20,7 @@ public  abstract class TitleBarActivity extends BaseActivity implements View.OnC
 
     @Override
     protected int intLayoutResId() {
-        return 0;
+        return R.layout.activity_base_titlebar;
     }
 
     @Override
