@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_360px">
-        <android.support.v4.view.ViewPager
+        <com.hzgkyt.vr.view.InfiniteViewPager
             android:id="@+id/viewpager_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -22,6 +22,7 @@
             android:layout_marginTop="@dimen/text_30px"
             android:src="@drawable/personal_center"/>
 
+        <!--app:tabBackground="@drawable/indicator"-->
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout_main_indicator"
@@ -30,16 +31,15 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/dip_20px"
-            android:layout_marginRight="@dimen/dip_20px"
-            app:tabBackground="@drawable/indicator"
+            android:layout_marginRight="10dp"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp"
             app:tabPaddingBottom="0dp"
-            app:tabPaddingEnd="@dimen/dip_15px"
-            app:tabPaddingStart="@dimen/dip_15px"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="5dp"
         />
 
-    
+
     </RelativeLayout>
     <RadioGroup
         android:id="@+id/radiogroup_main_viedogroup"

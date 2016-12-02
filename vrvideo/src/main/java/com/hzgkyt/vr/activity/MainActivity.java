@@ -4,26 +4,26 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.fragment.VideoGroupFragment;
 import com.hzgkyt.vr.fragment.ViedeoNewestFragment;
-import com.orhanobut.logger.Logger;
+import com.hzgkyt.vr.view.InfiniteViewPager;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-
-    int[] pics = {R.drawable.test, R.drawable.test, R.drawable.test, R.drawable.test, R.drawable.test};
+    //c a b c a
+    int[] pics = {R.drawable.e, R.drawable.a, R.drawable.b, R.drawable.c,R.drawable.d,R.drawable.e, R.drawable.a};
 
 
     private ImageView mImageView;
-    private ViewPager mViewPager;
+    private InfiniteViewPager mInfiniteViewPager;
     private TextView mTextViewGroupName;
     private RadioGroup mRadioGroup;
 
@@ -49,20 +49,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mRadioGroup.check(R.id.radiobutton_main_viedogroup_newest);
 
 
-
         mImageView = (ImageView) findViewById(R.id.imageview_main_personal_center);
 
         mImageView.setOnClickListener(this);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager_banner);
+        mInfiniteViewPager = (InfiniteViewPager) findViewById(R.id.viewpager_banner);
 
-        mViewPager.setAdapter(new ImageViewAdapter());
+        final ImageViewAdapter imageViewAdapter = new ImageViewAdapter();
+
+        mInfiniteViewPager.setAdapter(imageViewAdapter);
+
+        mInfiniteViewPager.setCurrentItem(1);
+
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout_main_indicator);
+        tabLayout.setupWithViewPager(mInfiniteViewPager);
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout_main_indicator);
-        tabLayout.setupWithViewPager(mViewPager, true);
+//
+//        mInfiniteViewPager.setTabSelectListener(new InfiniteViewPager.TabSelectListener() {
+//            @Override
+//            public void selectTab(int position) {
+//                tabLayout.getTabAt(position).select();
+//            }
+//        });
+
+
+        for (int i = 0;i<imageViewAdapter.getCount();i++){
+            ImageView imageView = new ImageView(MainActivity.this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(40,40);
+            imageView.setLayoutParams(layoutParams);
+            if(i==0||i==imageViewAdapter.getCount()-1){
+                imageView.setVisibility(View.GONE);
+            }
+            imageView.setImageResource(R.drawable.indicator);
+            tabLayout.getTabAt(i).setCustomView(imageView);
+
+        }
+
+
     }
-
 
 
     @Override
@@ -78,24 +103,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.radiobutton_main_viedogroup_newest:
-                Logger.e("radiobutton_main_viedogroup_newest");
                 mTextViewGroupName.setText(R.string.newest_video);
-                replaceFragment(new ViedeoNewestFragment(),null);
+                replaceFragment(new ViedeoNewestFragment(), null);
                 break;
 
             case R.id.radiobutton_main_viedogroup_religionary:
                 mTextViewGroupName.setText(R.string.religionary);
-                replaceFragment(new VideoGroupFragment(),null);
+                replaceFragment(new VideoGroupFragment(), null);
 
                 break;
             case R.id.radiobutton_main_viedogroup_landscape:
                 mTextViewGroupName.setText(R.string.landscaoe);
-                replaceFragment(new VideoGroupFragment(),null);
+                replaceFragment(new VideoGroupFragment(), null);
 
                 break;
             case R.id.radiobutton_main_viedogroup_history:
                 mTextViewGroupName.setText(R.string.history);
-                replaceFragment(new VideoGroupFragment(),null);
+                replaceFragment(new VideoGroupFragment(), null);
 
                 break;
 
@@ -120,7 +144,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
             ImageView imageView = new ImageView(MainActivity.this);
             imageView.setImageResource(pics[position]);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
             container.addView(imageView);
 
@@ -131,6 +155,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((ImageView) object);
         }
+
+
     }
 
 }

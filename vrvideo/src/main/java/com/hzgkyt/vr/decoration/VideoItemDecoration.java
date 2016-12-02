@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 /**
  * Created by wrf on 2016/12/1.
  */
@@ -28,8 +26,10 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
+        /**
+         * 这里不能写成if else的形式因为GridLayoutManager是LinearLayoutManager的子类
+         */
         if (layoutManager instanceof GridLayoutManager) {
-            Logger.e("GridLayoutManager");
             if (position % 2 == 0) {
                 outRect.right = mSpace;
             }
@@ -39,7 +39,6 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
 
 
         if (layoutManager instanceof LinearLayoutManager) {
-            Logger.e("LinearLayoutManager");
             outRect.right = mSpace;
         }
 
