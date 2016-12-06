@@ -1,5 +1,7 @@
 package com.hzgkyt.vr.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
@@ -19,7 +21,7 @@ import com.hzgkyt.vr.view.InfiniteViewPager;
 public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     //c a b c a
-    int[] pics = {R.drawable.e, R.drawable.a, R.drawable.b, R.drawable.c,R.drawable.d,R.drawable.e, R.drawable.a};
+    int[] pics = {R.drawable.c, R.drawable.a, R.drawable.b, R.drawable.c,R.drawable.a};
 
 
     private ImageView mImageView;
@@ -33,6 +35,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         SystemClock.sleep(2000);
         super.onCreate(savedInstanceState);
 
+
     }
 
     @Override
@@ -42,6 +45,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     protected void initView() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
         mTextViewGroupName = (TextView) findViewById(R.id.textview_main_group);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_main_viedogroup);
@@ -63,15 +76,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout_main_indicator);
         tabLayout.setupWithViewPager(mInfiniteViewPager);
-
-
-//
-//        mInfiniteViewPager.setTabSelectListener(new InfiniteViewPager.TabSelectListener() {
-//            @Override
-//            public void selectTab(int position) {
-//                tabLayout.getTabAt(position).select();
-//            }
-//        });
 
 
         for (int i = 0;i<imageViewAdapter.getCount();i++){
