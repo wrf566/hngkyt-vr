@@ -1,12 +1,14 @@
 package com.hzgkyt.vr.fragment;
 
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoGroupAdapter;
 import com.hzgkyt.vr.decoration.VideoGroupDecoration;
-import com.hzgkyt.vr.model.ViedoGroupModel;
+import com.hzgkyt.vr.model.VideoGroupModel;
+import com.hzgkyt.vr.model.VideoItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,6 @@ import java.util.List;
 
 public class VideoGroupFragment extends RecyclerViewFragment {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-
-    private List<ViedoGroupModel> mViedoGroupModelList;
 
     @Override
     protected int intLayoutResId() {
@@ -31,8 +28,7 @@ public class VideoGroupFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        createViedoGroupModelList();
-        return new VideoGroupAdapter(getActivity(), mViedoGroupModelList);
+        return new VideoGroupAdapter(getActivity(), createViedoGroupModelList());
     }
 
     @Override
@@ -46,16 +42,39 @@ public class VideoGroupFragment extends RecyclerViewFragment {
     }
 
 
-    private void createViedoGroupModelList() {
+    private List<VideoGroupModel> createViedoGroupModelList() {
 
-        mViedoGroupModelList = new ArrayList<>();
+        List<VideoGroupModel> videoGroupModelList = new ArrayList<>();
+        videoGroupModelList.add(getVideoGroupModel("分组1"
+                , new String[]{
+                        "财神殿", "金鱼池"
+                }
+                , new String[]{
+                        Environment.getExternalStorageDirectory() + "/vrvideo/zm.mp4"
+                        , Environment.getExternalStorageDirectory() + "/vrvideo/jyc.mp4"
+                }));
 
-        for (int i = 0; i < 15; i++) {
-            ViedoGroupModel viedoGroupModel = new ViedoGroupModel();
-            viedoGroupModel.setName("宗教 " + i);
-            mViedoGroupModelList.add(viedoGroupModel);
-        }
+
+        videoGroupModelList.add(getVideoGroupModel("分组2"
+                , new String[]{
+                        "三清殿1", "三清殿2"
+                }
+                , new String[]{
+                        Environment.getExternalStorageDirectory() + "/vrvideo/sqd1.mp4"
+                        , Environment.getExternalStorageDirectory() + "/vrvideo/sqd2.mp4"
+                }));
 
 
+        return videoGroupModelList;
+    }
+
+    private VideoGroupModel getVideoGroupModel(String group, String[] names, String path[]) {
+        VideoGroupModel viedoGroupModel = new VideoGroupModel();
+        viedoGroupModel.setName(group);
+        VideoItemModel[] videoItemModels = new VideoItemModel[2];
+        videoItemModels[0] = new VideoItemModel(names[0], path[0]);
+        videoItemModels[1] = new VideoItemModel(names[1], path[1]);
+        viedoGroupModel.setVideoItemModels(videoItemModels);
+        return  viedoGroupModel;
     }
 }

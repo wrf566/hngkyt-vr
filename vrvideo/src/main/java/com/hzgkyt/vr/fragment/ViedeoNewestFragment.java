@@ -1,5 +1,6 @@
 package com.hzgkyt.vr.fragment;
 
+import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,7 +9,7 @@ import android.widget.FrameLayout;
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoItemAdapter;
 import com.hzgkyt.vr.decoration.VideoItemDecoration;
-import com.hzgkyt.vr.model.ViedoGroupModel;
+import com.hzgkyt.vr.model.VideoItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class ViedeoNewestFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoItemAdapter(getActivity(),R.layout.item_video,getVideoItemList());
+        return new VideoItemAdapter(getActivity(),  getVideoItemList());
     }
 
     @Override
@@ -48,16 +49,15 @@ public class ViedeoNewestFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.LayoutManager initRecyclerViewLayoutManager() {
-        return new GridLayoutManager(getActivity(),SPAN_COUNT);
+        return new GridLayoutManager(getActivity(), SPAN_COUNT);
     }
 
-    private List<ViedoGroupModel.VideoItem> getVideoItemList(){
-       List<ViedoGroupModel.VideoItem> mVideoItemList = new ArrayList<>();
-        for (int i = 0;i<20;i++){
-            ViedoGroupModel.VideoItem videoItem = new ViedoGroupModel.VideoItem();
-            videoItem.setName("item "+i);
-            mVideoItemList.add(videoItem);
-        }
+    private List<VideoItemModel> getVideoItemList() {
+        List<VideoItemModel> mVideoItemList = new ArrayList<>();
+        mVideoItemList.add(new VideoItemModel("财神殿", Environment.getExternalStorageDirectory() + "/vrvideo/zm.mp4"));
+        mVideoItemList.add(new VideoItemModel("金鱼池", Environment.getExternalStorageDirectory() + "/vrvideo/jyc.mp4"));
+        mVideoItemList.add(new VideoItemModel("三清殿1", Environment.getExternalStorageDirectory() + "/vrvideo/sqd1.mp4"));
+        mVideoItemList.add(new VideoItemModel("三清殿2", Environment.getExternalStorageDirectory() + "/vrvideo/sqd2.mp4"));
         return mVideoItemList;
     }
 }

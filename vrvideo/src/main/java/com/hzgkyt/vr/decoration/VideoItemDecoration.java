@@ -3,7 +3,6 @@ package com.hzgkyt.vr.decoration;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -34,12 +33,6 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
                 outRect.right = mSpace;
             }
             outRect.bottom = mSpace;
-            return;
-        }
-
-
-        if (layoutManager instanceof LinearLayoutManager) {
-            outRect.right = mSpace;
         }
 
 
@@ -55,4 +48,10 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
     }
+
+
+    //1.取消列表的横向滑动
+    //2.更多页面添加排序
+    //3.视频的详情
+    //4.视频分类可以滑动
 }

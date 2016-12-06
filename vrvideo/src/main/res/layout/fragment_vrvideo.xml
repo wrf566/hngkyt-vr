@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+    <com.google.vr.sdk.widgets.video.VrVideoView
+        android:id="@+id/vrvideoview_vrvideo"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:layout_below="@id/vrvideoview_vrvideo"
+        android:id="@+id/seekbar_vrvideo"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <!--<include layout="@layout/include_recyclerview"/>-->
+</RelativeLayout>

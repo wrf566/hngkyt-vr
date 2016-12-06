@@ -2,114 +2,131 @@ package com.hzgkyt.vr.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.activity.MoreActivity;
-import com.hzgkyt.vr.decoration.VideoItemDecoration;
-import com.hzgkyt.vr.model.ViedoGroupModel;
+import com.hzgkyt.vr.activity.VRVideoActivity;
+import com.hzgkyt.vr.model.VideoGroupModel;
+import com.hzgkyt.vr.model.VideoItemModel;
+import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 视频分组适配器
- * Created by wrf on 2016/12/1.
+ * Created by wrf on 2016/12/5.
  */
 
-public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.ViewHolder> {
+public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.VideoGroupHolder> {
 
-    private List<ViedoGroupModel> mViedoGroupModelList;
-
-    private List<ViedoGroupModel.VideoItem> mVideoItemList;
 
     private Context mContext;
+    private List<VideoGroupModel> mVideoGroupModelList;
 
 
-    public VideoGroupAdapter(Context context, List<ViedoGroupModel> viedoGroupModelList) {
-        mViedoGroupModelList = viedoGroupModelList;
+    public VideoGroupAdapter(Context context, List<VideoGroupModel> videoGroupModelList) {
         mContext = context;
-    }
-
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-
-        View itemView = layoutInflater.inflate(R.layout.item_videogroup, parent, false);
-        ViewHolder viewHolder = new ViewHolder(itemView);
-
-
-        return viewHolder;
+        mVideoGroupModelList = videoGroupModelList;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final ViedoGroupModel viedoGroupModel = mViedoGroupModelList.get(position);
+    public VideoGroupHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        TextView textViewCategoryName = holder.mTextViewCategoryName;
-        textViewCategoryName.setText(viedoGroupModel.getName());
+        View viewItem = LayoutInflater.from(mContext).inflate(R.layout.item_video_group, parent, false);
 
+        return new VideoGroupHolder(viewItem);
+    }
 
-        TextView textViewMore = holder.mTextViewMore;
-        textViewMore.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onBindViewHolder(VideoGroupHolder holder, int position) {
+        final VideoGroupModel videoGroupModel = mVideoGroupModelList.get(position);
+
+        holder.mTextViewVideoGroupMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext,MoreActivity.class);
-                intent.putExtra(MoreActivity.class.getCanonicalName(), viedoGroupModel.getName());
+                Intent intent = new Intent(mContext, MoreActivity.class);
+                intent.putExtra(MoreActivity.class.getCanonicalName(), videoGroupModel.getName());
                 mContext.startActivity(intent);
-
             }
         });
 
+        holder.includeView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, VRVideoActivity.class);
+                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[0]);
+                mContext.startActivity(intent);
+            }
+        });
 
-        RecyclerView recyclerView = holder.mRecyclerView;
+        holder.includeView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, VRVideoActivity.class);
+                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[1]);
+                mContext.startActivity(intent);
+            }
+        });
 
-        VideoItemAdapter videoItemAdapter = new VideoItemAdapter(mContext, R.layout.item_video, getVideoItems());
-
-        recyclerView.setAdapter(videoItemAdapter);
+        holder.mTextViewVideoGroupName.setText(videoGroupModel.getName());
 
 
-    }
+        VideoItemModel[] videoItemModels = videoGroupModel.getVideoItemModels();
 
-    private List<ViedoGroupModel.VideoItem> getVideoItems() {
-        List<ViedoGroupModel.VideoItem> mVideoItemList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            ViedoGroupModel.VideoItem videoItem = new ViedoGroupModel.VideoItem();
-            videoItem.setName("item " + i);
-            mVideoItemList.add(videoItem);
-        }
-        return mVideoItemList;
+        Logger.e("videoGroupModel.getVideoItemModels()长度 = " + videoItemModels.length);
+
+        holder.mTextViewVideoItemName1.setText(videoItemModels[0].getName());
+        holder.mTextViewVideoItemName2.setText(videoItemModels[1].getName());
+
+        holder.mImageViewVideoItemCover1.setImageResource(R.drawable.t4);
+        holder.mImageViewVideoItemCover2.setImageResource(R.drawable.t1);
+
+
     }
 
     @Override
     public int getItemCount() {
-        return mViedoGroupModelList.size();
+        return mVideoGroupModelList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class VideoGroupHolder extends RecyclerView.ViewHolder {
 
-        TextView mTextViewCategoryName;
-        TextView mTextViewMore;
-        RecyclerView mRecyclerView;
+        TextView mTextViewVideoItemName1;
+        TextView mTextViewVideoItemName2;
+
+        ImageView mImageViewVideoItemCover1;
+        ImageView mImageViewVideoItemCover2;
 
 
-        ViewHolder(View itemView) {
+        TextView mTextViewVideoGroupName;
+        TextView mTextViewVideoGroupMore;
+
+        View includeView1;
+        View includeView2;
+
+        public VideoGroupHolder(View itemView) {
             super(itemView);
-            mTextViewCategoryName = (TextView) itemView.findViewById(R.id.textview_item_videogroup_category_name);
-            mTextViewMore = (TextView) itemView.findViewById(R.id.textview_item_videogroup_more);
-            mRecyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerview);
-            mRecyclerView.addItemDecoration(new VideoItemDecoration(8));
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-            mRecyclerView.setLayoutManager(layoutManager);
+
+            includeView1 = itemView.findViewById(R.id.include_video_item1);
+            includeView2 = itemView.findViewById(R.id.include_video_item2);
+
+
+            mTextViewVideoItemName1 = (TextView) includeView1.findViewById(R.id.textview_item_video_name);
+            mTextViewVideoItemName2 = (TextView) includeView2.findViewById(R.id.textview_item_video_name);
+
+            mImageViewVideoItemCover1 = (ImageView) includeView1.findViewById(R.id.imageview_item_video_cover);
+            mImageViewVideoItemCover2 = (ImageView) includeView2.findViewById(R.id.imageview_item_video_cover);
+
+
+            mTextViewVideoGroupName = (TextView) itemView.findViewById(R.id.textview_item_video_group_name);
+            mTextViewVideoGroupMore = (TextView) itemView.findViewById(R.id.textview_item_video_group_more);
+
 
         }
     }
-
 }
