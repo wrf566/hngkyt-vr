@@ -2,20 +2,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-
+    
+    
     <com.google.vr.sdk.widgets.video.VrVideoView
         android:id="@+id/vrvideoview_vrvideo"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/video_height"
         android:layout_alignParentTop="true"/>
-
-    <android.support.v7.widget.AppCompatSeekBar
-        android:layout_below="@id/vrvideoview_vrvideo"
-        android:id="@+id/seekbar_vrvideo"
-        style="?android:attr/progressBarStyleHorizontal"
+    <FrameLayout
+        android:id="@+id/framelayout_vrvideo_controller"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="@dimen/video_height"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dip_30px"
+            android:paddingRight="@dimen/dip_30px"
+            android:paddingTop="25dp">
+            
+            <ImageView
+                android:id="@+id/imageview_vrvideo_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_white"/>
+            
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            
+            <ImageView
+                android:id="@+id/imageview_vrvideo_stereo"
+                android:src="@drawable/selector_stereo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_70px"
+            android:layout_below="@id/vrvideoview_vrvideo"
+            android:layout_gravity="bottom"
+            android:background="@color/black_transparent_70"
+            android:gravity="center_vertical">
 
+            <CheckBox
+                android:id="@+id/checkbox_vrvideo_play"
+                android:paddingLeft="@dimen/dip_30px"
+                android:paddingRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:drawableLeft="@drawable/selector_play"
+                android:button="@null"
+                android:checked="false"/>
+            <TextView
+                android:id="@+id/textview_vrvideo_currenttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:30"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_28px"/>
+            
+            <SeekBar
+                android:id="@+id/seekbar_vrvideo"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+            />
+            
+            <TextView
+                android:id="@+id/textview_vrvideo_totaltime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:30"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_28px"/>
+            <ImageView
+                android:id="@+id/imageview_vrvideo_fullscreen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="@dimen/dip_30px"
+                android:src="@drawable/fullscreen"/>
+        </LinearLayout>
+    </FrameLayout>
+    
+    
     <!--<include layout="@layout/include_recyclerview"/>-->
 </RelativeLayout>

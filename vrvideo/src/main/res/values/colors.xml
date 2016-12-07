@@ -7,6 +7,7 @@
 
     <color name="white">#ffffff</color>
     <color name="white_transparent_70">#b2ffffff</color>
+    <color name="black_transparent_70">#b2000000</color>
     <color name="yellow">#ffc900</color>
     <color name="gray_eeeeee">#EEEEEE</color>
     <color name="gray_ecebeb">#ECEBEB</color>
