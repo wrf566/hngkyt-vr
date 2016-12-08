@@ -56,32 +56,32 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     private boolean isCompletion = false;
 
+    private VideoLoaderTask mVideoLoaderTask;
+
+
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            if (isFirstPlay) {
-                new VideoLoaderTask().execute(mVideoItemModel.getCoverURL());
-                isFirstPlay = false;
+            Logger.e("isChecked = " + isChecked);
+            //第一次运行
+            if (mVideoLoaderTask == null) {
+                mVideoLoaderTask = new VideoLoaderTask();
+                mVideoLoaderTask.execute(mVideoItemModel.getCoverURL());
+                return;
             }
-
-
-            Logger.e("isChecked =  " + isChecked);
-            Logger.e("isCompletion =  " + isCompletion);
-
-            if (isChecked) {
-                //播放完毕重新播放
-//                if (isCompletion) {
-//                    isCompletion = false;
-//                    mVrVideoView.seekTo(0);
-//                } else {
-                    mVrVideoView.playVideo();
-//                }
-
+            //这里一定要判断是非完成，不然会调用pauseVideo()则seekTo就无用了。
+            if (isCompletion) {//重新播放播放
+                if(isChecked){
+                    mVrVideoView.seekTo(0);
+                    isCompletion=false;
+                }
             } else {
-                mVrVideoView.pauseVideo();
+                if (isChecked) {
+                    mVrVideoView.playVideo();
+                } else {
+                    mVrVideoView.pauseVideo();
+                }
             }
-
         }
     };
 
