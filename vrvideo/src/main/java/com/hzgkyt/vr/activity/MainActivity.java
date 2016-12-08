@@ -108,22 +108,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (checkedId) {
             case R.id.radiobutton_main_viedogroup_newest:
                 mTextViewGroupName.setText(R.string.newest_video);
-                replaceFragment(new ViedeoNewestFragment(), null);
+                replaceFragment(new ViedeoNewestFragment(), ViedeoNewestFragment.class.getCanonicalName());
                 break;
 
             case R.id.radiobutton_main_viedogroup_religionary:
                 mTextViewGroupName.setText(R.string.religionary);
-                replaceFragment(new VideoGroupFragment(), null);
+                replaceFragment(new VideoGroupFragment(), VideoGroupFragment.class.getCanonicalName()+1);
 
                 break;
             case R.id.radiobutton_main_viedogroup_landscape:
                 mTextViewGroupName.setText(R.string.landscaoe);
-                replaceFragment(new VideoGroupFragment(), null);
+                replaceFragment(new VideoGroupFragment(), VideoGroupFragment.class.getCanonicalName()+2);
 
                 break;
             case R.id.radiobutton_main_viedogroup_history:
                 mTextViewGroupName.setText(R.string.history);
-                replaceFragment(new VideoGroupFragment(), null);
+                replaceFragment(new VideoGroupFragment(), VideoGroupFragment.class.getCanonicalName()+3);
 
                 break;
 

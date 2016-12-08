@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -14,9 +15,10 @@ import com.hzgkyt.vr.R;
  * Created by wrf on 2016/11/16.
  */
 
-public abstract class BaseActivity extends AppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity {
 
 
+    protected FragmentManager mFragmentManager;
 
 
     @Override
@@ -25,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity{
         setContentView(intLayoutResId());
 
 
-
+        mFragmentManager = getSupportFragmentManager();
 
         initView();
     }
@@ -45,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity{
         transaction.commit();
     }
 
-    public void startActivityOriginal(Context context, Class<?> cls){
-        startActivity(new Intent(context,cls));
+    public void startActivityOriginal(Context context, Class<?> cls) {
+        startActivity(new Intent(context, cls));
     }
 }

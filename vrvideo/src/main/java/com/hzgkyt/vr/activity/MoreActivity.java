@@ -14,7 +14,7 @@ public class MoreActivity extends TitleBarActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        replaceFragment(new MoreFragment(),null);
+        replaceFragment(new MoreFragment(),MoreFragment.class.getCanonicalName());
     }
 
     @Override
