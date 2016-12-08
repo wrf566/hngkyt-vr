@@ -57,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:freezesText="true"
                 android:drawableLeft="@drawable/selector_play"
                 android:button="@null"
                 android:checked="false"/>
@@ -64,7 +65,8 @@
                 android:id="@+id/textview_vrvideo_currenttime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:30"
+                android:text="00:00"
+                android:freezesText="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             
@@ -80,7 +82,8 @@
                 android:id="@+id/textview_vrvideo_totaltime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:30"
+                android:text="00:00"
+                android:freezesText="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             <ImageView

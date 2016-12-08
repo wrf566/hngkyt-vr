@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -30,10 +31,8 @@ import java.io.IOException;
 public class VRVideoFragment extends BaseFragment implements View.OnClickListener {
 
 
-    public static final String VRVIDEO_PATH = "vrvideo_path";
-    public static final String VRVIDEO_NAME = "vrvideo_name";
     private static final String STATE_IS_PLAY = "isPlay";
-    private static final String STATE_PROGRESS_TIME = "progressTime";
+    private static final String STATE_CURRENT_POSITION = "state_current_position";
     private static final String STATE_VIDEO_DURATION = "videoDuration";
 
     private FrameLayout mFrameLayoutController;
@@ -48,14 +47,8 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     private VrVideoView mVrVideoView;
     private SeekBar mSeekBar;
-    private boolean isPaused = false;
-
     private VideoItemModel mVideoItemModel;
-
-    private boolean isFirstPlay = true;
-
     private boolean isCompletion = false;
-
     private VideoLoaderTask mVideoLoaderTask;
 
 
@@ -69,11 +62,11 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                 mVideoLoaderTask.execute(mVideoItemModel.getCoverURL());
                 return;
             }
-            //这里一定要判断是非完成，不然会调用pauseVideo()则seekTo就无用了。
-            if (isCompletion) {//重新播放播放
-                if(isChecked){
+            //重新播放
+            if (isCompletion) {
+                if (isChecked) {
                     mVrVideoView.seekTo(0);
-                    isCompletion=false;
+                    isCompletion = false;
                 }
             } else {
                 if (isChecked) {
@@ -83,6 +76,40 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                 }
             }
         }
+    };
+    /**
+     * 只有当用户拖动进度条的时候改变播放时间
+     */
+    private SeekBar.OnSeekBarChangeListener mSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) {
+                mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(progress / 1000));
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            if (seekBar.getProgress() != seekBar.getMax()) {
+                isCompletion = false;
+            }
+            //这里是防止播放完毕后用户再拖动进度条，如果光调用seekTo()，会直接播放
+            //但是实际上，我们的按钮是可播放样式，所以要立马暂停
+            //其实未播放完毕的时候调用seekTo是不会影响暂停和播放状态的
+            //即拖动前是在播放或暂停那么拖动后也是播放或暂停，但是只要播放完毕了，那么调用seekTo就无视之前的状态自动播放
+            //由于播放完毕了就表示视频已经暂停了，所以播放完毕的拖动全部都是暂停的，除非用户手动点击播放
+            mVrVideoView.seekTo(seekBar.getProgress());
+            if (!mCheckBoxPlay.isChecked()) {
+                mVrVideoView.pauseVideo();
+            }
+
+        }
+
+
     };
 
     public static VRVideoFragment newInstance(VideoItemModel videoItemModel) {
@@ -130,7 +157,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         hideDefaultViews(mVrVideoView);
 
         mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_vrvideo);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBarListener());
+        mSeekBar.setOnSeekBarChangeListener(mSeekBarListener);
 
 
         //        Logger.e("VRVideoPath = " + mVideoItemModel.getCoverURL());
@@ -144,14 +171,6 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
      */
     private void hideDefaultViews(VrVideoView vrVideoView) {
 
-        VrWidgetView vrWidgetView = new VrWidgetView(getActivity()) {
-
-            @Override
-            protected VrWidgetRenderer createRenderer(Context context, VrWidgetRenderer.GLThreadScheduler glThreadScheduler, float v, float v1, int i) {
-                return null;
-            }
-        };
-
         vrVideoView.setFullscreenButtonEnabled(false);
         vrVideoView.setInfoButtonEnabled(false);
         vrVideoView.setStereoModeButtonEnabled(false);
@@ -159,30 +178,30 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
-            long progressTime = savedInstanceState.getLong(STATE_PROGRESS_TIME);
-            mVrVideoView.seekTo(progressTime);
+            mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mSeekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
-            mSeekBar.setProgress((int) progressTime);
+            mSeekBar.setProgress((int) savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mCheckBoxPlay.setChecked(savedInstanceState.getBoolean(STATE_IS_PLAY));
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putLong(STATE_PROGRESS_TIME, mVrVideoView.getCurrentPosition());
+        Logger.e("onSaveInstanceState");
+        savedInstanceState.putLong(STATE_CURRENT_POSITION, mVrVideoView.getCurrentPosition());
         savedInstanceState.putLong(STATE_VIDEO_DURATION, mVrVideoView.getDuration());
         savedInstanceState.putBoolean(STATE_IS_PLAY, mCheckBoxPlay.isChecked());
         super.onSaveInstanceState(savedInstanceState);
     }
 
-
     @Override
     public void onResume() {
+        Logger.e("onResume");
         mVrVideoView.resumeRendering();
 
         super.onResume();
@@ -190,16 +209,21 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onPause() {
-        super.onPause();
+        Logger.e("onPause");
         mVrVideoView.pauseRendering();
+        //应用被遮盖要暂停
+        mCheckBoxPlay.setChecked(false);
+        super.onPause();
     }
 
     @Override
     public void onDestroy() {
+//        mVrVideoView.pauseRendering();//要加上不然切换出去再进来会报错
         mVrVideoView.shutdown();
         super.onDestroy();
 
     }
+
 
     @Override
     public void onClick(View v) {
@@ -216,26 +240,10 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         }
     }
 
-    /**
-     * When the user manipulates the seek bar, update the video position.
-     */
-    private class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-                mVrVideoView.seekTo(progress);
-            } // else this was from the ActivityEventHandler.onNewFrame()'s seekBar.setProgress update.
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-        }
-
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Logger.e("onDetach");
     }
 
     /**
@@ -252,6 +260,9 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         @Override
         public void onLoadSuccess() {
             mSeekBar.setMax((int) mVrVideoView.getDuration());
+            //            mTextViewTotaltime.setText(formatTime(maxTime));
+            mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));
+
 
         }
 
@@ -283,11 +294,9 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         @Override
         public void onNewFrame() {
             mSeekBar.setProgress((int) mVrVideoView.getCurrentPosition());
-
-            //            if(infoButton!=null){
-            //                infoButton.setVisibility(View.GONE);
-            //            }
+            mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(mVrVideoView.getCurrentPosition() / 1000));
         }
+
 
         /**
          * Make the video play in a loop. This method could also be used to move to the next video in
@@ -295,10 +304,10 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
          */
         @Override
         public void onCompletion() {
-            //            mVrVideoView.seekTo(0);
             Logger.e("onCompletion");
             isCompletion = true;
             mCheckBoxPlay.setChecked(false);
+            //            mVrVideoView.pauseVideo();
 
         }
 
