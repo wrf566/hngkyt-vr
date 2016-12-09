@@ -47,7 +47,7 @@
             android:layout_height="@dimen/dip_70px"
             android:layout_below="@id/vrvideoview_vrvideo"
             android:layout_gravity="bottom"
-            android:background="@color/black_transparent_70"
+            android:background="@color/black_transparent_50"
             android:gravity="center_vertical">
 
             <CheckBox
@@ -70,12 +70,18 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             
+                <!--android:thumb="@null"-->
             <SeekBar
                 android:id="@+id/seekbar_vrvideo"
-                style="?android:attr/progressBarStyleHorizontal"
+                android:minHeight="10dp"
+                android:maxHeight="35dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:thumbOffset="2dip"
+                android:thumb="@drawable/selector_thumb"
+
+                android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
             />
             
             <TextView

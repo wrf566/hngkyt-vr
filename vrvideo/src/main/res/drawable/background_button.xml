@@ -3,48 +3,30 @@
 
 
     <item android:state_pressed="true">
-        <layer-list>
 
-            <item>
-                <shape android:shape="rectangle">
+        <shape android:shape="rectangle">
 
-                    <corners
-                        android:radius="@dimen/dip_50px"
-                    />
-                    <solid
-                        android:color="@color/gray_ecebeb"
-                    />
-                </shape>
-
-            </item>
-
-
-        </layer-list>
-
+            <corners
+                android:radius="@dimen/dip_50px"
+            />
+            <solid
+                android:color="@color/gray_ecebeb"
+            />
+        </shape>
 
     </item>
 
 
     <item>
-        <layer-list>
+        <shape android:shape="rectangle">
 
-            <item>
-                <shape android:shape="rectangle">
-
-                    <corners
-                        android:radius="@dimen/dip_50px"
-                    />
-                    <solid
-                        android:color="@color/colorAccent"
-                    />
-                </shape>
-
-            </item>
-
-
-        </layer-list>
-
-
+            <corners
+                android:radius="@dimen/dip_50px"
+            />
+            <solid
+                android:color="@color/colorAccent"
+            />
+        </shape>
     </item>
 
 

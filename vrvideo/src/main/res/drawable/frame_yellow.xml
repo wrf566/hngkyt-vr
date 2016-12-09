@@ -1,8 +1,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true">
-        <layer-list>
-            <item>
                 <shape android:shape="rectangle">
                     <corners
                         android:radius="1.5dp"
@@ -13,13 +11,9 @@
 
                     <solid android:color="@color/white"/>
                 </shape>
-            </item>
-        </layer-list>
     </item>
 
     <item>
-        <layer-list>
-            <item>
                 <shape android:shape="rectangle">
                     <corners
                         android:radius="1.5dp"
@@ -32,9 +26,6 @@
 
                     <solid android:color="@color/white"/>
                 </shape>
-            </item>
-        </layer-list>
-
     </item>
 
 

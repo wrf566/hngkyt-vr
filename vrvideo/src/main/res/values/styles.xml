@@ -55,4 +55,11 @@
 
     </style>
 
+
+    <style name="SeekBar" parent="android:Widget.Holo.Light.SeekBar">
+        <item name="android:progressDrawable">@drawable/apptheme_scrubber_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/apptheme_scrubber_progress_horizontal_holo_light</item>
+        <item name="android:thumb">@drawable/selector_thumb</item>
+    </style>
+
 </resources>

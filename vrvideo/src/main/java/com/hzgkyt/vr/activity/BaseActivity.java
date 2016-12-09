@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 import com.hzgkyt.vr.R;
 
 /**
@@ -20,12 +21,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected FragmentManager mFragmentManager;
 
+    public SPUtils mSPUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(intLayoutResId());
-
+        mSPUtils = new SPUtils(this,SPUtils.class.getName());
 
         mFragmentManager = getSupportFragmentManager();
 

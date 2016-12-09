@@ -50,15 +50,15 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_100px"
             android:button="@null"
-            android:checked="true"
             android:drawableRight="@drawable/abc_btn_radio_material"
             android:drawableTint="@color/yellow"
             android:paddingStart="0dp"
             android:text="@string/autoplay_next"/>
-        
+
         <RadioButton
             android:id="@+id/radiobutton_personal_center_loop"
             style="@style/personal_center_setting_item"
+            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_100px"
             android:button="@null"
@@ -76,14 +76,14 @@
         android:layout_height="@dimen/dip_92px"
         android:text="@string/setting"/>
     
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switch1"
+    <Switch
+        android:id="@+id/switch_personal_center_stereo"
         style="@style/personal_center_setting_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_100px"
         android:checked="true"
         android:text="@string/fullscreen_double_screen"/>
-    
+
     <TextView
         style="@style/personal_center_setting_item"
         android:layout_width="match_parent"

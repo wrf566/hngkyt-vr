@@ -7,8 +7,9 @@
 
     <color name="white">#ffffff</color>
     <color name="white_transparent_70">#b2ffffff</color>
-    <color name="black_transparent_70">#b2000000</color>
+    <color name="black_transparent_50">#70000000</color>
     <color name="yellow">#ffc900</color>
+    <color name="yellow_transparent_50">#b2ffc900</color>
     <color name="gray_eeeeee">#EEEEEE</color>
     <color name="gray_ecebeb">#ECEBEB</color>
     <color name="transparent">@android:color/transparent</color>

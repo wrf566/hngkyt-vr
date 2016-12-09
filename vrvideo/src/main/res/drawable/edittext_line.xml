@@ -2,10 +2,16 @@
     <!--<item android:state_focused="true"  android:drawable="@drawable/edittext_line_focused"/>-->
     <!--<item android:state_focused="false"  android:drawable="@drawable/edittext_line_normal"/>-->
 
-    <item android:state_focused="true">
+    <item
 
+
+        android:state_focused="true">
+        <!--这里不能把layer-list去掉-->
+        <!--    android:bottom="0dp"
+                        android:left="-2dp"
+                        android:right="-2dp"
+                        android:top="-2dp" 写在上面的item中是无用的-->
         <layer-list>
-            <!--此处-->
             <item
                 android:bottom="0dp"
                 android:left="-2dp"
@@ -31,7 +37,7 @@
 
     </item>
 
-    <item >
+    <item>
 
 
         <layer-list>

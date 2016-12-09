@@ -50,6 +50,23 @@ public class VRVideoActivity extends BaseActivity {
             replaceFragment(VRVideoFragment.newInstance(videoItemModel), VRVideoFragment.class.getCanonicalName());
         }
 
+        showStatsBar();
+
+
+    }
+
+
+
+
+    public void hideStatsBar(){
+        View decorView = getWindow().getDecorView();
+
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    public void showStatsBar(){
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -59,9 +76,8 @@ public class VRVideoActivity extends BaseActivity {
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-
-
     }
+
 
 
 }

@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hzgkyt.vr.activity.BaseActivity;
+
 /**
  * 基Fragment
  * Created by wrf on 2016/11/21.
  */
 
 public abstract class BaseFragment extends Fragment{
+    protected BaseActivity mBaseActivity;
 
     @Nullable
     @Override
@@ -23,6 +26,7 @@ public abstract class BaseFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mBaseActivity = (BaseActivity) getActivity();
         initView(view);
     }
 

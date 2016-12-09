@@ -1,6 +1,5 @@
 package com.hzgkyt.vr.fragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.vr.sdk.widgets.common.VrWidgetRenderer;
-import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hzgkyt.vr.R;
@@ -34,32 +31,37 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     private static final String STATE_IS_PLAY = "isPlay";
     private static final String STATE_CURRENT_POSITION = "state_current_position";
     private static final String STATE_VIDEO_DURATION = "videoDuration";
-
+    private static final int DISPLAYMODE_PORTRAIT = 1;
+    private static final int DISPLAYMODE_LANDSCAPE = 2;
+    private static final int DISPLAYMODE_STEREO = 3;
     private FrameLayout mFrameLayoutController;
     private CheckBox mCheckBoxPlay;
-
     private TextView mTextViewCurrentTime;
     private TextView mTextViewTotaltime;
-
     private ImageView mImageViewFullScreen;
     private ImageView mImageViewBack;
     private ImageView mImageViewStereo;
-
     private VrVideoView mVrVideoView;
     private SeekBar mSeekBar;
     private VideoItemModel mVideoItemModel;
     private boolean isCompletion = false;
     private VideoLoaderTask mVideoLoaderTask;
-
-
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Logger.e("isChecked = " + isChecked);
+
             //第一次运行
             if (mVideoLoaderTask == null) {
+                if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
+                } else {
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
+                }
                 mVideoLoaderTask = new VideoLoaderTask();
                 mVideoLoaderTask.execute(mVideoItemModel.getCoverURL());
+                //第一次运行后进度条才能拖动
+                mSeekBar.setEnabled(true);
                 return;
             }
             //重新播放
@@ -94,6 +96,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+
             if (seekBar.getProgress() != seekBar.getMax()) {
                 isCompletion = false;
             }
@@ -145,22 +148,22 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         mImageViewStereo.setOnClickListener(this);
         mCheckBoxPlay.setOnCheckedChangeListener(playChangeListener);
 
+        mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_vrvideo);
+        mSeekBar.setOnSeekBarChangeListener(mSeekBarListener);
+        //第一次进来还没播放的时候就不让拖动
+        mSeekBar.setEnabled(false);
 
         mVideoItemModel = getArguments().getParcelable(VideoItemModel.class.getCanonicalName());
 
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
         mVrVideoView.setEventListener(new ActivityEventListener());
-        mVrVideoView.setDisplayMode(1);
+
+            mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
 
 
         hideDefaultViews(mVrVideoView);
 
-        mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_vrvideo);
-        mSeekBar.setOnSeekBarChangeListener(mSeekBarListener);
-
-
-        //        Logger.e("VRVideoPath = " + mVideoItemModel.getCoverURL());
 
     }
 
@@ -218,12 +221,11 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDestroy() {
-//        mVrVideoView.pauseRendering();//要加上不然切换出去再进来会报错
+        //        mVrVideoView.pauseRendering();//要加上不然切换出去再进来会报错
         mVrVideoView.shutdown();
         super.onDestroy();
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -250,9 +252,6 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
      * Listen to the important events from widget.
      */
     private class ActivityEventListener extends VrVideoEventListener {
-        private static final int DISPLAYMODE_PORTRAIT = 1;
-        private static final int DISPLAYMODE_LANDSCAPE = 2;
-        private static final int DISPLAYMODE_STEREO = 3;
 
         /**
          * Called by video widget on the UI thread when it's done loading the video.
@@ -260,7 +259,6 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         @Override
         public void onLoadSuccess() {
             mSeekBar.setMax((int) mVrVideoView.getDuration());
-            //            mTextViewTotaltime.setText(formatTime(maxTime));
             mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));
 
 
@@ -305,9 +303,13 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         @Override
         public void onCompletion() {
             Logger.e("onCompletion");
-            isCompletion = true;
-            mCheckBoxPlay.setChecked(false);
-            //            mVrVideoView.pauseVideo();
+            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), true)) {
+                mVrVideoView.seekTo(0);
+            } else {
+                isCompletion = true;
+                mCheckBoxPlay.setChecked(false);
+            }
+
 
         }
 
@@ -322,7 +324,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                 case DISPLAYMODE_LANDSCAPE://普通全屏
 
                     break;
-                case DISPLAYMODE_STEREO://普通全屏
+                case DISPLAYMODE_STEREO://立体全屏
 
                     break;
 
@@ -341,6 +343,9 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
+                //                if(mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo),true)){
+                //                }
+//                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
                 mVrVideoView.loadVideo(Uri.parse(files[0]), options);
             } catch (IOException e) {
                 e.printStackTrace();
