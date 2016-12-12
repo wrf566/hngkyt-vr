@@ -2,7 +2,6 @@ package com.hzgkyt.vr.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -23,18 +22,13 @@ public class VideoItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, recyclerView, state);
 
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-
-        /**
-         * 这里不能写成if else的形式因为GridLayoutManager是LinearLayoutManager的子类
-         */
-        if (layoutManager instanceof GridLayoutManager) {
-            if (position % 2 == 0) {
-                outRect.right = mSpace;
-            }
-            outRect.bottom = mSpace;
+        if (position == 0||position == 1) {
+            outRect.top = 40;
         }
-
+        if (position % 2 == 0) {
+            outRect.right = mSpace;
+        }
+        outRect.bottom = mSpace;
 
 
     }

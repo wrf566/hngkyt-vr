@@ -17,6 +17,7 @@ import com.hzgkyt.vr.model.VideoItemModel;
 import java.util.List;
 
 /**
+ * 单个视频适配器
  * Created by wrf on 2016/12/1.
  */
 

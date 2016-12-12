@@ -48,7 +48,7 @@
             android:background="@drawable/frame_yellow"
             android:gravity="center"
             android:text="@string/send_verify_code"
-            android:textColor="@color/text_selector_yellow"/>
+            android:textColor="@color/text_yellow_selector"/>
 
     </RelativeLayout>
     <Button

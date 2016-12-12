@@ -41,79 +41,24 @@
 
 
     </RelativeLayout>
-    <RadioGroup
-        android:id="@+id/radiogroup_main_viedogroup"
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout_main_group"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_180px"
         android:background="@color/colorPrimary"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/red"/>
 
-        <RadioButton
-            android:id="@+id/radiobutton_main_viedogroup_newest"
-            style="@style/RadioButton_main_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/newest"
-            android:text="@string/newest_video"/>
-
-        <RadioButton
-            android:id="@+id/radiobutton_main_viedogroup_religionary"
-            style="@style/RadioButton_main_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/religious"
-            android:text="@string/religionary"/>
-
-        <RadioButton
-            android:id="@+id/radiobutton_main_viedogroup_landscape"
-            style="@style/RadioButton_main_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/landscape"
-            android:text="@string/landscaoe"/>
-
-        <RadioButton
-            android:id="@+id/radiobutton_main_viedogroup_history"
-            style="@style/RadioButton_main_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/history_related"
-            android:text="@string/history"/>
-
-
-    </RadioGroup>
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_main_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dip_40px"
-        android:layout_marginTop="@dimen/dip_40px"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+    </android.support.v4.view.ViewPager>
 
-        <View
-            android:layout_width="@dimen/dip_30px"
-            android:layout_height="@dimen/dip_4px"
-            android:background="@color/colorAccent"/>
 
-        <TextView
-            android:id="@+id/textview_main_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dip_24px"
-            android:layout_marginRight="@dimen/dip_24px"
-            android:text="最新视频"
-            android:textColor="@color/text3"
-            android:textSize="@dimen/text_34px"/>
 
-        <View
-            android:layout_width="@dimen/dip_30px"
-            android:layout_height="@dimen/dip_4px"
-            android:background="@color/colorAccent"
-        />
-
-    </LinearLayout>
-    <include
-        layout="@layout/include_framelayout_fragment"/>
 
 </LinearLayout>

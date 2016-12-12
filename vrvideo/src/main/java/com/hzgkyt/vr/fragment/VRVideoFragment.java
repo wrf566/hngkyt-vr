@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hzgkyt.vr.R;
@@ -159,7 +160,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
         mVrVideoView.setEventListener(new ActivityEventListener());
 
-            mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
+        mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
 
 
         hideDefaultViews(mVrVideoView);
@@ -178,6 +179,10 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         vrVideoView.setInfoButtonEnabled(false);
         vrVideoView.setStereoModeButtonEnabled(false);
         vrVideoView.setTransitionViewEnabled(false);
+        VrWidgetView vrWidgetView = vrVideoView;
+
+//        vrWidgetView.
+
 
     }
 
@@ -343,10 +348,15 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
+                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
                 //                if(mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo),true)){
                 //                }
-//                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
-                mVrVideoView.loadVideo(Uri.parse(files[0]), options);
+                //                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
+                //                mVrVideoView.loadVideo(Uri.parse(files[0]), options);
+
+
+                //                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
+                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"), options);
             } catch (IOException e) {
                 e.printStackTrace();
 

@@ -14,11 +14,11 @@ import com.hzgkyt.vr.activity.MoreActivity;
 import com.hzgkyt.vr.activity.VRVideoActivity;
 import com.hzgkyt.vr.model.VideoGroupModel;
 import com.hzgkyt.vr.model.VideoItemModel;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
 /**
+ * 分组适配器，一个频道中有多个分组
  * Created by wrf on 2016/12/5.
  */
 
@@ -78,7 +78,6 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
         VideoItemModel[] videoItemModels = videoGroupModel.getVideoItemModels();
 
-        Logger.e("videoGroupModel.getVideoItemModels()长度 = " + videoItemModels.length);
 
         holder.mTextViewVideoItemName1.setText(videoItemModels[0].getName());
         holder.mTextViewVideoItemName2.setText(videoItemModels[1].getName());

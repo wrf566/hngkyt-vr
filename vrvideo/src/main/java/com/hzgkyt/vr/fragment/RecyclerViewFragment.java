@@ -21,33 +21,43 @@ public abstract class RecyclerViewFragment extends BaseFragment {
         initRecyclerView(view);
     }
 
-    private void initRecyclerView(View view){
+    private void initRecyclerView(View view) {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setAdapter(initRecyclerViewAdapter());
-        mRecyclerView.addItemDecoration(initRecyclerViewItemDecoration());
+        if (initRecyclerViewItemDecoration() != null) {//这里有可能不添加，因为不需要分割线
+            mRecyclerView.addItemDecoration(initRecyclerViewItemDecoration());
+        }
         mRecyclerView.setLayoutManager(initRecyclerViewLayoutManager());
 
+    }
+
+    @Override
+    protected int intLayoutResId() {
+        return R.layout.include_recyclerview;
     }
 
 
     /**
      * 初始化自定义的适配器
+     *
      * @return 相对应的适配器
      */
     protected abstract RecyclerView.Adapter initRecyclerViewAdapter();
 
     /**
-     *  分割器初始化
+     * 分割器初始化
+     *
      * @return 分割器
      */
     protected abstract RecyclerView.ItemDecoration initRecyclerViewItemDecoration();
 
     /**
      * 布局初始化
+     *
      * @return 布局
      */
     protected abstract RecyclerView.LayoutManager initRecyclerViewLayoutManager();

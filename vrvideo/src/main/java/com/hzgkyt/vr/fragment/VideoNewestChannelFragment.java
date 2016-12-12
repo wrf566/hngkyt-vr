@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoItemAdapter;
 import com.hzgkyt.vr.decoration.VideoItemDecoration;
 import com.hzgkyt.vr.model.VideoItemModel;
@@ -23,10 +22,6 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
     private static final int ITEM_SPACE = 20;//item之间的距离
 
 
-    @Override
-    protected int intLayoutResId() {
-        return R.layout.include_recyclerview;
-    }
 
     @Override
     protected void initView(View view) {

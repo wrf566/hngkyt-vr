@@ -103,5 +103,5 @@
     </FrameLayout>
     
     
-    <!--<include layout="@layout/include_recyclerview"/>-->
+    <include layout="@layout/include_fullscreen"/>
 </RelativeLayout>

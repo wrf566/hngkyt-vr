@@ -4,7 +4,6 @@ import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoGroupAdapter;
 import com.hzgkyt.vr.decoration.VideoGroupDecoration;
 import com.hzgkyt.vr.model.VideoGroupModel;
@@ -20,10 +19,7 @@ import java.util.List;
 public class VideoChannelFragment extends RecyclerViewFragment {
 
 
-    @Override
-    protected int intLayoutResId() {
-        return R.layout.include_recyclerview;
-    }
+
 
 
     @Override

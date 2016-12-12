@@ -20,7 +20,10 @@ public class VideoGroupDecoration extends RecyclerView.ItemDecoration{
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
-
+        int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
+        if (position == 0) {
+            outRect.top = 40;
+        }
         outRect.bottom = mSpace;
     }
 }
