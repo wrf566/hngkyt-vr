@@ -17,7 +17,7 @@ import java.util.List;
  * Created by wrf on 2016/11/22.
  */
 
-public class VideoGroupFragment extends RecyclerViewFragment {
+public class VideoChannelFragment extends RecyclerViewFragment {
 
 
     @Override

@@ -4,7 +4,6 @@ import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.adapter.VideoItemAdapter;
@@ -15,22 +14,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 更多页面
- * <p>
- * Created by wrf on 2016/12/2.
+ * Created by wrf on 2016/12/1.
  */
 
-public class MoreFragment extends RecyclerViewFragment {
+public class VideoNewestChannelFragment extends RecyclerViewFragment {
 
-    private static final int ITEM_SPACE = 10;//item之间的距离
+    private static final int SPAN_COUNT = 2;//列数
+    private static final int ITEM_SPACE = 20;//item之间的距离
 
+
+    @Override
+    protected int intLayoutResId() {
+        return R.layout.include_recyclerview;
+    }
 
     @Override
     protected void initView(View view) {
         super.initView(view);
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mRecyclerView.getLayoutParams();
-        layoutParams.setMargins(30, 30, 30, 30);
-        mRecyclerView.setLayoutParams(layoutParams);
+//        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mRecyclerView.getLayoutParams();
+//        layoutParams.setMargins(10, 10, 10, 10);
+//        mRecyclerView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -45,12 +48,7 @@ public class MoreFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.LayoutManager initRecyclerViewLayoutManager() {
-        return new GridLayoutManager(getActivity(), 2);
-    }
-
-    @Override
-    protected int intLayoutResId() {
-        return R.layout.include_recyclerview;
+        return new GridLayoutManager(getActivity(), SPAN_COUNT);
     }
 
     private List<VideoItemModel> getVideoItemList() {
