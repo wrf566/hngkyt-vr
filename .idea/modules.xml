@@ -4,9 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VRVideo.iml" filepath="$PROJECT_DIR$/VRVideo.iml" />
       <module fileurl="file://$PROJECT_DIR$/baselibrary/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary/baselibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/commonwidget/commonwidget.iml" filepath="$PROJECT_DIR$/commonwidget/commonwidget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/videowidget/videowidget.iml" filepath="$PROJECT_DIR$/videowidget/videowidget.iml" />
       <module fileurl="file://$PROJECT_DIR$/vrvideo/vrvideo.iml" filepath="$PROJECT_DIR$/vrvideo/vrvideo.iml" />
     </modules>
   </component>

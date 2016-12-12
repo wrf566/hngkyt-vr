@@ -1,1 +1,1 @@
-include ':common', ':commonwidget', ':videowidget', ':vrvideo', ':baselibrary'
+include ':vrvideo', ':baselibrary'

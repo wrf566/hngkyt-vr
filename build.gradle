@@ -14,7 +14,15 @@ buildscript {
 
 allprojects {
     repositories {
+        // For GVR components, the official source of the .aars is the Google
+        // repository.
+        maven {
+            url "http://google.bintray.com/googlevr"
+        }
+        // We also use components from JCenter.
         jcenter()
+        // You can also use a local Maven repository if desired.
+        mavenLocal()
     }
 }
 
