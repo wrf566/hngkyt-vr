@@ -17,7 +17,7 @@ import java.util.List;
  * Created by wrf on 2016/12/12.
  */
 
-public class VideoChannelAdapter extends RecyclerView.Adapter<VideoChannelAdapter.VideoChannelHolder>{
+public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChannelAdapter.VideoChannelHolder>{
 
 
     private Context mContext;
@@ -25,7 +25,7 @@ public class VideoChannelAdapter extends RecyclerView.Adapter<VideoChannelAdapte
     private List<VideoChannelModel> mVideoChannelModelList;
 
 
-    public VideoChannelAdapter(Context context, List<VideoChannelModel> videoChannelModelList) {
+    public VideoMoreChannelAdapter(Context context, List<VideoChannelModel> videoChannelModelList) {
         mContext = context;
         mVideoChannelModelList = videoChannelModelList;
     }
@@ -34,7 +34,7 @@ public class VideoChannelAdapter extends RecyclerView.Adapter<VideoChannelAdapte
     public VideoChannelHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View viewItem = LayoutInflater.from(mContext).inflate(R.layout.item_channel, parent, false);
 
-        return new VideoChannelAdapter.VideoChannelHolder(viewItem);
+        return new VideoMoreChannelAdapter.VideoChannelHolder(viewItem);
     }
 
     @Override
