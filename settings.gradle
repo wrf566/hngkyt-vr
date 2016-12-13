@@ -1,1 +1,1 @@
-include ':vrvideo', ':baselibrary'
+include ':vrvideo', ':baselibrary', ':loginsdk'

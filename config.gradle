@@ -11,7 +11,10 @@ ext {
             versionCode      : 1,
             versionName      : "1.0.0",
 
-            minifyEnabled    : false
+            minifyEnabled    : false,
+
+            storeFile : "../vrkeystore.jks",
+            keyAlias : "阅心VR"
 
     ]
 

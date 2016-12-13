@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.hzgkyt.vr.R;
 import com.hzgkyt.vr.model.VideoChannelModel;
@@ -32,7 +32,7 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     @Override
     public VideoChannelHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewItem = LayoutInflater.from(mContext).inflate(R.layout.item_channel, parent, false);
+        View viewItem = LayoutInflater.from(mContext).inflate(R.layout.item_more_channel, parent, false);
 
         return new VideoMoreChannelAdapter.VideoChannelHolder(viewItem);
     }
@@ -42,8 +42,8 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
         VideoChannelModel videoChannelModel = mVideoChannelModelList.get(position);
 
 
-        holder.mTextViewChannel.setText(videoChannelModel.getName());
-        holder.mTextViewChannel.setCompoundDrawablesWithIntrinsicBounds(0,videoChannelModel.getDrawableID(),0,0);
+        holder.mButtonChannel.setText(videoChannelModel.getName());
+        holder.mButtonChannel.setCompoundDrawablesWithIntrinsicBounds(0,videoChannelModel.getDrawableID(),0,0);
 
     }
 
@@ -54,11 +54,11 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     static class VideoChannelHolder extends RecyclerView.ViewHolder{
 
-        TextView mTextViewChannel;
+        Button mButtonChannel;
 
         public VideoChannelHolder(View itemView) {
             super(itemView);
-            mTextViewChannel = (TextView) itemView;
+            mButtonChannel = (Button) itemView;
         }
     }
 }

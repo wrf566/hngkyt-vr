@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:drawablePadding="30dp"
                 android:drawableTop="@drawable/userpic"
                 
@@ -39,17 +39,17 @@
                 style="@style/Edittext_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="53dp"
+                android:layout_marginTop="30dp"
                 android:hint="@string/username"/>
-            
-            
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="55dp"
                 android:layout_marginRight="55dp"
                 android:layout_marginTop="23dp">
-                
+
                 <EditText
                     style="@style/Edittext"
                     android:layout_width="match_parent"
@@ -73,21 +73,74 @@
                 android:id="@+id/button_login_login"
                 style="@style/Button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginLeft="55dp"
                 android:layout_marginRight="55dp"
-                android:layout_marginTop="50dp"
-                android:text="@string/login"/>
-            
-            <TextView
                 android:layout_marginTop="20dp"
-                android:id="@+id/textview_login_signup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+                android:text="@string/login"/>
+            <Button
+                android:id="@+id/button_login_signup"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_button_hollow"
                 android:text="@string/signup"
-                android:textColor="@color/text3"
-                android:textSize="@dimen/text_28px"/>
+                android:textColor="@color/text_yellow_selector"/>
+
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="25dp"
+                          android:gravity="center"
+                          android:orientation="horizontal">
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_ecebeb"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/thirdlypart_signip"
+                    android:textColor="@color/text3"
+                    android:textSize="12sp"/>
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_ecebeb"/>
+            </LinearLayout>
+
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="20dp"
+                          android:gravity="center"
+                          android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageview_login_wechat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wechat"/>
+                <ImageView
+                    android:id="@+id/imageview_login_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:src="@drawable/qq"/>
+
+                <ImageView
+                    android:id="@+id/imageview_login_sina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/sina"/>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

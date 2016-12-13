@@ -8,7 +8,7 @@
     <string name="version_update">版本更新</string>
     <string name="personal_center">个人中心</string>
     <string name="login_or_signup">登录 / 注册</string>
-    <string name="username">用户名：</string>
+    <string name="username">账号：</string>
     <string name="password">密码：</string>
     <string name="signup">注册</string>
     <string name="age">年龄：</string>
@@ -31,6 +31,7 @@
     <string name="religionary">宗教文化</string>
     <string name="landscaoe">自然风景</string>
     <string name="history">历史人文</string>
+    <string name="thirdlypart_signip">第三方账号登录</string>
 
 
     <string-array name="array_religions">

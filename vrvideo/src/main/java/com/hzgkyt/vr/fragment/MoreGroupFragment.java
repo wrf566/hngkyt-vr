@@ -4,7 +4,6 @@ import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.hzgkyt.vr.adapter.VideoItemAdapter;
 import com.hzgkyt.vr.decoration.VideoItemDecoration;
@@ -27,9 +26,9 @@ public class MoreGroupFragment extends RecyclerViewFragment {
     @Override
     protected void initView(View view) {
         super.initView(view);
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mRecyclerView.getLayoutParams();
-        layoutParams.setMargins(30, 30, 30, 30);
-        mRecyclerView.setLayoutParams(layoutParams);
+//        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mRecyclerView.getLayoutParams();
+//        layoutParams.setMargins(30, 30, 30, 30);
+//        mRecyclerView.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -50,10 +49,13 @@ public class MoreGroupFragment extends RecyclerViewFragment {
 
     private List<VideoItemModel> getVideoItemList() {
         List<VideoItemModel> mVideoItemList = new ArrayList<>();
-        mVideoItemList.add(new VideoItemModel("财神殿", Environment.getExternalStorageDirectory() + "/vrvideo/zm.mp4"));
+        mVideoItemList.add(new VideoItemModel("楼观之路", Environment.getExternalStorageDirectory() + "/vrvideo/lgzl.mp4"));
+        mVideoItemList.add(new VideoItemModel("楼观台广场", Environment.getExternalStorageDirectory() + "/vrvideo/lgtgc.mp4"));
+        mVideoItemList.add(new VideoItemModel("财神殿", Environment.getExternalStorageDirectory() + "/vrvideo/csd.mp4"));
         mVideoItemList.add(new VideoItemModel("金鱼池", Environment.getExternalStorageDirectory() + "/vrvideo/jyc.mp4"));
-        mVideoItemList.add(new VideoItemModel("三清殿1", Environment.getExternalStorageDirectory() + "/vrvideo/sqd1.mp4"));
-        mVideoItemList.add(new VideoItemModel("三清殿2", Environment.getExternalStorageDirectory() + "/vrvideo/sqd2.mp4"));
+        mVideoItemList.add(new VideoItemModel("太极台", Environment.getExternalStorageDirectory() + "/vrvideo/tjt.mp4"));
+        mVideoItemList.add(new VideoItemModel("八卦池", Environment.getExternalStorageDirectory() + "/vrvideo/bgc.mp4"));
+
         return mVideoItemList;
     }
 }

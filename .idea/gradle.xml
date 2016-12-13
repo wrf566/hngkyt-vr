@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/baselibrary" />
+            <option value="$PROJECT_DIR$/loginsdk" />
             <option value="$PROJECT_DIR$/vrvideo" />
           </set>
         </option>

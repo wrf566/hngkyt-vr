@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     int[] pics = {R.drawable.c, R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.a};
 
 
-    private ImageView mImageView;
+    private ImageView mImageViewPersonalCenter;
     private InfiniteViewPager mInfiniteViewPager;
 
 
@@ -75,9 +75,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initBanner();
 
 
-        mImageView = (ImageView) findViewById(R.id.imageview_main_personal_center);
+        mImageViewPersonalCenter = (ImageView) findViewById(R.id.imageview_main_personal_center);
 
-        mImageView.setOnClickListener(this);
+        mImageViewPersonalCenter.setOnClickListener(this);
 
 
     }
@@ -186,11 +186,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
 
             ImageView imageView = new ImageView(MainActivity.this);
             imageView.setImageResource(pics[position]);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    ToastUtils.showShortToast(MainActivity.this,"position = "+position);
+                }
+            });
 
             container.addView(imageView);
 

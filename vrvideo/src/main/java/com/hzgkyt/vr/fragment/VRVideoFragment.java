@@ -181,7 +181,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         vrVideoView.setTransitionViewEnabled(false);
         VrWidgetView vrWidgetView = vrVideoView;
 
-//        vrWidgetView.
+        //        vrWidgetView.
 
 
     }
@@ -348,15 +348,13 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
-                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
-                //                if(mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo),true)){
-                //                }
-                //                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
-                //                mVrVideoView.loadVideo(Uri.parse(files[0]), options);
+                //                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
+                //                                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
+                mVrVideoView.loadVideo(Uri.parse(files[0]), options);
 
 
                 //                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
-                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"), options);
+                //                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"), options);
             } catch (IOException e) {
                 e.printStackTrace();
 

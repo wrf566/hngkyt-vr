@@ -19,6 +19,10 @@ android {
             minifyEnabled rootProject.ext.config.minifyEnabled
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
@@ -33,7 +37,7 @@ dependencies {
     compile rootProject.ext.dependencies["android_support_design"]
 
     compile rootProject.ext.dependencies["com_orhanobut_logger"]
-    compile rootProject.ext.dependencies["com_elvishew_xlog"]
+//    compile rootProject.ext.dependencies["com_elvishew_xlog"]
 
     testCompile rootProject.ext.dependencies["junit"]
     testCompile rootProject.ext.dependencies["android_support_test_runner"]

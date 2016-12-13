@@ -4,7 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.hzgkyt.vr.R;
-import com.hzgkyt.vr.adapter.VideoChannelAdapter;
+import com.hzgkyt.vr.adapter.VideoMoreChannelAdapter;
 import com.hzgkyt.vr.decoration.VideoChannelDecoration;
 import com.hzgkyt.vr.model.VideoChannelModel;
 
@@ -22,7 +22,7 @@ public class MoreChannelFragment extends RecyclerViewFragment {
 
     @Override
     protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoChannelAdapter(getActivity(), initCHannelList());
+        return new VideoMoreChannelAdapter(getActivity(), initCHannelList());
     }
 
     @Override

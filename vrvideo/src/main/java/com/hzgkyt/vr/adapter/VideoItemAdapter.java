@@ -59,13 +59,17 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
         });
 
         if (position  == 0) {
-            holder.mImageViewCover.setImageResource(R.drawable.t1);
+            holder.mImageViewCover.setImageResource(R.drawable.lgzl);
         } else if(position  == 1){
-            holder.mImageViewCover.setImageResource(R.drawable.t2);
+            holder.mImageViewCover.setImageResource(R.drawable.zm);
         }else if(position  == 2){
-            holder.mImageViewCover.setImageResource(R.drawable.t3);
+            holder.mImageViewCover.setImageResource(R.drawable.csd);
         }else if(position  == 3){
-            holder.mImageViewCover.setImageResource(R.drawable.t4);
+            holder.mImageViewCover.setImageResource(R.drawable.jyc);
+        }else if(position  == 4){
+            holder.mImageViewCover.setImageResource(R.drawable.tjt);
+        }else if(position  == 5){
+            holder.mImageViewCover.setImageResource(R.drawable.bgc);
 
         }
     }

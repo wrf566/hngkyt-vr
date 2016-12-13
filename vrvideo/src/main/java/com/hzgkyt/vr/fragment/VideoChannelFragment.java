@@ -41,24 +41,35 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     private List<VideoGroupModel> createViedoGroupModelList() {
 
         List<VideoGroupModel> videoGroupModelList = new ArrayList<>();
-        videoGroupModelList.add(getVideoGroupModel("分组1"
+
+        videoGroupModelList.add(getVideoGroupModel("楼观台"
+                , new String[]{
+                        "楼观之路", "楼观台广场"
+                }
+                , new String[]{
+                        Environment.getExternalStorageDirectory() + "/vrvideo/lgzl.mp4"
+                        , Environment.getExternalStorageDirectory() + "/vrvideo/lgtgc.mp4"
+                }));
+
+        videoGroupModelList.add(getVideoGroupModel("财神"
                 , new String[]{
                         "财神殿", "金鱼池"
                 }
                 , new String[]{
-                        Environment.getExternalStorageDirectory() + "/vrvideo/zm.mp4"
+                        Environment.getExternalStorageDirectory() + "/vrvideo/csd.mp4"
                         , Environment.getExternalStorageDirectory() + "/vrvideo/jyc.mp4"
                 }));
 
 
-        videoGroupModelList.add(getVideoGroupModel("分组2"
+        videoGroupModelList.add(getVideoGroupModel("太极"
                 , new String[]{
-                        "三清殿1", "三清殿2"
+                        "太极台", "八卦池"
                 }
                 , new String[]{
-                        Environment.getExternalStorageDirectory() + "/vrvideo/sqd1.mp4"
-                        , Environment.getExternalStorageDirectory() + "/vrvideo/sqd2.mp4"
+                        Environment.getExternalStorageDirectory() + "/vrvideo/tjt.mp4"
+                        , Environment.getExternalStorageDirectory() + "/vrvideo/bgc.mp4"
                 }));
+
 
 
         return videoGroupModelList;

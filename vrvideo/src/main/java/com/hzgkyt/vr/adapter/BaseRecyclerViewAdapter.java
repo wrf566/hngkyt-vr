@@ -21,7 +21,7 @@ public abstract class BaseRecyclerViewAdapter<Model,VH extends RecyclerView.View
 
 
     @Override
-    public VideoChannelAdapter.VideoChannelHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VideoMoreChannelAdapter.VideoChannelHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View viewItem = LayoutInflater.from(mContext).inflate(initLayout(), parent, false);
 
         return null;

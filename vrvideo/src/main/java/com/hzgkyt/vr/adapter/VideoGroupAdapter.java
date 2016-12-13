@@ -81,9 +81,17 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
         holder.mTextViewVideoItemName1.setText(videoItemModels[0].getName());
         holder.mTextViewVideoItemName2.setText(videoItemModels[1].getName());
+        if(position==0){
+        holder.mImageViewVideoItemCover1.setImageResource(R.drawable.lgzl);
+        holder.mImageViewVideoItemCover2.setImageResource(R.drawable.zm);
 
-        holder.mImageViewVideoItemCover1.setImageResource(R.drawable.t4);
-        holder.mImageViewVideoItemCover2.setImageResource(R.drawable.t1);
+        }else if(position==1){
+            holder.mImageViewVideoItemCover1.setImageResource(R.drawable.csd);
+            holder.mImageViewVideoItemCover2.setImageResource(R.drawable.jyc);
+        }else if(position==2){
+            holder.mImageViewVideoItemCover1.setImageResource(R.drawable.tjt);
+            holder.mImageViewVideoItemCover2.setImageResource(R.drawable.bgc);
+        }
 
 
     }
