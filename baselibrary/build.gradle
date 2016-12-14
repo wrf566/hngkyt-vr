@@ -37,6 +37,9 @@ dependencies {
     compile rootProject.ext.dependencies["android_support_design"]
 
     compile rootProject.ext.dependencies["com_orhanobut_logger"]
+    compile rootProject.ext.dependencies["com_squareup_retrofit2"]
+    compile rootProject.ext.dependencies["retrofit2_converter_gson"]
+    compile rootProject.ext.dependencies["retrofit2_converter_scalars"]
 //    compile rootProject.ext.dependencies["com_elvishew_xlog"]
 
     testCompile rootProject.ext.dependencies["junit"]

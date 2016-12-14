@@ -5,7 +5,7 @@ ext {
             compileSdkVersion: 25,
             buildToolsVersion: "25.0.1",
 
-            applicationId    : "com.hzgkyt.vr",
+            applicationId    : "com.hngkyt.vr",
             minSdkVersion    : 19,
             targetSdkVersion : 25,
             versionCode      : 1,
@@ -13,8 +13,8 @@ ext {
 
             minifyEnabled    : false,
 
-            storeFile : "../vrkeystore.jks",
-            keyAlias : "阅心VR"
+            storeFile        : "../vrkeystore.jks",
+            keyAlias         : "阅心VR"
 
     ]
 
@@ -32,11 +32,15 @@ ext {
             //Test
             "junit"                       : 'junit:junit:4.12',
             "android_support_test_runner" : 'com.android.support.test:runner:0.5',
-            "hamcrest_integration" : 'org.hamcrest:hamcrest-integration:1.3',
+            "hamcrest_integration"        : 'org.hamcrest:hamcrest-integration:1.3',
 
             //Logger
             "com_orhanobut_logger"        : 'com.orhanobut:logger:1.15',
-            "com_elvishew_xlog"           : 'com.elvishew:xlog:1.1.0'
+            "com_elvishew_xlog"           : 'com.elvishew:xlog:1.1.0',
+            //http
+            "com_squareup_retrofit2"      : 'com.squareup.retrofit2:retrofit:2.1.0',
+            "retrofit2_converter_gson"     : 'com.squareup.retrofit2:converter-gson:2.1.0',
+            "retrofit2_converter_scalars"     : 'com.squareup.retrofit2:converter-scalars:2.1.0'
 
     ]
 }

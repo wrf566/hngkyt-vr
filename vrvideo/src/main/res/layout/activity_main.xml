@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_360px">
-        <com.hzgkyt.vr.view.InfiniteViewPager
+        <com.hngkyt.vr.view.InfiniteViewPager
             android:id="@+id/viewpager_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
