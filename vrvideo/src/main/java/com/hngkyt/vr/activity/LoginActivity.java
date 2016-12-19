@@ -1,14 +1,22 @@
 package com.hngkyt.vr.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.net.ResultCall;
+import com.hngkyt.vr.net.been.DataLogin;
+import com.hngkyt.vr.net.been.ResponseBean;
+import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
@@ -19,6 +27,14 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+
+import static com.hngkyt.vr.net.Constants.APPLICATION_JSON_UTF8;
+import static com.hngkyt.vr.net.Constants.PASSWORD;
+import static com.hngkyt.vr.net.Constants.USERNAME;
 
 /**
  * Created by wrf on 2016/11/23.
@@ -30,11 +46,17 @@ public class LoginActivity extends TitleBarActivity {
     private static final int MSG_AUTH_ERROR = 2;
     private static final int MSG_AUTH_COMPLETE = 3;
     private Button mButtonSignUp;
+    private Button mButtonLogin;
     private TextView mTextViewForgetPassword;
     private ImageView mImageViewWeChat;
     private ImageView mImageViewQQ;
     private ImageView mImageViewSina;
+    private EditText mEditTextUsername;
+    private EditText mEditTextPassword;
     private LoginHandler mLoginHandler = new LoginHandler(this);
+
+
+    private DataLogin mDataLogin;
 
     @Override
     protected int intLayoutResId() {
@@ -52,6 +74,8 @@ public class LoginActivity extends TitleBarActivity {
         mImageViewWeChat = (ImageView) findViewById(R.id.imageview_login_wechat);
         mImageViewQQ = (ImageView) findViewById(R.id.imageview_login_qq);
         mImageViewSina = (ImageView) findViewById(R.id.imageview_login_sina);
+        mEditTextUsername = (EditText) findViewById(R.id.edittext_login_username);
+        mEditTextPassword = (EditText) findViewById(R.id.edittext_login_password);
 
         mImageViewWeChat.setOnClickListener(this);
         mImageViewQQ.setOnClickListener(this);
@@ -59,8 +83,10 @@ public class LoginActivity extends TitleBarActivity {
 
 
         mButtonSignUp = (Button) findViewById(R.id.button_login_signup);
+        mButtonLogin = (Button) findViewById(R.id.button_login_login);
         mTextViewForgetPassword = (TextView) findViewById(R.id.textview_login_forget_password);
         mButtonSignUp.setOnClickListener(this);
+        mButtonLogin.setOnClickListener(this);
         mTextViewForgetPassword.setOnClickListener(this);
 
 
@@ -71,11 +97,10 @@ public class LoginActivity extends TitleBarActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.button_login_signup:
-                startActivityOriginal(this, SignupActivity.class);
-
+                startActivityOriginal(this, MessageVerifyActivity.class);
                 break;
             case R.id.textview_login_forget_password:
-                startActivityOriginal(this, MessageVerifyActivity.class);
+                startActivityOriginal(this, MessageVerifyActivity1.class);
                 break;
             case R.id.imageview_login_wechat:
 
@@ -87,7 +112,61 @@ public class LoginActivity extends TitleBarActivity {
                 login(SinaWeibo.NAME);
 
                 break;
+            case R.id.button_login_login:
+                login();
+
+
+                break;
         }
+    }
+
+    private void login() {
+        String username = getEditTextContent(mEditTextUsername);
+        String password = getEditTextContent(mEditTextPassword);
+
+
+        if (TextUtils.isEmpty(username)) {
+            ToastUtils.showShortToast(this, R.string.username_can_not_be_nul);
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            ToastUtils.showShortToast(this, R.string.password_can_not_be_empty);
+            return;
+
+        }
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(USERNAME, username);
+        jsonObject.addProperty(PASSWORD, password);
+        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
+        Call<ResponseBean> loginCall = mRequestService.login(requestBody);
+        ResultCall<DataLogin> mResultCall = new ResultCall<>(this, DataLogin.class);
+        mResultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                mDataLogin = (DataLogin) o;
+                Logger.e("mDataLogin =  " + mDataLogin);
+                //登陆成功后，存储信息
+                mSPUtils.putString(DataLogin.USERNAME,mDataLogin.getUserName());
+                mSPUtils.putString(DataLogin.PASSWORD,mDataLogin.getPassword());
+                //表示已登录
+                mSPUtils.putBoolean(DataLogin.class.getName(),true);
+
+                Intent intent = new Intent();
+                intent.putExtra(DataLogin.class.getCanonicalName(),mDataLogin);
+                setResult(RESULT_OK,intent);
+                onBackPressed();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+
+            }
+        });
+
+        loginCall.enqueue(mResultCall);
+
     }
 
     public void login(String platform) {
@@ -173,7 +252,7 @@ public class LoginActivity extends TitleBarActivity {
                     Object[] objs = (Object[]) msg.obj;
                     String plat = (String) objs[0];
 
-                    Logger.e("plat = "+plat);
+                    Logger.e("plat = " + plat);
 
                     //                    @SuppressWarnings("unchecked")
                     //                    HashMap<String, Object> res = (HashMap<String, Object>) objs[1];

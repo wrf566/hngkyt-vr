@@ -1,5 +1,6 @@
 package com.hngkyt.vr.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,20 +14,20 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.net.been.DataLogin;
 
 /**
  * Created by wrf on 2016/11/17.
  */
 
 public class PersonalCenterActivity extends TitleBarActivity implements RadioGroup.OnCheckedChangeListener {
+    public static final int REQUEST_CODE = 1;
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButtonAutoPlay;
     private RadioButton mRadioButtonLoopPlay;
-
     private Switch mSwitch;
-
-    private TextView mTextView;
-
+    private TextView mTextViewUsername;
+    private DataLogin mDataLogin;
 
     @Override
     protected int intLayoutResId() {
@@ -54,8 +55,14 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
 
         mSwitch.setChecked(mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true));
 
-        mTextView = (TextView) findViewById(R.id.textview_personal_center_login_signup);
-        mTextView.setOnClickListener(this);
+        mTextViewUsername = (TextView) findViewById(R.id.textview_personal_center_login_signup);
+
+        if (mSPUtils.getBoolean(DataLogin.class.getName(), false)) {
+            mTextViewUsername.setText(mSPUtils.getString(DataLogin.USERNAME));
+        } else {
+            mTextViewUsername.setText(R.string.login_or_signup);
+            mTextViewUsername.setOnClickListener(this);
+        }
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_personal_center);
         mRadioButtonAutoPlay = (RadioButton) findViewById(R.id.radiobutton_personal_center_autoplay_next);
@@ -70,21 +77,21 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
 
 
         setRadioButtonsStatus(mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), true));
-//        mRadioButtonLoopPlay.setChecked();
+        //        mRadioButtonLoopPlay.setChecked();
     }
 
-    public void setRadioButtonsStatus(boolean isLoop){
-        if(isLoop){
+    public void setRadioButtonsStatus(boolean isLoop) {
+        if (isLoop) {
             mRadioButtonLoopPlay.setChecked(true);
-        }else{
+        } else {
             mRadioButtonAutoPlay.setChecked(true);
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(String.valueOf(R.id.radiobutton_personal_center_loop),mRadioButtonLoopPlay.isSelected());
-        outState.putBoolean(String.valueOf(R.id.switch_personal_center_stereo),mSwitch.isChecked());
+        outState.putBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), mRadioButtonLoopPlay.isSelected());
+        outState.putBoolean(String.valueOf(R.id.switch_personal_center_stereo), mSwitch.isChecked());
 
         super.onSaveInstanceState(outState);
     }
@@ -136,7 +143,20 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.onClick(v);
         switch (v.getId()) {
             case R.id.textview_personal_center_login_signup:
-                startActivityOriginal(PersonalCenterActivity.this, LoginActivity.class);
+                Intent intent = new Intent(PersonalCenterActivity.this, LoginActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (REQUEST_CODE == requestCode) {
+                mDataLogin = data.getParcelableExtra(DataLogin.class.getCanonicalName());
+                mTextViewUsername.setText(mDataLogin.getUserName());
+            }
+        }
+
     }
 }

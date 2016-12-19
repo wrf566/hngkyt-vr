@@ -38,17 +38,17 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="com.hngkyt.vr.activity.SignupActivity"
+            android:name="com.hngkyt.vr.activity.MessageVerifyActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.hngkyt.vr.activity.LoginActivity"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.hngkyt.vr.activity.MessageVerifyActivity"
+        <activity android:name="com.hngkyt.vr.activity.MessageVerifyActivity1"
                   android:screenOrientation="portrait"
 
         />
 
-        <activity android:name="com.hngkyt.vr.activity.ChangePasswordActivity"
+        <activity android:name="com.hngkyt.vr.activity.PasswordActivity"
                   android:screenOrientation="portrait"
 
         />

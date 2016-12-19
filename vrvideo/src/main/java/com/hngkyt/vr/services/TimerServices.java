@@ -59,7 +59,7 @@ public class TimerServices extends Service {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     isFinish = false;
-                    Logger.e("millisUntilFinished = "+millisUntilFinished);
+//                    Logger.e("millisUntilFinished = "+millisUntilFinished);
                     timerIntent.setAction(ACTION_TIMER_TICK);
                     timerIntent.putExtra(REMAINING_TIME,String.valueOf(millisUntilFinished/1000));
                     mLocalBroadcastManager.sendBroadcast(timerIntent);

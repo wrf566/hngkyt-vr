@@ -20,6 +20,7 @@
         <EditText
             android:id="@+id/edittext_message_verify_phonenumber"
             style="@style/Edittext_signup"
+            android:maxLength="11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -29,6 +30,7 @@
         <EditText
             android:id="@+id/edittext_message_verify_code"
             style="@style/Edittext_signup"
+            android:maxLength="6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/edittext_message_verify_phonenumber"

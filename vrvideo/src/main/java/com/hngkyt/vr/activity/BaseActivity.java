@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 
-import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.VRApplication;
+import com.hngkyt.vr.net.RequestService;
+import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 
 /**
  * Created by wrf on 2016/11/16.
@@ -19,16 +22,22 @@ import com.hngkyt.vr.R;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
-    protected FragmentManager mFragmentManager;
-
     public SPUtils mSPUtils;
+    protected FragmentManager mFragmentManager;
+    protected VRApplication mVRApplication;
+
+    protected RequestService mRequestService;
+
+    public static final int REQUEST_CODE_DEFAULT = 1;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(intLayoutResId());
-        mSPUtils = new SPUtils(this,SPUtils.class.getName());
-
+        mSPUtils = new SPUtils(this, SPUtils.class.getName());
+        mVRApplication = (VRApplication) getApplication();
+        mRequestService = mVRApplication.mRetrofit.create(RequestService.class);
         mFragmentManager = getSupportFragmentManager();
 
         initView();
@@ -51,5 +60,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void startActivityOriginal(Context context, Class<?> cls) {
         startActivity(new Intent(context, cls));
+    }
+
+
+    public String getEditTextContent(EditText editText) {
+        return editText.getText().toString().trim();
     }
 }

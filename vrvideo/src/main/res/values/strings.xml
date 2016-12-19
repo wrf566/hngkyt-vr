@@ -8,7 +8,7 @@
     <string name="version_update">版本更新</string>
     <string name="personal_center">个人中心</string>
     <string name="login_or_signup">登录 / 注册</string>
-    <string name="username">账号：</string>
+    <string name="username">用户名：(默认为手机号)</string>
     <string name="password">密码：</string>
     <string name="signup">注册</string>
     <string name="age">年龄：</string>
@@ -18,7 +18,7 @@
     <string name="appname">阅心VR</string>
     <string name="froget_password">忘记密码</string>
     <string name="login">登录</string>
-    <string name="signup_phonenumber">请输入注册时手机号</string>
+    <string name="signup_phonenumber">请输入手机号</string>
     <string name="input_verify_code">请输入验证码</string>
     <string name="ok">确定</string>
     <string name="send_verify_code">发送验证码</string>
@@ -34,6 +34,11 @@
     <string name="thirdlypart_signip">第三方账号登录</string>
     <string name="sort_by_play">播放排序</string>
     <string name="sort_by_time">时间排序</string>
+    <string name="phonenumber_can_not_empty">手机号码不能为空</string>
+    <string name="phonenumber_format_is_not_correct">手机号码格式不正确</string>
+    <string name="verify_code_incorrect">验证码错误</string>
+    <string name="username_can_not_be_nul">用户名不能为空</string>
+    <string name="password_can_not_be_empty">密码不能为空</string>
 
 
     <string-array name="array_religions">
