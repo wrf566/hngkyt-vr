@@ -9,7 +9,7 @@ import com.hngkyt.vr.fragment.MoreGroupFragment;
  * Created by wrf on 2016/12/2.
  */
 
-public class MoreActivity extends TitleBarActivity{
+public class MoreGroupActivity extends TitleBarActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class MoreActivity extends TitleBarActivity{
     @Override
     protected void initView() {
         super.initView();
-        String category = getIntent().getStringExtra(MoreActivity.class.getCanonicalName());
+        String category = getIntent().getStringExtra(MoreGroupActivity.class.getCanonicalName());
         setTextViewTitle(category);
     }
 }

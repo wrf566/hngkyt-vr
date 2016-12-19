@@ -21,6 +21,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="岳麓书院"
+        android:maxLines="1"
         android:textColor="@color/text1"
         android:textSize="@dimen/text_34px"/>
 

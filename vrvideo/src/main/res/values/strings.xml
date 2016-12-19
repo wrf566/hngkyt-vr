@@ -32,6 +32,8 @@
     <string name="landscaoe">自然风景</string>
     <string name="history">历史人文</string>
     <string name="thirdlypart_signip">第三方账号登录</string>
+    <string name="sort_by_play">播放排序</string>
+    <string name="sort_by_time">时间排序</string>
 
 
     <string-array name="array_religions">

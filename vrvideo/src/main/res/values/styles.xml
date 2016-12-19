@@ -62,4 +62,9 @@
         <item name="android:thumb">@drawable/selector_thumb</item>
     </style>
 
+
+    <!--<style name="TabLayout" parent="Base.Widget.Design.TabLayout">-->
+        <!--<item name="android:textSize">14sp</item>-->
+        <!--<item name="app:tabTextColor">@color/text1</item>-->
+    <!--</style>-->
 </resources>

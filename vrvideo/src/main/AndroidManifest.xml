@@ -55,10 +55,13 @@
         <activity android:name="com.hngkyt.vr.activity.VRVideoActivity"
         android:screenOrientation="portrait"
         />
-        <activity android:name="com.hngkyt.vr.activity.MoreActivity"
+        <activity android:name="com.hngkyt.vr.activity.MoreGroupActivity"
                   android:screenOrientation="portrait"
         />
 
+        <service android:name=".services.TimerServices"
+                 android:enabled="true"
+                 android:exported="false"/>
 
 
         <activity

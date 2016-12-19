@@ -1,5 +1,6 @@
 package com.hngkyt.vr.fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,10 +12,10 @@ import com.hngkyt.vr.R;
  * Created by wrf on 2016/12/1.
  */
 
-public abstract class RecyclerViewFragment extends BaseFragment {
+public abstract class RecyclerViewFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     protected RecyclerView mRecyclerView;
-
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void initView(View view) {
@@ -22,6 +23,10 @@ public abstract class RecyclerViewFragment extends BaseFragment {
     }
 
     private void initRecyclerView(View view) {
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -61,4 +66,7 @@ public abstract class RecyclerViewFragment extends BaseFragment {
      * @return 布局
      */
     protected abstract RecyclerView.LayoutManager initRecyclerViewLayoutManager();
+
+
+
 }

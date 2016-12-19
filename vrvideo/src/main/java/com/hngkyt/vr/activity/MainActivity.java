@@ -1,15 +1,11 @@
 package com.hngkyt.vr.activity;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -20,13 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.adapter.GroupFragmentAdapter;
 import com.hngkyt.vr.fragment.MoreChannelFragment;
 import com.hngkyt.vr.fragment.VideoChannelFragment;
 import com.hngkyt.vr.fragment.VideoNewestChannelFragment;
 import com.hngkyt.vr.view.InfiniteViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.hzgktyt.vr.baselibrary.utils.DrawableTintUtils.getTintDrawable;
 import static com.hzgktyt.vr.baselibrary.utils.DrawableTintUtils.selectStateListDrawable;
@@ -213,32 +207,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    class GroupFragmentAdapter extends FragmentPagerAdapter {
-
-        private List<Fragment> mFragmentList;
-        private Context mContext;
-
-        public GroupFragmentAdapter(Context context, FragmentManager fm) {
-            super(fm);
-            mContext = context;
-            mFragmentList = new ArrayList<>();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-
-        public void addFragment(Fragment fragment) {
-            mFragmentList.add(fragment);
-        }
-    }
 
 
 }

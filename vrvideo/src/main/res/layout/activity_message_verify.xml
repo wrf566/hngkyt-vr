@@ -37,6 +37,7 @@
             android:hint="@string/input_verify_code"/>
 
         <Button
+            android:id="@+id/button_message_verify_send"
             android:layout_width="80dp"
             android:layout_height="35dp"
             android:textSize="@dimen/text_28px"

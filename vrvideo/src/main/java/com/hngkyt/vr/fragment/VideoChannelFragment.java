@@ -84,4 +84,10 @@ public class VideoChannelFragment extends RecyclerViewFragment {
         viedoGroupModel.setVideoItemModels(videoItemModels);
         return  viedoGroupModel;
     }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
+
+    }
 }

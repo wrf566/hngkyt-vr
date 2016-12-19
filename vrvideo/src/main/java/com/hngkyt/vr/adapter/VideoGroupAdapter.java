@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.activity.MoreActivity;
+import com.hngkyt.vr.activity.MoreGroupActivity;
 import com.hngkyt.vr.activity.VRVideoActivity;
 import com.hngkyt.vr.model.VideoGroupModel;
 import com.hngkyt.vr.model.VideoItemModel;
@@ -49,8 +49,8 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         holder.mTextViewVideoGroupMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MoreActivity.class);
-                intent.putExtra(MoreActivity.class.getCanonicalName(), videoGroupModel.getName());
+                Intent intent = new Intent(mContext, MoreGroupActivity.class);
+                intent.putExtra(MoreGroupActivity.class.getCanonicalName(), videoGroupModel.getName());
                 mContext.startActivity(intent);
             }
         });

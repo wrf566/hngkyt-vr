@@ -52,4 +52,9 @@ public class MoreChannelFragment extends RecyclerViewFragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
+
+    }
 }
