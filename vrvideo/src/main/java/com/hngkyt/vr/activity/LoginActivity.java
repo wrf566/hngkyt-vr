@@ -11,10 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataLogin;
+import com.hngkyt.vr.net.been.DataUser;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
@@ -27,14 +26,10 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.Constants.APPLICATION_JSON_UTF8;
-import static com.hngkyt.vr.net.Constants.PASSWORD;
-import static com.hngkyt.vr.net.Constants.USERNAME;
+import static com.hngkyt.vr.net.been.DataUser.USERNAME;
 
 /**
  * Created by wrf on 2016/11/23.
@@ -56,7 +51,7 @@ public class LoginActivity extends TitleBarActivity {
     private LoginHandler mLoginHandler = new LoginHandler(this);
 
 
-    private DataLogin mDataLogin;
+    private DataUser mDataUser;
 
     @Override
     protected int intLayoutResId() {
@@ -97,7 +92,7 @@ public class LoginActivity extends TitleBarActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.button_login_signup:
-                startActivityOriginal(this, MessageVerifyActivity.class);
+                startActivityForResult(new Intent(this, MessageVerifyActivity.class), REQUEST_CODE_DEFAULT);
                 break;
             case R.id.textview_login_forget_password:
                 startActivityOriginal(this, MessageVerifyActivity1.class);
@@ -120,6 +115,19 @@ public class LoginActivity extends TitleBarActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_DEFAULT:
+                    setResult(RESULT_OK,data);
+                    onBackPressed();
+                    break;
+            }
+        }
+    }
+
     private void login() {
         String username = getEditTextContent(mEditTextUsername);
         String password = getEditTextContent(mEditTextPassword);
@@ -135,28 +143,30 @@ public class LoginActivity extends TitleBarActivity {
             return;
 
         }
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(USERNAME, username);
-        jsonObject.addProperty(PASSWORD, password);
-        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
-        Call<ResponseBean> loginCall = mRequestService.login(requestBody);
-        ResultCall<DataLogin> mResultCall = new ResultCall<>(this, DataLogin.class);
+        //
+        //        JsonObject jsonObject = new JsonObject();
+        //        jsonObject.addProperty(DataUser.USERNAME, username);
+        //        jsonObject.addProperty(DataUser.PASSWORD, password);
+        //        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
+        Call<ResponseBean> loginCall = mRequestService.login(username, password);
+        ResultCall<DataUser> mResultCall = new ResultCall<>(this, DataUser.class);
         mResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                mDataLogin = (DataLogin) o;
-                Logger.e("mDataLogin =  " + mDataLogin);
-                //登陆成功后，存储信息
-                mSPUtils.putString(DataLogin.USERNAME,mDataLogin.getUserName());
-                mSPUtils.putString(DataLogin.PASSWORD,mDataLogin.getPassword());
-                //表示已登录
-                mSPUtils.putBoolean(DataLogin.class.getName(),true);
+//                if(o!=null){
+                    mDataUser = (DataUser) o;
+                    Logger.e("mDataUser =  " + mDataUser);
+                    //登陆成功后，存储信息
+                    mSPUtils.putString(USERNAME, mDataUser.getUserName());
+                    mSPUtils.putString(DataUser.PASSWORD, mDataUser.getPassword());
+                    //表示已登录
+                    mSPUtils.putBoolean(DataUser.class.getName(), true);
 
-                Intent intent = new Intent();
-                intent.putExtra(DataLogin.class.getCanonicalName(),mDataLogin);
-                setResult(RESULT_OK,intent);
-                onBackPressed();
+                    Intent intent = new Intent();
+                    intent.putExtra(DataUser.class.getCanonicalName(), mDataUser);
+                    setResult(RESULT_OK, intent);
+                    onBackPressed();
+//                }
             }
 
             @Override

@@ -3,6 +3,7 @@ package com.hngkyt.vr.net;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
@@ -41,18 +42,23 @@ public class ResultCall<T> implements Callback<ResponseBean> {
         Logger.e("response.message() = " + response.message());
         Logger.e("response.body() = " + response.body());
         Logger.e("response.code() = " + response.code());
-//        try {这里暂时不打印，正常访问的时候会报空异常
-//            Logger.e("response.errorBody() = " + response.errorBody().string());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        //        try {这里暂时不打印，正常访问的时候会报空异常
+        //            Logger.e("response.errorBody() = " + response.errorBody().string());
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
 
         if (response.isSuccessful()) {
             ResponseBean responseBean = response.body();
             ToastUtils.showShortToast(mContext, responseBean.getMsg());
-            Gson gson = new Gson();
-            T t = gson.fromJson(responseBean.getData().toString(), mClassOf);
-            mOnCallListener.onResponse(call, response, t);
+            JsonObject data = responseBean.getData();
+            if (data.size() > 0) {
+                Logger.e("非空");
+                Gson gson = new Gson();
+                T t = gson.fromJson(data.toString(), mClassOf);
+                mOnCallListener.onResponse(call, response, t);
+            }
+
         }
 
 

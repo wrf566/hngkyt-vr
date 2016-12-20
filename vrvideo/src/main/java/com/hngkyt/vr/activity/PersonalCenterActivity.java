@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.net.been.DataLogin;
+import com.hngkyt.vr.net.been.DataUser;
 
 /**
  * Created by wrf on 2016/11/17.
@@ -27,7 +27,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
     private RadioButton mRadioButtonLoopPlay;
     private Switch mSwitch;
     private TextView mTextViewUsername;
-    private DataLogin mDataLogin;
+    private DataUser mDataUser;
 
     @Override
     protected int intLayoutResId() {
@@ -57,8 +57,8 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
 
         mTextViewUsername = (TextView) findViewById(R.id.textview_personal_center_login_signup);
 
-        if (mSPUtils.getBoolean(DataLogin.class.getName(), false)) {
-            mTextViewUsername.setText(mSPUtils.getString(DataLogin.USERNAME));
+        if (mSPUtils.getBoolean(DataUser.class.getName(), false)) {
+            mTextViewUsername.setText(mSPUtils.getString(DataUser.USERNAME));
         } else {
             mTextViewUsername.setText(R.string.login_or_signup);
             mTextViewUsername.setOnClickListener(this);
@@ -153,8 +153,8 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (REQUEST_CODE == requestCode) {
-                mDataLogin = data.getParcelableExtra(DataLogin.class.getCanonicalName());
-                mTextViewUsername.setText(mDataLogin.getUserName());
+                mDataUser = data.getParcelableExtra(DataUser.class.getCanonicalName());
+                mTextViewUsername.setText(mDataUser.getUserName());
             }
         }
 

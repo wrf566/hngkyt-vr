@@ -8,11 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.gson.JsonObject;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataLogin;
 import com.hngkyt.vr.net.been.DataSendCode;
+import com.hngkyt.vr.net.been.DataUser;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.receiver.TimerBroadcastReceiver;
 import com.hngkyt.vr.services.TimerServices;
@@ -20,13 +19,8 @@ import com.hzgktyt.vr.baselibrary.utils.RegexUtils;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import static com.hngkyt.vr.net.Constants.APPLICATION_JSON_UTF8;
-import static com.hngkyt.vr.net.Constants.PHONE;
 
 /**
  * Created by wrf on 2016/11/22.
@@ -99,7 +93,7 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
                 if (mDataSendCode != null) {
                     if (getEditTextContent(mEditTextVerifyCode).equals(mDataSendCode.getCode())) {
                         Intent intent = new Intent(this, PasswordActivity.class);
-                        intent.putExtra(DataLogin.USERNAME,getEditTextContent(mEditTextPhoneNumber));
+                        intent.putExtra(DataUser.USERNAME, getEditTextContent(mEditTextPhoneNumber));
                         startActivityForResult(intent, REQUEST_CODE_DEFAULT);
                     } else {
                         ToastUtils.showShortToast(this, R.string.verify_code_incorrect);
@@ -114,6 +108,7 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_DEFAULT) {
+                setResult(RESULT_OK,data);
                 onBackPressed();
             }
         }
@@ -123,17 +118,20 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
      * 发送验证码
      */
     private void sendCode() {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(PHONE, getEditTextContent(mEditTextPhoneNumber));
-        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
-        Call<ResponseBean> responseBeanCall = mRequestService.sendCode(requestBody);
-        ResultCall<DataSendCode> resultCall = new ResultCall<>(this,DataSendCode.class);
+        //        JsonObject jsonObject = new JsonObject();
+        //        jsonObject.addProperty(PHONE, getEditTextContent(mEditTextPhoneNumber));
+        //        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
+        //        Call<ResponseBean> responseBeanCall = mRequestService.sendCode(requestBody);
+        Call<ResponseBean> responseBeanCall = mRequestService.sendCode(getEditTextContent(mEditTextPhoneNumber));
+        ResultCall<DataSendCode> resultCall = new ResultCall<>(this, DataSendCode.class);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                startService(new Intent(MessageVerifyActivity.this, TimerServices.class));
-                mDataSendCode = (DataSendCode) o;
-                Logger.e("mDataSendCode =  " + mDataSendCode);
+//                if (o != null) {
+                    startService(new Intent(MessageVerifyActivity.this, TimerServices.class));
+                    mDataSendCode = (DataSendCode) o;
+                    Logger.e("mDataSendCode =  " + mDataSendCode);
+//                }
 
             }
 
