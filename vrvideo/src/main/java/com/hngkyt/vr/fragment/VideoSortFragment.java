@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
+ * 排序列表
  * Created by wrf on 2016/12/15.
  */
 
