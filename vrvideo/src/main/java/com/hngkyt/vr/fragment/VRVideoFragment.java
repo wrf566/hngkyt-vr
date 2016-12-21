@@ -10,17 +10,22 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.vr.sdk.widgets.common.VrWidgetView;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.model.VideoItemModel;
+import com.hngkyt.vr.net.ResultCall;
+import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.ResponseBean;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
+
+import retrofit2.Call;
 
 /**
  * Created by wrf on 2016/12/5.
@@ -39,14 +44,21 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     private CheckBox mCheckBoxPlay;
     private TextView mTextViewCurrentTime;
     private TextView mTextViewTotaltime;
-    private ImageView mImageViewFullScreen;
-    private ImageView mImageViewBack;
-    private ImageView mImageViewStereo;
+    private ImageView mImageViewFullScreen;//全屏模式
+    private ImageView mImageViewBack;//返回
+    private ImageView mImageViewStereo;//立体模式
     private VrVideoView mVrVideoView;
+    private ProgressBar mProgressBar;
     private SeekBar mSeekBar;
-    private VideoItemModel mVideoItemModel;
+    private CategoryVedios.VedioListBean.ListBean mListBean;//视频实体类
     private boolean isCompletion = false;
     private VideoLoaderTask mVideoLoaderTask;
+
+    private TextView mTextViewName;
+    private TextView mTextViewPlayCounts;
+    private TextView mTextViewReleaseTime;
+
+
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -60,9 +72,11 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                     mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
                 }
                 mVideoLoaderTask = new VideoLoaderTask();
-                mVideoLoaderTask.execute(mVideoItemModel.getCoverURL());
+                mVideoLoaderTask.execute(mListBean.getVedioUrl());
                 //第一次运行后进度条才能拖动
                 mSeekBar.setEnabled(true);
+                mProgressBar.setVisibility(View.VISIBLE);
+                putPlaycount();
                 return;
             }
             //重新播放
@@ -116,14 +130,32 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     };
 
-    public static VRVideoFragment newInstance(VideoItemModel videoItemModel) {
+    public static VRVideoFragment newInstance(CategoryVedios.VedioListBean.ListBean listBean) {
 
         Bundle args = new Bundle();
-        args.putParcelable(VideoItemModel.class.getCanonicalName(), videoItemModel);
+        args.putParcelable(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName(), listBean);
 
         VRVideoFragment fragment = new VRVideoFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /**
+     * 向服务器提交播放记录
+     */
+    private void putPlaycount() {
+        DataUser userInfo = mBaseActivity.getUserInfo();
+        int userId;
+        if (userInfo == null) {
+            userId = 0;
+        } else {
+            userId = userInfo.getId();
+        }
+        Logger.e("mListBean.getId() = " + mListBean.getId());
+        Logger.e("userId =  " + userId);
+        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mListBean.getId(), userId);
+        ResultCall<String> resultCall = new ResultCall<>(getActivity(), String.class, false);
+        responseBeanCall.enqueue(resultCall);
     }
 
     @Override
@@ -140,9 +172,17 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         mTextViewCurrentTime = (TextView) view.findViewById(R.id.textview_vrvideo_currenttime);
         mTextViewTotaltime = (TextView) view.findViewById(R.id.textview_vrvideo_totaltime);
 
+
+        mTextViewName = (TextView) view.findViewById(R.id.textview_vrvideo_name);
+        mTextViewPlayCounts = (TextView) view.findViewById(R.id.textview_vrvideo_play_counts);
+        mTextViewReleaseTime = (TextView) view.findViewById(R.id.textview_vrvideo_release_time);
+
         mImageViewFullScreen = (ImageView) view.findViewById(R.id.imageview_vrvideo_fullscreen);
         mImageViewBack = (ImageView) view.findViewById(R.id.imageview_vrvideo_back);
         mImageViewStereo = (ImageView) view.findViewById(R.id.imageview_vrvideo_stereo);
+
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar_vrvideo);
+
 
         mImageViewFullScreen.setOnClickListener(this);
         mImageViewBack.setOnClickListener(this);
@@ -154,7 +194,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         //第一次进来还没播放的时候就不让拖动
         mSeekBar.setEnabled(false);
 
-        mVideoItemModel = getArguments().getParcelable(VideoItemModel.class.getCanonicalName());
+        mListBean = getArguments().getParcelable(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName());
 
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
@@ -163,6 +203,9 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
 
 
+        mTextViewName.setText(mListBean.getVedioName());
+        mTextViewPlayCounts.setText(getResources().getString(R.string.play_counts, mListBean.getPlayAmount()));
+        //        mTextViewReleaseTime.setText(getResources().getString(R.string.release_time,mListBean.get));
         hideDefaultViews(mVrVideoView);
 
 
@@ -179,17 +222,13 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         vrVideoView.setInfoButtonEnabled(false);
         vrVideoView.setStereoModeButtonEnabled(false);
         vrVideoView.setTransitionViewEnabled(false);
-        VrWidgetView vrWidgetView = vrVideoView;
-
-        //        vrWidgetView.
-
 
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Logger.e("onActivityCreated");
+        //        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mSeekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
@@ -200,7 +239,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Logger.e("onSaveInstanceState");
+        //        Logger.e("onSaveInstanceState");
         savedInstanceState.putLong(STATE_CURRENT_POSITION, mVrVideoView.getCurrentPosition());
         savedInstanceState.putLong(STATE_VIDEO_DURATION, mVrVideoView.getDuration());
         savedInstanceState.putBoolean(STATE_IS_PLAY, mCheckBoxPlay.isChecked());
@@ -209,7 +248,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onResume() {
-        Logger.e("onResume");
+        //        Logger.e("onResume");
         mVrVideoView.resumeRendering();
 
         super.onResume();
@@ -217,7 +256,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onPause() {
-        Logger.e("onPause");
+        //        Logger.e("onPause");
         mVrVideoView.pauseRendering();
         //应用被遮盖要暂停
         mCheckBoxPlay.setChecked(false);
@@ -263,9 +302,10 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
          */
         @Override
         public void onLoadSuccess() {
+            mProgressBar.setVisibility(View.GONE);
             mSeekBar.setMax((int) mVrVideoView.getDuration());
             mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));
-
+            Logger.e("onLoadSuccess");
 
         }
 
@@ -281,7 +321,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
             if (mVrVideoView.getDisplayMode() == DISPLAYMODE_PORTRAIT) {
                 if (mFrameLayoutController.getVisibility() == View.VISIBLE) {
-                    mFrameLayoutController.setVisibility(View.GONE);
+                    mFrameLayoutController.setVisibility(View.INVISIBLE);
                 } else {
                     mFrameLayoutController.setVisibility(View.VISIBLE);
 
@@ -296,6 +336,8 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
          */
         @Override
         public void onNewFrame() {
+            //            Logger.e("onNewFrame");
+
             mSeekBar.setProgress((int) mVrVideoView.getCurrentPosition());
             mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(mVrVideoView.getCurrentPosition() / 1000));
         }
@@ -318,19 +360,17 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
         }
 
+
         @Override
         public void onDisplayModeChanged(int newDisplayMode) {
             super.onDisplayModeChanged(newDisplayMode);
             Logger.e("newDisplayMode = " + newDisplayMode);
             switch (newDisplayMode) {
                 case DISPLAYMODE_PORTRAIT://竖屏
-
                     break;
                 case DISPLAYMODE_LANDSCAPE://普通全屏
-
                     break;
                 case DISPLAYMODE_STEREO://立体全屏
-
                     break;
 
             }
@@ -344,17 +384,13 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
      */
     class VideoLoaderTask extends AsyncTask<String, Void, Boolean> {
         @Override
-        protected Boolean doInBackground(String... files) {
+        protected Boolean doInBackground(String... urls) {
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
-                                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
-                //                                options.inputType = VrVideoView.Options.TYPE_STEREO_OVER_UNDER;
-//                mVrVideoView.loadVideo(Uri.parse(files[0]), options);
-
-
-//                                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
-                                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"), options);
+                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
+                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
+                //                mVrVideoView.loadVideo(Uri.parse(urls[0]),options);
             } catch (IOException e) {
                 e.printStackTrace();
 

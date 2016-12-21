@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/white">
     
     
     <com.google.vr.sdk.widgets.video.VrVideoView
@@ -37,9 +38,9 @@
             
             <ImageView
                 android:id="@+id/imageview_vrvideo_stereo"
-                android:src="@drawable/selector_stereo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:src="@drawable/selector_stereo"/>
         </LinearLayout>
         
         <LinearLayout
@@ -52,44 +53,44 @@
 
             <CheckBox
                 android:id="@+id/checkbox_vrvideo_play"
-                android:paddingLeft="@dimen/dip_30px"
-                android:paddingRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:freezesText="true"
-                android:drawableLeft="@drawable/selector_play"
                 android:button="@null"
-                android:checked="false"/>
+                android:checked="false"
+                android:drawableLeft="@drawable/selector_play"
+                android:freezesText="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dip_30px"
+                android:paddingRight="10dp"/>
             <TextView
                 android:id="@+id/textview_vrvideo_currenttime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"
                 android:freezesText="true"
+                android:text="00:00"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             
-                <!--android:thumb="@null"-->
+            <!--android:thumb="@null"-->
             <SeekBar
                 android:id="@+id/seekbar_vrvideo"
-                android:minHeight="10dp"
-                android:maxHeight="35dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:thumbOffset="2dip"
+                android:maxHeight="35dp"
+                android:minHeight="10dp"
+                android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
                 android:thumb="@drawable/selector_thumb"
 
-                android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
+                android:thumbOffset="2dip"
             />
             
             <TextView
                 android:id="@+id/textview_vrvideo_totaltime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"
                 android:freezesText="true"
+                android:text="00:00"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             <ImageView
@@ -100,8 +101,55 @@
                 android:paddingRight="@dimen/dip_30px"
                 android:src="@drawable/fullscreen"/>
         </LinearLayout>
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progressbar_vrvideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
     </FrameLayout>
-    
+    <TextView
+        android:id="@+id/textview_vrvideo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/framelayout_vrvideo_controller"
+        android:layout_marginLeft="@dimen/dip_30px"
+        android:layout_marginTop="@dimen/dip_20px"
+        android:text="岳麓书院"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_28px"/>
+
+
+    <TextView
+        android:id="@+id/textview_vrvideo_play_counts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/framelayout_vrvideo_controller"
+        android:layout_marginRight="@dimen/dip_30px"
+        android:layout_marginTop="@dimen/dip_20px"
+        android:text="播放次数"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/text_28px"/>
+
+    <TextView
+        android:id="@+id/textview_vrvideo_release_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_vrvideo_name"
+        android:layout_marginBottom="@dimen/dip_20px"
+        android:layout_marginLeft="@dimen/dip_30px"
+        android:layout_marginTop="@dimen/dip_15px"
+        android:text="2016-12-21"
+        android:textColor="@color/text3"
+        android:textSize="@dimen/text_22px"/>
+
+
+    <View android:layout_width="match_parent"
+          android:layout_height="@dimen/dip_20px"
+          android:layout_below="@id/textview_vrvideo_release_time"
+          android:background="@color/gray_eeeeee"/>
     
     <include layout="@layout/include_fullscreen"/>
 </RelativeLayout>

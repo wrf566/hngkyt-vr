@@ -43,10 +43,6 @@
 
         <activity android:name="com.hngkyt.vr.activity.LoginActivity"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.hngkyt.vr.activity.MessageVerifyActivity1"
-                  android:screenOrientation="portrait"
-
-        />
 
         <activity android:name="com.hngkyt.vr.activity.PasswordActivity"
                   android:screenOrientation="portrait"

@@ -16,8 +16,6 @@ import com.orhanobut.logger.Logger;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.DataUser.USERNAME;
-
 /**
  * Created by wrf on 2016/11/24.
  */
@@ -66,32 +64,19 @@ public class PasswordActivity extends TitleBarActivity {
         }
 
         if (password.equals(confirmPassword)) {
-            //            JsonObject jsonObject = new JsonObject();
-            //            jsonObject.addProperty(DataUser.USERNAME, getIntent().getStringExtra(DataUser.USERNAME));
-            //            jsonObject.addProperty(DataUser.PASSWORD, getEditTextContent(mEditTextPassword));
-            //            RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
-            Logger.e("getIntent().getStringExtra(DataUser.USERNAME) = "+getIntent().getStringExtra(DataUser.USERNAME));
             Call<ResponseBean> registerCall = mRequestService.register(getIntent().getStringExtra(DataUser.USERNAME), getEditTextContent(mEditTextPassword));
 
             ResultCall<DataUser> resultCall = new ResultCall<>(this, DataUser.class);
             resultCall.setOnCallListener(new ResultCall.OnCallListener() {
                 @Override
                 public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                    //                    if (o != null) {
                     DataUser dataUser = (DataUser) o;
                     Logger.e("dataUser = " + dataUser);
-
-                    //注册成功后，存储信息
-                    mSPUtils.putString(USERNAME, dataUser.getUserName());
-                    mSPUtils.putString(DataUser.PASSWORD, dataUser.getPassword());
-                    //表示已登录
-                    mSPUtils.putBoolean(DataUser.class.getName(), true);
-
+                    saveUserInfo(dataUser);
                     Intent intent = new Intent();
                     intent.putExtra(DataUser.class.getCanonicalName(), dataUser);
                     setResult(RESULT_OK, intent);
                     onBackPressed();
-                    //                    }
 
 
                 }

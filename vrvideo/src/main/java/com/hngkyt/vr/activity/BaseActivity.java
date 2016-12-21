@@ -8,11 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.VRApplication;
 import com.hngkyt.vr.net.RequestService;
+import com.hngkyt.vr.net.been.DataUser;
 import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 
 /**
@@ -22,20 +25,17 @@ import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
+    public static final int REQUEST_CODE_DEFAULT = 1;
     public SPUtils mSPUtils;
     public FragmentManager mFragmentManager;
     public VRApplication mVRApplication;
-
     public RequestService mRequestService;
-
-    public static final int REQUEST_CODE_DEFAULT = 1;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(intLayoutResId());
-        mSPUtils = new SPUtils(this, SPUtils.class.getName());
+        mSPUtils = new SPUtils(this, SPUtils.class.getCanonicalName());
         mVRApplication = (VRApplication) getApplication();
         mRequestService = mVRApplication.mRetrofit.create(RequestService.class);
         mFragmentManager = getSupportFragmentManager();
@@ -66,4 +66,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     public String getEditTextContent(EditText editText) {
         return editText.getText().toString().trim();
     }
+
+
+    public DataUser getUserInfo() {
+        String userJson = mSPUtils.getString(DataUser.class.getCanonicalName(), "");
+        if (TextUtils.isEmpty(userJson)) {
+            return null;
+        }
+        return new Gson().fromJson(userJson, DataUser.class);
+    }
+
+
+    public void saveUserInfo(DataUser dataUser) {
+        if (dataUser == null) {
+            mSPUtils.putString(DataUser.class.getCanonicalName(), "");
+            return;
+        }
+        String userJson = new Gson().toJson(dataUser);
+        mSPUtils.putString(DataUser.class.getCanonicalName(), userJson);
+    }
+
 }

@@ -53,7 +53,7 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
         Glide.with(mContext)
                 .load(vedioCategoryListBean.getLogoImgUrl())
                 .asBitmap()
-                .into(new ButtonSimpleTarget(holder.mButtonChannel,vedioCategoryListBean));
+                .into(new ButtonSimpleTarget(holder.mButtonChannel));
 
     }
 
@@ -84,17 +84,14 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
     /**
      * 这个类用于加载大分类中的图片
      */
-    class ButtonSimpleTarget extends SimpleTarget<Bitmap> {
+   private class ButtonSimpleTarget extends SimpleTarget<Bitmap> {
 
 
-        private VedioCategoryList.VedioCategoryListBean mVedioCategoryListBean;
 
         private Button mButton;
 
-        ButtonSimpleTarget(Button button, VedioCategoryList.VedioCategoryListBean vedioCategoryListBean) {
-            //            super(90,90);
+        ButtonSimpleTarget(Button button) {
             this.mButton = button;
-            this.mVedioCategoryListBean = vedioCategoryListBean;
         }
 
         @Override

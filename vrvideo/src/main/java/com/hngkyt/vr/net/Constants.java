@@ -15,8 +15,9 @@ public interface Constants {
     //下面这几个路径是刘琴写的，所以path有所不同
     String PATH_VEDIOAPP = "vedioApp/";
     String PATH_GETVEDIOCATEGORY =PATH_YUEXINVR+PATH_VEDIOAPP+"getVedioCategory";
-
     String PATH_GETCATEGORYVEDIOS =PATH_YUEXINVR+PATH_VEDIOAPP+"getCategoryVedios";
+    String PATH_PLAYAMONT =PATH_YUEXINVR+PATH_VEDIOAPP+"playAmont";
+    String PATH_GETVEDIOS =PATH_YUEXINVR+PATH_VEDIOAPP+"getVedios";
 
     String PHONE = "phone";
 

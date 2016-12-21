@@ -2,6 +2,7 @@
 
     <dimen name="text_22px">12sp</dimen>
     <dimen name="text_28px">14sp</dimen>
+    <dimen name="text_26px">13sp</dimen>
     <dimen name="text_30px">16sp</dimen>
     <dimen name="text_34px">18sp</dimen>
 

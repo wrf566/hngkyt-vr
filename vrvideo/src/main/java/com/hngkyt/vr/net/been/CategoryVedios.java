@@ -19,7 +19,6 @@ public class CategoryVedios {
 
     private VedioCategoryBean vedioCategory;
     private List<VedioListBean> vedioList;
-
     public VedioCategoryBean getVedioCategory() {
         return vedioCategory;
     }
@@ -64,7 +63,7 @@ public class CategoryVedios {
         private String logoImgUrl;
         private int type;
         private long addTime;
-        private Object updateTime;
+        private long updateTime;
         private int sysFlag;
 
         public int getId() {
@@ -123,11 +122,11 @@ public class CategoryVedios {
             this.addTime = addTime;
         }
 
-        public Object getUpdateTime() {
+        public long getUpdateTime() {
             return updateTime;
         }
 
-        public void setUpdateTime(Object updateTime) {
+        public void setUpdateTime(long updateTime) {
             this.updateTime = updateTime;
         }
 
@@ -140,7 +139,7 @@ public class CategoryVedios {
         }
     }
 
-    public static class VedioListBean {
+    public static class VedioListBean implements Parcelable {
         /**
          * id : 3
          * name : 基督教
@@ -211,7 +210,7 @@ public class CategoryVedios {
             private String vedioNotes;
             private String vedioImgUrl;
             private String vedioUrl;
-            private int playAmount;
+            private String playAmount;
 
             public int getId() {
                 return id;
@@ -301,11 +300,11 @@ public class CategoryVedios {
                 this.vedioUrl = vedioUrl;
             }
 
-            public int getPlayAmount() {
+            public String getPlayAmount() {
                 return playAmount;
             }
 
-            public void setPlayAmount(int playAmount) {
+            public void setPlayAmount(String playAmount) {
                 this.playAmount = playAmount;
             }
 
@@ -346,7 +345,7 @@ public class CategoryVedios {
                 dest.writeString(this.vedioNotes);
                 dest.writeString(this.vedioImgUrl);
                 dest.writeString(this.vedioUrl);
-                dest.writeInt(this.playAmount);
+                dest.writeString(this.playAmount);
             }
 
             public ListBean() {
@@ -364,7 +363,7 @@ public class CategoryVedios {
                 this.vedioNotes = in.readString();
                 this.vedioImgUrl = in.readString();
                 this.vedioUrl = in.readString();
-                this.playAmount = in.readInt();
+                this.playAmount = in.readString();
             }
 
             public static final Parcelable.Creator<ListBean> CREATOR = new Parcelable.Creator<ListBean>() {
@@ -379,5 +378,38 @@ public class CategoryVedios {
                 }
             };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.id);
+            dest.writeString(this.name);
+            dest.writeTypedList(this.list);
+        }
+
+        public VedioListBean() {
+        }
+
+        protected VedioListBean(Parcel in) {
+            this.id = in.readInt();
+            this.name = in.readString();
+            this.list = in.createTypedArrayList(ListBean.CREATOR);
+        }
+
+        public static final Parcelable.Creator<VedioListBean> CREATOR = new Parcelable.Creator<VedioListBean>() {
+            @Override
+            public VedioListBean createFromParcel(Parcel source) {
+                return new VedioListBean(source);
+            }
+
+            @Override
+            public VedioListBean[] newArray(int size) {
+                return new VedioListBean[size];
+            }
+        };
     }
 }

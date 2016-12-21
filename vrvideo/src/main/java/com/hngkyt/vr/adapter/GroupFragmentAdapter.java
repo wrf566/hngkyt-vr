@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 视频分组适配器
  * Created by wrf on 2016/12/15.
  */
 

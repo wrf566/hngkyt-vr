@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mTabLayoutGroup.getTabAt(3).setCustomView(getTabLayoutCustomView(selectStateListDrawable(
                         getResources().getDrawable(R.drawable.more)
                         , getTintDrawable(getResources().getDrawable(R.drawable.more)
-                                , getResources().getColor(R.color.red))), R.string.more));
+                                , getResources().getColor(R.color.red))), R.string.more_channel));
 
                 //这里是添加网络加载的频道，添加网络图片和文字，所以要和上面的分开
                 for (int i = 0; i < vedioCategoryListBeanList.size(); i++) {

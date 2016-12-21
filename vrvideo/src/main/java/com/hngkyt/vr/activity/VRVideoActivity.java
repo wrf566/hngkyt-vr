@@ -9,7 +9,8 @@ import android.view.View;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.fragment.VRVideoFragment;
-import com.hngkyt.vr.model.VideoItemModel;
+import com.hngkyt.vr.net.been.CategoryVedios;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by wrf on 2016/11/16.
@@ -29,10 +30,13 @@ public class VRVideoActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void initView() {
-        VideoItemModel videoItemModel = getIntent().getParcelableExtra(VideoItemModel.class.getCanonicalName());
+
+        CategoryVedios.VedioListBean.ListBean listBean = getIntent().getParcelableExtra(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName());
+
+        Logger.e("listBean = "+listBean);
+
 
         //当Activity被系统销毁的时候，回复状态要判断Fragment会不会为空，不然Fragment中onActivityCreated会执行两次
         VRVideoFragment vrVideoFragment = (VRVideoFragment) mFragmentManager.findFragmentByTag(VRVideoFragment.class.getCanonicalName());
@@ -49,7 +53,7 @@ public class VRVideoActivity extends BaseActivity {
 
             fragmentTransaction.commit();
         } else {
-            replaceFragment(VRVideoFragment.newInstance(videoItemModel), VRVideoFragment.class.getCanonicalName());
+            replaceFragment(VRVideoFragment.newInstance(listBean), VRVideoFragment.class.getCanonicalName());
         }
 
         showStatsBar();
@@ -58,9 +62,7 @@ public class VRVideoActivity extends BaseActivity {
     }
 
 
-
-
-    public void hideStatsBar(){
+    public void hideStatsBar() {
         View decorView = getWindow().getDecorView();
 
         // Hide the status bar.
@@ -68,7 +70,7 @@ public class VRVideoActivity extends BaseActivity {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-    public void showStatsBar(){
+    public void showStatsBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -79,7 +81,6 @@ public class VRVideoActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
     }
-
 
 
 }

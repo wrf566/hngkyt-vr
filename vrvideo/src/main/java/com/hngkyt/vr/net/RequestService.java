@@ -16,16 +16,6 @@ import retrofit2.http.Query;
 
 public interface RequestService {
 
-    //    这里用标准的Post请求访问替代了
-    //    @POST(Constants.PATH_SENDCODE)
-    //    Call<ResponseBean> sendCode(@Body RequestBody params);
-
-//    @POST(Constants.PATH_LOGIN)
-//    Call<ResponseBean> login(@Body RequestBody params)
-
-//    @POST(Constants.PATH_REGISTER)
-//    Call<ResponseBean> register(@Body RequestBody params);
-
     @FormUrlEncoded
     @POST(Constants.PATH_SENDCODE)
     Call<ResponseBean> sendCode(@Field("phone") String phone);//发送验证码
@@ -43,6 +33,14 @@ public interface RequestService {
 
     @GET(Constants.PATH_GETCATEGORYVEDIOS)
     Call<ResponseBean> getCategoryVedios(@Query("vedioCategoryId") int vedioCategoryId);//分类视频列表
+
+    @FormUrlEncoded
+    @POST(Constants.PATH_PLAYAMONT)
+    Call<ResponseBean> playAmont(@Field("vedioId") int vedioId,@Field("userId") int userId);//分类视频列表
+
+
+    @GET(Constants.PATH_GETVEDIOS)
+    Call<ResponseBean> getVedios(@Query("vedioCategoryId") int vedioCategoryId,@Query("sortType") int sortType);//视频列表
 
 
 }

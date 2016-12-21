@@ -47,9 +47,7 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.item_video, parent, false);
 
-        VideoItemViewHolder viewHolder = new VideoItemViewHolder(itemView);
-
-        return viewHolder;
+        return new VideoItemViewHolder(itemView);
     }
 
     @Override
@@ -88,7 +86,7 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
         ImageView mImageViewCover;
         RelativeLayout mRelativeLayoutItem;
 
-        public VideoItemViewHolder(View itemView) {
+         VideoItemViewHolder(View itemView) {
             super(itemView);
 
             mTextViewName = (TextView) itemView.findViewById(R.id.textview_item_video_name);

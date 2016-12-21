@@ -27,6 +27,7 @@ public class DataUser implements Parcelable {
 
     public static final String USERNAME = "userName";
     public static final String PASSWORD = "password";
+    public static final String ID = "id";
 
     private int id;
     private String userName;

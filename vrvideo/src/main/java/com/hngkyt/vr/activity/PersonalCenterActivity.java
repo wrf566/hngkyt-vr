@@ -59,11 +59,15 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
 
         mTextViewUsername = (TextView) findViewById(R.id.textview_personal_center_login_signup);
 
-        if (mSPUtils.getBoolean(DataUser.class.getName(), false)) {
-            mTextViewUsername.setText(mSPUtils.getString(DataUser.USERNAME));
-        } else {
+
+        mDataUser = getUserInfo();
+
+        if (mDataUser == null) {
             mTextViewUsername.setText(R.string.login_or_signup);
+        } else {
+            mTextViewUsername.setText(mDataUser.getUserName());
         }
+
         mTextViewUsername.setOnClickListener(this);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_personal_center);
@@ -145,16 +149,15 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.onClick(v);
         switch (v.getId()) {
             case R.id.textview_personal_center_login_signup:
-                if (mSPUtils.getBoolean(DataUser.class.getName())) {
+
+                if (mDataUser!=null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.unregister);
                     builder.setMessage(R.string.exit_login);
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mSPUtils.putBoolean(DataUser.class.getName(),false);
-                            mSPUtils.putString(DataUser.USERNAME,"");
-                            mSPUtils.putString(DataUser.PASSWORD,"");
+                            saveUserInfo(null);
                             mTextViewUsername.setText(R.string.login_or_signup);
 
                         }

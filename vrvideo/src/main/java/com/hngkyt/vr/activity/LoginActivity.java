@@ -29,8 +29,6 @@ import cn.sharesdk.tencent.qq.QQ;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.DataUser.USERNAME;
-
 /**
  * Created by wrf on 2016/11/23.
  */
@@ -95,7 +93,7 @@ public class LoginActivity extends TitleBarActivity {
                 startActivityForResult(new Intent(this, MessageVerifyActivity.class), REQUEST_CODE_DEFAULT);
                 break;
             case R.id.textview_login_forget_password:
-                startActivityOriginal(this, MessageVerifyActivity1.class);
+//                startActivityOriginal(this, MessageVerifyActivity1.class);
                 break;
             case R.id.imageview_login_wechat:
 
@@ -143,30 +141,18 @@ public class LoginActivity extends TitleBarActivity {
             return;
 
         }
-        //
-        //        JsonObject jsonObject = new JsonObject();
-        //        jsonObject.addProperty(DataUser.USERNAME, username);
-        //        jsonObject.addProperty(DataUser.PASSWORD, password);
-        //        RequestBody requestBody = RequestBody.create(MediaType.parse(APPLICATION_JSON_UTF8), jsonObject.toString());
         Call<ResponseBean> loginCall = mRequestService.login(username, password);
         ResultCall<DataUser> mResultCall = new ResultCall<>(this, DataUser.class);
         mResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-//                if(o!=null){
                     mDataUser = (DataUser) o;
                     Logger.e("mDataUser =  " + mDataUser);
-                    //登陆成功后，存储信息
-                    mSPUtils.putString(USERNAME, mDataUser.getUserName());
-                    mSPUtils.putString(DataUser.PASSWORD, mDataUser.getPassword());
-                    //表示已登录
-                    mSPUtils.putBoolean(DataUser.class.getName(), true);
-
+                    saveUserInfo(mDataUser);
                     Intent intent = new Intent();
                     intent.putExtra(DataUser.class.getCanonicalName(), mDataUser);
                     setResult(RESULT_OK, intent);
                     onBackPressed();
-//                }
             }
 
             @Override

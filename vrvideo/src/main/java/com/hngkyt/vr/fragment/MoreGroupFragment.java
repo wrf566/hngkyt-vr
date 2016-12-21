@@ -34,7 +34,7 @@ public class MoreGroupFragment extends BaseFragment {
 
     @Override
     protected int intLayoutResId() {
-        return R.layout.fragment_moregroup;
+        return R.layout.activity_moregroup;
     }
 
 }
