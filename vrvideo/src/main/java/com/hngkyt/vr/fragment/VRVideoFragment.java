@@ -21,6 +21,7 @@ import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.CategoryVedios;
 import com.hngkyt.vr.net.been.DataUser;
 import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.net.been.VideoBean;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     private VrVideoView mVrVideoView;
     private ProgressBar mProgressBar;
     private SeekBar mSeekBar;
-    private CategoryVedios.VedioListBean.ListBean mListBean;//视频实体类
+    private VideoBean mListBean;//视频实体类
     private boolean isCompletion = false;
     private VideoLoaderTask mVideoLoaderTask;
 
@@ -130,10 +131,10 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     };
 
-    public static VRVideoFragment newInstance(CategoryVedios.VedioListBean.ListBean listBean) {
+    public static VRVideoFragment newInstance(VideoBean listBean) {
 
         Bundle args = new Bundle();
-        args.putParcelable(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName(), listBean);
+        args.putParcelable(VideoBean.class.getCanonicalName(), listBean);
 
         VRVideoFragment fragment = new VRVideoFragment();
         fragment.setArguments(args);
@@ -194,7 +195,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         //第一次进来还没播放的时候就不让拖动
         mSeekBar.setEnabled(false);
 
-        mListBean = getArguments().getParcelable(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName());
+        mListBean = getArguments().getParcelable(VideoBean.class.getCanonicalName());
 
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);

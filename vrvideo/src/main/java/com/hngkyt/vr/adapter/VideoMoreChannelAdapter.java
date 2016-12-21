@@ -1,6 +1,7 @@
 package com.hngkyt.vr.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.activity.MoreGroupActivity;
+import com.hngkyt.vr.net.been.CategoryVedios;
 import com.hngkyt.vr.net.been.VedioCategoryList;
 
 import java.util.List;
@@ -45,10 +48,23 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     @Override
     public void onBindViewHolder(VideoChannelHolder holder, int position) {
-        VedioCategoryList.VedioCategoryListBean vedioCategoryListBean = mVedioCategoryListBeen.get(position);
+       final VedioCategoryList.VedioCategoryListBean vedioCategoryListBean = mVedioCategoryListBeen.get(position);
 
 
         holder.mButtonChannel.setText(vedioCategoryListBean.getVedioCategoryName());
+        holder.mButtonChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, MoreGroupActivity.class);
+                //这里为了界面接受统一，接口其实也是统一的所以转成了CategoryVedios.VedioListBean
+                CategoryVedios.VedioListBean vedioListBean = new CategoryVedios.VedioListBean();
+                vedioListBean.setName(vedioCategoryListBean.getVedioCategoryName());
+                vedioListBean.setId(vedioCategoryListBean.getId());
+
+                intent.putExtra(CategoryVedios.VedioListBean.class.getCanonicalName(), vedioListBean);
+                mContext.startActivity(intent);
+            }
+        });
 
         Glide.with(mContext)
                 .load(vedioCategoryListBean.getLogoImgUrl())
@@ -78,6 +94,7 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     public void setVedioCategoryListBeen(List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
         mVedioCategoryListBeen = vedioCategoryListBeen;
+        notifyDataSetChanged();
     }
 
 

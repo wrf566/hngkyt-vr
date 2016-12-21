@@ -13,6 +13,7 @@ import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.CategoryVedios;
 import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.net.been.VideoBean;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -146,13 +147,14 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
 
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         });
         categoryVediosCall.enqueue(categoryVediosResultCall);
     }
 
-    private void setAdapter(List<CategoryVedios.VedioListBean.ListBean> listBeen) {
+    private void setAdapter(List<VideoBean> listBeen) {
         if(mVideoItemAdapter==null){
             mVideoItemAdapter = new VideoItemAdapter(getActivity(),listBeen);
             mRecyclerView.setAdapter(mVideoItemAdapter);

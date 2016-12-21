@@ -7,6 +7,7 @@ import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.GroupFragmentAdapter;
 import com.hngkyt.vr.fragment.VideoSortFragment;
 import com.hngkyt.vr.net.been.CategoryVedios;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by wrf on 2016/12/2.
@@ -22,6 +23,8 @@ public class MoreGroupActivity extends TitleBarActivity {
     protected void initView() {
         super.initView();
         CategoryVedios.VedioListBean vedioListBean = getIntent().getParcelableExtra(CategoryVedios.VedioListBean.class.getCanonicalName());
+        Logger.e("vedioListBean = "+vedioListBean);
+
         setTextViewTitle(vedioListBean.getName());
 
         mTabLayoutSort = (TabLayout) findViewById(R.id.tablayout_moregroup_sort);

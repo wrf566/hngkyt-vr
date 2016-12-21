@@ -60,7 +60,7 @@ public class VideoChannelFragment extends RecyclerViewFragment {
                 CategoryVedios categoryVedios = (CategoryVedios) o;
                 Logger.e("categoryVedios = " + categoryVedios);
                 List<CategoryVedios.VedioListBean> categoryVediosVedioList = categoryVedios.getVedioList();
-//                CategoryVedios.VedioListBean vedioListBean = categoryVediosVedioList.get(0);
+//                CategoryVedios.VideoBean vedioListBean = categoryVediosVedioList.get(0);
 //                setAdapter(vedioListBean.getList());
 
                 setAdapter(categoryVediosVedioList);
@@ -68,6 +68,7 @@ public class VideoChannelFragment extends RecyclerViewFragment {
 
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         });

@@ -11,6 +11,9 @@ import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.CategoryVedios;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.net.been.VedioList;
+import com.hngkyt.vr.net.been.VideoBean;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -53,23 +56,35 @@ public class VideoSortFragment extends RecyclerViewFragment {
     private void getVideoList() {
         Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.getVedios(mVedioListBean.getId(), sortby);
 
-        ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class);
+        ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class,false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VedioList vedioList = (VedioList) o;
-//                mVideoItemAdapter = new VideoItemAdapter()
+                if (vedioList.getVedioList() != null) {
+                    setAdapter(vedioList.getVedioList());
+                }
 
             }
 
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
 
             }
         });
         responseBeanCall.enqueue(resultCall);
     }
 
+    private void setAdapter(List<VideoBean> listBeen) {
+        if (mVideoItemAdapter == null) {
+            mVideoItemAdapter = new VideoItemAdapter(getActivity(), listBeen);
+            mRecyclerView.setAdapter(mVideoItemAdapter);
+        } else {
+            mVideoItemAdapter.setListBeanList(listBeen);
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected RecyclerView.ItemDecoration initRecyclerViewItemDecoration() {
@@ -84,7 +99,6 @@ public class VideoSortFragment extends RecyclerViewFragment {
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
-
+        getVideoList();
     }
 }

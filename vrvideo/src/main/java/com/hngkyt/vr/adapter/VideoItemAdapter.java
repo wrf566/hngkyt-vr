@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.VideoBean;
 
 import java.util.List;
 
@@ -26,18 +26,18 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
 
     private Context mContext;
-    private List<CategoryVedios.VedioListBean.ListBean> mListBeanList;
+    private List<VideoBean> mListBeanList;
 
-    public VideoItemAdapter(Context context, List<CategoryVedios.VedioListBean.ListBean> listBeanList) {
+    public VideoItemAdapter(Context context, List<VideoBean> listBeanList) {
         mContext = context;
         mListBeanList = listBeanList;
     }
 
-    public List<CategoryVedios.VedioListBean.ListBean> getListBeanList() {
+    public List<VideoBean> getListBeanList() {
         return mListBeanList;
     }
 
-    public void setListBeanList(List<CategoryVedios.VedioListBean.ListBean> listBeanList) {
+    public void setListBeanList(List<VideoBean> listBeanList) {
         mListBeanList = listBeanList;
         notifyDataSetChanged();
     }
@@ -52,7 +52,7 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
     @Override
     public void onBindViewHolder(VideoItemViewHolder holder, int position) {
-        final CategoryVedios.VedioListBean.ListBean listBean = mListBeanList.get(position);
+        final VideoBean listBean = mListBeanList.get(position);
 
         holder.mTextViewName.setText(listBean.getVedioName());
         holder.mRelativeLayoutItem.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,7 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName(), listBean);
+                intent.putExtra(VideoBean.class.getCanonicalName(), listBean);
                 mContext.startActivity(intent);
 
             }

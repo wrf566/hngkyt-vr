@@ -158,6 +158,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveUserInfo(null);
+                            mDataUser=null;
                             mTextViewUsername.setText(R.string.login_or_signup);
 
                         }

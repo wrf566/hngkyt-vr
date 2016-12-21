@@ -3,6 +3,7 @@ package com.hngkyt.vr.net.been;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,6 +141,15 @@ public class CategoryVedios {
     }
 
     public static class VedioListBean implements Parcelable {
+        @Override
+        public String toString() {
+            return "VedioListBean{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", list=" + list +
+                    '}';
+        }
+
         /**
          * id : 3
          * name : 基督教
@@ -148,7 +158,7 @@ public class CategoryVedios {
 
         private int id;
         private String name;
-        private List<ListBean> list;
+        private List<VideoBean> list;
 
         public int getId() {
             return id;
@@ -166,218 +176,14 @@ public class CategoryVedios {
             this.name = name;
         }
 
-        public List<ListBean> getList() {
+        public List<VideoBean> getList() {
             return list;
         }
 
-        public void setList(List<ListBean> list) {
+        public void setList(List<VideoBean> list) {
             this.list = list;
         }
 
-        @Override
-        public String toString() {
-            return "VedioListBean{" +
-                    "id=" + id +
-                    ", name='" + name + '\'' +
-                    ", list=" + list +
-                    '}';
-        }
-
-        public static class ListBean implements Parcelable {
-            /**
-             * id : 38
-             * vedioCategoryPId : 1
-             * vedioCategoryPName : 宗教文化
-             * vedioCategoryId : 3
-             * vedioCategoryName : 基督教
-             * isFree : null
-             * money : null
-             * vedioName : 333333
-             * vedioNotes : 4444444
-             * vedioImgUrl : http://anneprivate1.oss-cn-hangzhou.aliyuncs.com/148211401253945P9MUNJ.jpg
-             * vedioUrl : http://anneprivate1.oss-cn-hangzhou.aliyuncs.com/14821140076829BRKTA8G.mp4
-             * playAmount : 0
-             */
-
-            private int id;
-            private int vedioCategoryPId;
-            private String vedioCategoryPName;
-            private int vedioCategoryId;
-            private String vedioCategoryName;
-            private boolean isFree;
-            private int money;
-            private String vedioName;
-            private String vedioNotes;
-            private String vedioImgUrl;
-            private String vedioUrl;
-            private String playAmount;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public int getVedioCategoryPId() {
-                return vedioCategoryPId;
-            }
-
-            public void setVedioCategoryPId(int vedioCategoryPId) {
-                this.vedioCategoryPId = vedioCategoryPId;
-            }
-
-            public String getVedioCategoryPName() {
-                return vedioCategoryPName;
-            }
-
-            public void setVedioCategoryPName(String vedioCategoryPName) {
-                this.vedioCategoryPName = vedioCategoryPName;
-            }
-
-            public int getVedioCategoryId() {
-                return vedioCategoryId;
-            }
-
-            public void setVedioCategoryId(int vedioCategoryId) {
-                this.vedioCategoryId = vedioCategoryId;
-            }
-
-            public String getVedioCategoryName() {
-                return vedioCategoryName;
-            }
-
-            public void setVedioCategoryName(String vedioCategoryName) {
-                this.vedioCategoryName = vedioCategoryName;
-            }
-
-            public Object getIsFree() {
-                return isFree;
-            }
-
-            public void setIsFree(boolean isFree) {
-                this.isFree = isFree;
-            }
-
-            public int getMoney() {
-                return money;
-            }
-
-            public void setMoney(int money) {
-                this.money = money;
-            }
-
-            public String getVedioName() {
-                return vedioName;
-            }
-
-            public void setVedioName(String vedioName) {
-                this.vedioName = vedioName;
-            }
-
-            public String getVedioNotes() {
-                return vedioNotes;
-            }
-
-            public void setVedioNotes(String vedioNotes) {
-                this.vedioNotes = vedioNotes;
-            }
-
-            public String getVedioImgUrl() {
-                return vedioImgUrl;
-            }
-
-            public void setVedioImgUrl(String vedioImgUrl) {
-                this.vedioImgUrl = vedioImgUrl;
-            }
-
-            public String getVedioUrl() {
-                return vedioUrl;
-            }
-
-            public void setVedioUrl(String vedioUrl) {
-                this.vedioUrl = vedioUrl;
-            }
-
-            public String getPlayAmount() {
-                return playAmount;
-            }
-
-            public void setPlayAmount(String playAmount) {
-                this.playAmount = playAmount;
-            }
-
-            @Override
-            public String toString() {
-                return "ListBean{" +
-                        "id=" + id +
-                        ", vedioCategoryPId=" + vedioCategoryPId +
-                        ", vedioCategoryPName='" + vedioCategoryPName + '\'' +
-                        ", vedioCategoryId=" + vedioCategoryId +
-                        ", vedioCategoryName='" + vedioCategoryName + '\'' +
-                        ", isFree=" + isFree +
-                        ", money=" + money +
-                        ", vedioName='" + vedioName + '\'' +
-                        ", vedioNotes='" + vedioNotes + '\'' +
-                        ", vedioImgUrl='" + vedioImgUrl + '\'' +
-                        ", vedioUrl='" + vedioUrl + '\'' +
-                        ", playAmount=" + playAmount +
-                        '}';
-            }
-
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(this.id);
-                dest.writeInt(this.vedioCategoryPId);
-                dest.writeString(this.vedioCategoryPName);
-                dest.writeInt(this.vedioCategoryId);
-                dest.writeString(this.vedioCategoryName);
-                dest.writeByte(this.isFree ? (byte) 1 : (byte) 0);
-                dest.writeInt(this.money);
-                dest.writeString(this.vedioName);
-                dest.writeString(this.vedioNotes);
-                dest.writeString(this.vedioImgUrl);
-                dest.writeString(this.vedioUrl);
-                dest.writeString(this.playAmount);
-            }
-
-            public ListBean() {
-            }
-
-            protected ListBean(Parcel in) {
-                this.id = in.readInt();
-                this.vedioCategoryPId = in.readInt();
-                this.vedioCategoryPName = in.readString();
-                this.vedioCategoryId = in.readInt();
-                this.vedioCategoryName = in.readString();
-                this.isFree = in.readByte() != 0;
-                this.money = in.readInt();
-                this.vedioName = in.readString();
-                this.vedioNotes = in.readString();
-                this.vedioImgUrl = in.readString();
-                this.vedioUrl = in.readString();
-                this.playAmount = in.readString();
-            }
-
-            public static final Parcelable.Creator<ListBean> CREATOR = new Parcelable.Creator<ListBean>() {
-                @Override
-                public ListBean createFromParcel(Parcel source) {
-                    return new ListBean(source);
-                }
-
-                @Override
-                public ListBean[] newArray(int size) {
-                    return new ListBean[size];
-                }
-            };
-        }
 
         @Override
         public int describeContents() {
@@ -388,7 +194,7 @@ public class CategoryVedios {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(this.id);
             dest.writeString(this.name);
-            dest.writeTypedList(this.list);
+            dest.writeList(this.list);
         }
 
         public VedioListBean() {
@@ -397,7 +203,8 @@ public class CategoryVedios {
         protected VedioListBean(Parcel in) {
             this.id = in.readInt();
             this.name = in.readString();
-            this.list = in.createTypedArrayList(ListBean.CREATOR);
+            this.list = new ArrayList<VideoBean>();
+            in.readList(this.list, VideoBean.class.getClassLoader());
         }
 
         public static final Parcelable.Creator<VedioListBean> CREATOR = new Parcelable.Creator<VedioListBean>() {

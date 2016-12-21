@@ -62,7 +62,7 @@ public class ResultCall<T> implements Callback<ResponseBean> {
             }
             JsonObject data = responseBean.getData();
             if (data.size() > 0) {
-                Logger.e("非空");
+//                Logger.e("非空");
                 Gson gson = new Gson();
                 T t = gson.fromJson(data.toString(), mClassOf);
                 mOnCallListener.onResponse(call, response, t);

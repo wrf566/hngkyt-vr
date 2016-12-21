@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.fragment.VRVideoFragment;
-import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.VideoBean;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -33,7 +33,7 @@ public class VRVideoActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        CategoryVedios.VedioListBean.ListBean listBean = getIntent().getParcelableExtra(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName());
+        VideoBean listBean = getIntent().getParcelableExtra(VideoBean.class.getCanonicalName());
 
         Logger.e("listBean = "+listBean);
 

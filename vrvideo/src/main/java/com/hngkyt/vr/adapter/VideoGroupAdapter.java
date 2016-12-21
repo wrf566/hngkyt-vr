@@ -14,6 +14,8 @@ import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.MoreGroupActivity;
 import com.hngkyt.vr.activity.VRVideoActivity;
 import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.VideoBean;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -47,7 +49,10 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
         final CategoryVedios.VedioListBean vedioListBean = mCategoryVediosVedioList.get(position);
 
-        final List<CategoryVedios.VedioListBean.ListBean> vedioListBeanList = vedioListBean.getList();
+        Logger.e("vedioListBean) = "+vedioListBean);
+
+
+        final List<VideoBean> vedioListBeanList = vedioListBean.getList();
 
         holder.mTextViewVideoGroupMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,13 +63,13 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
             }
         });
 
+
         holder.mTextViewVideoGroupName.setText(vedioListBean.getName());
 
 
         for (int i = 0; i < vedioListBeanList.size(); i++) {
-            CategoryVedios.VedioListBean.ListBean listBean = vedioListBeanList.get(i);
+            VideoBean listBean = vedioListBeanList.get(i);
 
-            holder.mTextViewVideoGroupName.setText(listBean.getVedioCategoryName());
             if (vedioListBeanList.size() == 1) {
                 holder.includeView2.setVisibility(View.INVISIBLE);
             }
@@ -92,6 +97,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
     public void setCategoryVediosVedioList(List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
         mCategoryVediosVedioList = categoryVediosVedioList;
+        notifyDataSetChanged();
     }
 
     static class VideoGroupHolder extends RecyclerView.ViewHolder {
@@ -130,7 +136,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         }
 
         void setItemData(final Context context
-                , final CategoryVedios.VedioListBean.ListBean listBean
+                , final VideoBean listBean
                 , TextView videoNameTextView
                 , ImageView imageView, View includeView) {
 
@@ -146,7 +152,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, VRVideoActivity.class);
-                    intent.putExtra(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName(), listBean);
+                    intent.putExtra(VideoBean.class.getCanonicalName(), listBean);
                     context.startActivity(intent);
                 }
             });
