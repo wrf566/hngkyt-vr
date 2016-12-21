@@ -1,16 +1,22 @@
 package com.hngkyt.vr.fragment;
 
-import android.os.Environment;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.hngkyt.vr.adapter.VideoGroupAdapter;
 import com.hngkyt.vr.decoration.VideoGroupDecoration;
-import com.hngkyt.vr.model.VideoGroupModel;
-import com.hngkyt.vr.model.VideoItemModel;
+import com.hngkyt.vr.net.ResultCall;
+import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.net.been.VedioCategoryList;
+import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by wrf on 2016/11/22.
@@ -18,13 +24,65 @@ import java.util.List;
 
 public class VideoChannelFragment extends RecyclerViewFragment {
 
+    private VedioCategoryList.VedioCategoryListBean mVedioCategoryListBean;
 
+    public static VideoChannelFragment newInstance(VedioCategoryList.VedioCategoryListBean vedioCategoryListBean) {
 
+        Bundle args = new Bundle();
+        args.putParcelable(VedioCategoryList.VedioCategoryListBean.class.getCanonicalName(), vedioCategoryListBean);
+        VideoChannelFragment fragment = new VideoChannelFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    private VideoGroupAdapter mVideoGroupAdapter;
 
     @Override
-    protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoGroupAdapter(getActivity(), createViedoGroupModelList());
+    protected void initView(View view) {
+        super.initView(view);
+
+        mVedioCategoryListBean = getArguments().getParcelable(VedioCategoryList.VedioCategoryListBean.class.getCanonicalName());
+
+
+        getVideoDataList();
+
+
+    }
+
+    private void getVideoDataList() {
+        Call<ResponseBean> categoryVediosCall = mBaseActivity.mRequestService.getCategoryVedios(mVedioCategoryListBean.getId());
+
+        ResultCall<CategoryVedios> categoryVediosResultCall = new ResultCall<>(getActivity(),CategoryVedios.class,false);
+
+        categoryVediosResultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                CategoryVedios categoryVedios = (CategoryVedios) o;
+                Logger.e("categoryVedios = " + categoryVedios);
+                List<CategoryVedios.VedioListBean> categoryVediosVedioList = categoryVedios.getVedioList();
+//                CategoryVedios.VedioListBean vedioListBean = categoryVediosVedioList.get(0);
+//                setAdapter(vedioListBean.getList());
+
+                setAdapter(categoryVediosVedioList);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+
+            }
+        });
+
+        categoryVediosCall.enqueue(categoryVediosResultCall);
+    }
+
+    private void setAdapter(List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
+        if(mVideoGroupAdapter==null){
+            mVideoGroupAdapter = new VideoGroupAdapter(getActivity(),categoryVediosVedioList);
+            mRecyclerView.setAdapter(mVideoGroupAdapter);
+        }else{
+            mVideoGroupAdapter.setCategoryVediosVedioList(categoryVediosVedioList);
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -38,56 +96,10 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     }
 
 
-    private List<VideoGroupModel> createViedoGroupModelList() {
 
-        List<VideoGroupModel> videoGroupModelList = new ArrayList<>();
-
-        videoGroupModelList.add(getVideoGroupModel("楼观台"
-                , new String[]{
-                        "楼观之路", "楼观台广场"
-                }
-                , new String[]{
-                        Environment.getExternalStorageDirectory() + "/vrvideo/lgzl.mp4"
-                        , Environment.getExternalStorageDirectory() + "/vrvideo/lgtgc.mp4"
-                }));
-
-        videoGroupModelList.add(getVideoGroupModel("财神"
-                , new String[]{
-                        "财神殿", "金鱼池"
-                }
-                , new String[]{
-                        Environment.getExternalStorageDirectory() + "/vrvideo/csd.mp4"
-                        , Environment.getExternalStorageDirectory() + "/vrvideo/jyc.mp4"
-                }));
-
-
-        videoGroupModelList.add(getVideoGroupModel("太极"
-                , new String[]{
-                        "太极台", "八卦池"
-                }
-                , new String[]{
-                        Environment.getExternalStorageDirectory() + "/vrvideo/tjt.mp4"
-                        , Environment.getExternalStorageDirectory() + "/vrvideo/bgc.mp4"
-                }));
-
-
-
-        return videoGroupModelList;
-    }
-
-    private VideoGroupModel getVideoGroupModel(String group, String[] names, String path[]) {
-        VideoGroupModel viedoGroupModel = new VideoGroupModel();
-        viedoGroupModel.setName(group);
-        VideoItemModel[] videoItemModels = new VideoItemModel[2];
-        videoItemModels[0] = new VideoItemModel(names[0], path[0]);
-        videoItemModels[1] = new VideoItemModel(names[1], path[1]);
-        viedoGroupModel.setVideoItemModels(videoItemModels);
-        return  viedoGroupModel;
-    }
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
-
+        getVideoDataList();
     }
 }

@@ -39,6 +39,9 @@
     <string name="verify_code_incorrect">验证码错误</string>
     <string name="username_can_not_be_nul">用户名不能为空</string>
     <string name="password_can_not_be_empty">密码不能为空</string>
+    <string name="cancel">取消</string>
+    <string name="exit_login">是否要退出登录</string>
+    <string name="unregister">注销</string>
 
 
     <string-array name="array_religions">

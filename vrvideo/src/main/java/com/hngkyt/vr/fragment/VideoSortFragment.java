@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.hngkyt.vr.adapter.VideoItemAdapter;
+import com.hngkyt.vr.adapter.VideoMoreChannelAdapter;
 import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.model.VideoItemModel;
 import com.orhanobut.logger.Logger;
@@ -39,12 +39,14 @@ public class VideoSortFragment extends RecyclerViewFragment {
         int sortby = getArguments().getInt(VideoSortFragment.class.getCanonicalName());
         Logger.e("sortby = "+sortby);
 
+        mRecyclerView.setAdapter( new VideoMoreChannelAdapter(getActivity(), null));
+
     }
 
-    @Override
-    protected RecyclerView.Adapter initRecyclerViewAdapter() {
-        return new VideoItemAdapter(getActivity(), getVideoItemList());
-    }
+//    @Override
+//    protected RecyclerView.Adapter initRecyclerViewAdapter() {
+//        return new VideoItemAdapter(getActivity(), getVideoItemList());
+//    }
 
     @Override
     protected RecyclerView.ItemDecoration initRecyclerViewItemDecoration() {

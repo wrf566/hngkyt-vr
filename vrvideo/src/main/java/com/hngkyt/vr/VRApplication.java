@@ -3,6 +3,8 @@ package com.hngkyt.vr;
 import android.app.Application;
 import android.net.Uri;
 
+import com.hzgktyt.vr.baselibrary.utils.Utils;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -16,7 +18,7 @@ public class VRApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Utils.init(this);
         initRetrofit2();
     }
 

@@ -1,11 +1,13 @@
 package com.hngkyt.vr.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -61,8 +63,8 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
             mTextViewUsername.setText(mSPUtils.getString(DataUser.USERNAME));
         } else {
             mTextViewUsername.setText(R.string.login_or_signup);
-            mTextViewUsername.setOnClickListener(this);
         }
+        mTextViewUsername.setOnClickListener(this);
 
         mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup_personal_center);
         mRadioButtonAutoPlay = (RadioButton) findViewById(R.id.radiobutton_personal_center_autoplay_next);
@@ -143,8 +145,33 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.onClick(v);
         switch (v.getId()) {
             case R.id.textview_personal_center_login_signup:
-                Intent intent = new Intent(PersonalCenterActivity.this, LoginActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                if (mSPUtils.getBoolean(DataUser.class.getName())) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(R.string.unregister);
+                    builder.setMessage(R.string.exit_login);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mSPUtils.putBoolean(DataUser.class.getName(),false);
+                            mSPUtils.putString(DataUser.USERNAME,"");
+                            mSPUtils.putString(DataUser.PASSWORD,"");
+                            mTextViewUsername.setText(R.string.login_or_signup);
+
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    builder.show();
+
+                } else {
+                    Intent intent = new Intent(PersonalCenterActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+
+                }
         }
     }
 

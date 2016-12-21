@@ -23,10 +23,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public SPUtils mSPUtils;
-    protected FragmentManager mFragmentManager;
-    protected VRApplication mVRApplication;
+    public FragmentManager mFragmentManager;
+    public VRApplication mVRApplication;
 
-    protected RequestService mRequestService;
+    public RequestService mRequestService;
 
     public static final int REQUEST_CODE_DEFAULT = 1;
 

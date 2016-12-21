@@ -28,6 +28,8 @@ public class VRVideoActivity extends BaseActivity {
         return R.layout.include_framelayout_fragment;
     }
 
+
+
     @Override
     protected void initView() {
         VideoItemModel videoItemModel = getIntent().getParcelableExtra(VideoItemModel.class.getCanonicalName());

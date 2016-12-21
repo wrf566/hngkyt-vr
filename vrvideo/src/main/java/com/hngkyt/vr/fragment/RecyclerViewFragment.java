@@ -32,7 +32,6 @@ public abstract class RecyclerViewFragment extends BaseFragment implements Swipe
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mRecyclerView.setAdapter(initRecyclerViewAdapter());
         if (initRecyclerViewItemDecoration() != null) {//这里有可能不添加，因为不需要分割线
             mRecyclerView.addItemDecoration(initRecyclerViewItemDecoration());
         }
@@ -51,7 +50,7 @@ public abstract class RecyclerViewFragment extends BaseFragment implements Swipe
      *
      * @return 相对应的适配器
      */
-    protected abstract RecyclerView.Adapter initRecyclerViewAdapter();
+//    protected abstract RecyclerView.Adapter initRecyclerViewAdapter(); //并不可以搞个抽象方法，因为adapter初始化是异步的
 
     /**
      * 分割器初始化

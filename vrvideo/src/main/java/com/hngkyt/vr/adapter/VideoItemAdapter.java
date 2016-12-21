@@ -10,9 +10,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.model.VideoItemModel;
+import com.hngkyt.vr.net.been.CategoryVedios;
 
 import java.util.List;
 
@@ -25,11 +26,20 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
 
     private Context mContext;
-    private List<VideoItemModel> mVideoItemModelList;
+    private List<CategoryVedios.VedioListBean.ListBean> mListBeanList;
 
-    public VideoItemAdapter(Context context, List<VideoItemModel> videoItemModelList) {
+    public VideoItemAdapter(Context context, List<CategoryVedios.VedioListBean.ListBean> listBeanList) {
         mContext = context;
-        mVideoItemModelList = videoItemModelList;
+        mListBeanList = listBeanList;
+    }
+
+    public List<CategoryVedios.VedioListBean.ListBean> getListBeanList() {
+        return mListBeanList;
+    }
+
+    public void setListBeanList(List<CategoryVedios.VedioListBean.ListBean> listBeanList) {
+        mListBeanList = listBeanList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -44,39 +54,31 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
     @Override
     public void onBindViewHolder(VideoItemViewHolder holder, int position) {
-        final VideoItemModel videoItemModel = mVideoItemModelList.get(position);
+        final CategoryVedios.VedioListBean.ListBean listBean = mListBeanList.get(position);
 
-        holder.mTextViewName.setText(videoItemModel.getName());
+        holder.mTextViewName.setText(listBean.getVedioName());
         holder.mRelativeLayoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoItemModel);
+                intent.putExtra(CategoryVedios.VedioListBean.ListBean.class.getCanonicalName(), listBean);
                 mContext.startActivity(intent);
 
             }
         });
 
-        if (position  == 0) {
-            holder.mImageViewCover.setImageResource(R.drawable.lgzl);
-        } else if(position  == 1){
-            holder.mImageViewCover.setImageResource(R.drawable.zm);
-        }else if(position  == 2){
-            holder.mImageViewCover.setImageResource(R.drawable.csd);
-        }else if(position  == 3){
-            holder.mImageViewCover.setImageResource(R.drawable.jyc);
-        }else if(position  == 4){
-            holder.mImageViewCover.setImageResource(R.drawable.tjt);
-        }else if(position  == 5){
-            holder.mImageViewCover.setImageResource(R.drawable.bgc);
+        Glide.with(mContext)
+                .load(listBean.getVedioImgUrl())
+                .asBitmap()
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.mImageViewCover);
 
-        }
     }
 
     @Override
     public int getItemCount() {
-        return mVideoItemModelList.size();
+        return mListBeanList.size();
     }
 
 

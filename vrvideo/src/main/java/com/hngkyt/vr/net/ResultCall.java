@@ -25,6 +25,13 @@ public class ResultCall<T> implements Callback<ResponseBean> {
 
     private Class<T> mClassOf;
 
+    private boolean isShow = true;
+
+
+    public ResultCall(Context context, Class<T> classOf, boolean isShow) {
+        this(context, classOf);
+        this.isShow = isShow;
+    }
 
     public ResultCall(Context context, Class<T> classOf) {
         mContext = context;
@@ -50,7 +57,9 @@ public class ResultCall<T> implements Callback<ResponseBean> {
 
         if (response.isSuccessful()) {
             ResponseBean responseBean = response.body();
-            ToastUtils.showShortToast(mContext, responseBean.getMsg());
+            if (isShow) {
+                ToastUtils.showShortToast(mContext, responseBean.getMsg());
+            }
             JsonObject data = responseBean.getData();
             if (data.size() > 0) {
                 Logger.e("非空");

@@ -1,7 +1,6 @@
 package com.hngkyt.vr.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.activity.MoreGroupActivity;
-import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.model.VideoGroupModel;
-import com.hngkyt.vr.model.VideoItemModel;
+import com.hngkyt.vr.net.been.CategoryVedios;
 
 import java.util.List;
 
@@ -26,12 +23,11 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
 
     private Context mContext;
-    private List<VideoGroupModel> mVideoGroupModelList;
+    private List<CategoryVedios.VedioListBean> mCategoryVediosVedioList;
 
-
-    public VideoGroupAdapter(Context context, List<VideoGroupModel> videoGroupModelList) {
+    public VideoGroupAdapter(Context context, List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
         mContext = context;
-        mVideoGroupModelList = videoGroupModelList;
+        mCategoryVediosVedioList = categoryVediosVedioList;
     }
 
     @Override
@@ -44,61 +40,67 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
     @Override
     public void onBindViewHolder(VideoGroupHolder holder, int position) {
-        final VideoGroupModel videoGroupModel = mVideoGroupModelList.get(position);
+
+
+        CategoryVedios.VedioListBean vedioListBean = mCategoryVediosVedioList.get(position);
+
 
         holder.mTextViewVideoGroupMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MoreGroupActivity.class);
-                intent.putExtra(MoreGroupActivity.class.getCanonicalName(), videoGroupModel.getName());
-                mContext.startActivity(intent);
+                //                Intent intent = new Intent(mContext, MoreGroupActivity.class);
+                //                intent.putExtra(MoreGroupActivity.class.getCanonicalName(), videoGroupModel.getName());
+                //                mContext.startActivity(intent);
             }
         });
 
         holder.includeView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[0]);
-                mContext.startActivity(intent);
+                //                Intent intent = new Intent(mContext, VRVideoActivity.class);
+                //                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[0]);
+                //                mContext.startActivity(intent);
             }
         });
 
         holder.includeView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[1]);
-                mContext.startActivity(intent);
+                //                Intent intent = new Intent(mContext, VRVideoActivity.class);
+                //                intent.putExtra(VideoItemModel.class.getCanonicalName(), videoGroupModel.getVideoItemModels()[1]);
+                //                mContext.startActivity(intent);
             }
         });
 
-        holder.mTextViewVideoGroupName.setText(videoGroupModel.getName());
+        holder.mTextViewVideoGroupName.setText(vedioListBean.getName());
 
 
-        VideoItemModel[] videoItemModels = videoGroupModel.getVideoItemModels();
+        List<CategoryVedios.VedioListBean.ListBean> vedioListBeanList = vedioListBean.getList();
 
+        for (int i = 0; i < vedioListBeanList.size(); i++) {
 
-        holder.mTextViewVideoItemName1.setText(videoItemModels[0].getName());
-        holder.mTextViewVideoItemName2.setText(videoItemModels[1].getName());
-        if(position==0){
-        holder.mImageViewVideoItemCover1.setImageResource(R.drawable.lgzl);
-        holder.mImageViewVideoItemCover2.setImageResource(R.drawable.zm);
+            CategoryVedios.VedioListBean.ListBean listBean = vedioListBeanList.get(i);
+            holder.setItemData(mContext, listBean, holder.mTextViewVideoItemName1, holder.mImageViewVideoItemCover1);
+            holder.setItemData(mContext, listBean, holder.mTextViewVideoItemName2, holder.mImageViewVideoItemCover2);
+            holder.mTextViewVideoGroupName.setText(listBean.getVedioCategoryName());
 
-        }else if(position==1){
-            holder.mImageViewVideoItemCover1.setImageResource(R.drawable.csd);
-            holder.mImageViewVideoItemCover2.setImageResource(R.drawable.jyc);
-        }else if(position==2){
-            holder.mImageViewVideoItemCover1.setImageResource(R.drawable.tjt);
-            holder.mImageViewVideoItemCover2.setImageResource(R.drawable.bgc);
         }
 
 
     }
 
+
     @Override
     public int getItemCount() {
-        return mVideoGroupModelList.size();
+        return mCategoryVediosVedioList.size();
+    }
+
+    public List<CategoryVedios.VedioListBean> getCategoryVediosVedioList() {
+        return mCategoryVediosVedioList;
+    }
+
+    public void setCategoryVediosVedioList(List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
+        mCategoryVediosVedioList = categoryVediosVedioList;
     }
 
     static class VideoGroupHolder extends RecyclerView.ViewHolder {
@@ -116,7 +118,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         View includeView1;
         View includeView2;
 
-        public VideoGroupHolder(View itemView) {
+        VideoGroupHolder(View itemView) {
             super(itemView);
 
             includeView1 = itemView.findViewById(R.id.include_video_item1);
@@ -134,6 +136,20 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
             mTextViewVideoGroupMore = (TextView) itemView.findViewById(R.id.textview_item_video_group_more);
 
 
+        }
+
+        void setItemData(Context context
+                , CategoryVedios.VedioListBean.ListBean listBean
+                , TextView videoNameTextView
+                , ImageView imageView) {
+
+            videoNameTextView.setText(listBean.getVedioName());
+
+            Glide.with(context)
+                    .load(listBean.getVedioImgUrl())
+                    .asBitmap()
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(imageView);
         }
     }
 }

@@ -1,14 +1,19 @@
 package com.hngkyt.vr.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.model.VideoChannelModel;
+import com.hngkyt.vr.net.been.VedioCategoryList;
 
 import java.util.List;
 
@@ -17,18 +22,19 @@ import java.util.List;
  * Created by wrf on 2016/12/12.
  */
 
-public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChannelAdapter.VideoChannelHolder>{
+public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChannelAdapter.VideoChannelHolder> {
 
 
     private Context mContext;
 
-    private List<VideoChannelModel> mVideoChannelModelList;
+    private List<VedioCategoryList.VedioCategoryListBean> mVedioCategoryListBeen;
 
 
-    public VideoMoreChannelAdapter(Context context, List<VideoChannelModel> videoChannelModelList) {
+    public VideoMoreChannelAdapter(Context context, List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
         mContext = context;
-        mVideoChannelModelList = videoChannelModelList;
+        mVedioCategoryListBeen = vedioCategoryListBeen;
     }
+
 
     @Override
     public VideoChannelHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -39,26 +45,64 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     @Override
     public void onBindViewHolder(VideoChannelHolder holder, int position) {
-        VideoChannelModel videoChannelModel = mVideoChannelModelList.get(position);
+        VedioCategoryList.VedioCategoryListBean vedioCategoryListBean = mVedioCategoryListBeen.get(position);
 
 
-        holder.mButtonChannel.setText(videoChannelModel.getName());
-        holder.mButtonChannel.setCompoundDrawablesWithIntrinsicBounds(0,videoChannelModel.getDrawableID(),0,0);
+        holder.mButtonChannel.setText(vedioCategoryListBean.getVedioCategoryName());
+
+        Glide.with(mContext)
+                .load(vedioCategoryListBean.getLogoImgUrl())
+                .asBitmap()
+                .into(new ButtonSimpleTarget(holder.mButtonChannel,vedioCategoryListBean));
 
     }
 
     @Override
     public int getItemCount() {
-        return mVideoChannelModelList.size();
+        return mVedioCategoryListBeen.size();
     }
 
-    static class VideoChannelHolder extends RecyclerView.ViewHolder{
+    static class VideoChannelHolder extends RecyclerView.ViewHolder {
 
         Button mButtonChannel;
 
-        public VideoChannelHolder(View itemView) {
+        VideoChannelHolder(View itemView) {
             super(itemView);
             mButtonChannel = (Button) itemView;
         }
+    }
+
+    public List<VedioCategoryList.VedioCategoryListBean> getVedioCategoryListBeen() {
+        return mVedioCategoryListBeen;
+    }
+
+    public void setVedioCategoryListBeen(List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
+        mVedioCategoryListBeen = vedioCategoryListBeen;
+    }
+
+
+    /**
+     * 这个类用于加载大分类中的图片
+     */
+    class ButtonSimpleTarget extends SimpleTarget<Bitmap> {
+
+
+        private VedioCategoryList.VedioCategoryListBean mVedioCategoryListBean;
+
+        private Button mButton;
+
+        ButtonSimpleTarget(Button button, VedioCategoryList.VedioCategoryListBean vedioCategoryListBean) {
+            //            super(90,90);
+            this.mButton = button;
+            this.mVedioCategoryListBean = vedioCategoryListBean;
+        }
+
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                    mButton.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(mContext.getResources(), bitmap), null, null);
+
+        }
+
+
     }
 }
