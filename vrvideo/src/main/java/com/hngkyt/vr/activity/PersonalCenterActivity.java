@@ -1,14 +1,17 @@
 package com.hngkyt.vr.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -16,7 +19,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.net.DownloadTask;
+import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.net.been.VersionBean;
+import com.hzgktyt.vr.baselibrary.utils.AppUtils;
+import com.orhanobut.logger.Logger;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by wrf on 2016/11/17.
@@ -29,6 +43,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
     private RadioButton mRadioButtonLoopPlay;
     private Switch mSwitch;
     private TextView mTextViewUsername;
+    private TextView mTextViewUpdateVersion;
     private DataUser mDataUser;
 
     @Override
@@ -46,6 +61,8 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.initView();
         setTextViewTitle(getString(R.string.personal_center));
 
+        mTextViewUpdateVersion = (TextView) findViewById(R.id.textview_personal_center_updata_version);
+        mTextViewUpdateVersion.setOnClickListener(this);
 
         mSwitch = (Switch) findViewById(R.id.switch_personal_center_stereo);
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -150,7 +167,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         switch (v.getId()) {
             case R.id.textview_personal_center_login_signup:
 
-                if (mDataUser!=null) {
+                if (mDataUser != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.unregister);
                     builder.setMessage(R.string.exit_login);
@@ -158,7 +175,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveUserInfo(null);
-                            mDataUser=null;
+                            mDataUser = null;
                             mTextViewUsername.setText(R.string.login_or_signup);
 
                         }
@@ -176,6 +193,10 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
                     startActivityForResult(intent, REQUEST_CODE);
 
                 }
+                break;
+            case R.id.textview_personal_center_updata_version:
+                checkVersion();
+                break;
         }
     }
 
@@ -190,4 +211,87 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         }
 
     }
+
+    /**
+     * 检测版本
+     */
+    private void checkVersion() {
+        Call<ResponseBean> responseBeanCall = mRequestService.getVersion();
+        ResultCall<VersionBean> versionBeanResultCall = new ResultCall<>(this, VersionBean.class, false);
+        versionBeanResultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                VersionBean versionBean = (VersionBean) o;
+                versionBean.setVesionCode(999999);//仅供测试
+                if (versionBean.getVesionCode() > AppUtils.getAppVersionCode(PersonalCenterActivity.this)) {
+                    initDownloadDialog(versionBean);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+
+            }
+        });
+        responseBeanCall.enqueue(versionBeanResultCall);
+
+
+    }
+
+    private void initDownloadDialog(VersionBean versionBean) {
+        //用这个可以android.support.v7.appcompat.R.style.ThemeOverlay_AppCompat_Dialog_Alert可以符合当前的主题颜色
+        //不然尼玛的都是默认绿色
+        ProgressDialog progressDialog = new ProgressDialog(PersonalCenterActivity.this
+                , android.support.v7.appcompat.R.style.ThemeOverlay_AppCompat_Dialog_Alert);
+        progressDialog.setTitle(versionBean.getUpdateTitle());
+        progressDialog.setMessage(versionBean.getUpdateContent());
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+        final DownloadTask downloadTask = new DownloadTask(progressDialog);
+        progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.download_now), (DialogInterface.OnClickListener) null);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                downloadTask.cancel(true);
+            }
+        });
+
+        progressDialog.show();
+
+        //这里为了点击以后不消失，选择在对话框显示以后在设置监听
+        final Button positiveButton = progressDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.e("positiveButton");
+                //"https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk" QQapk的测试地址
+                Call<ResponseBody> responseBodyCall = mRequestService
+                        .downloadFileWithDynamicUrlSync("https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk");
+                responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                        Logger.e("response.raw()" + response.raw());
+                        if (response.isSuccessful()) {
+                            if (downloadTask.getStatus() == AsyncTask.Status.PENDING) {
+                                downloadTask.execute(response.body());
+                                positiveButton.setEnabled(false);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Logger.e("call = " + call.toString());
+                        Logger.e("Throwable = " + t.getMessage());
+                    }
+                });
+            }
+        });
+    }
+
+
 }

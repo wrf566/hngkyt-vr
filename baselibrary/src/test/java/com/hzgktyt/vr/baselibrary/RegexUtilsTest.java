@@ -66,14 +66,14 @@ public class RegexUtilsTest {
 
     @Test
     public void testIsEmail() throws Exception {
-        assertTrue(isEmail("blankj@qq.com"));
-        assertFalse(isEmail("blankj@qq"));
+        assertTrue(isEmail("wrf@qq.com"));
+        assertFalse(isEmail("wrf@qq"));
     }
 
     @Test
     public void testIsURL() throws Exception {
-        assertTrue(isURL("http://blankj.com"));
-        assertFalse(isURL("http://blank"));
+        assertTrue(isURL("http://wrf.com"));
+        assertFalse(isURL("http://wrf"));
     }
 
     @Test
@@ -112,9 +112,9 @@ public class RegexUtilsTest {
     @Test
     public void testGetMatches() throws Exception {
         // 贪婪
-        System.out.println(getMatches("b.*j", "blankj blankj"));
+        System.out.println(getMatches("b.*j", "wrf wrf"));
         // 懒惰
-        System.out.println(getMatches("b.*?j", "blankj blankj"));
+        System.out.println(getMatches("b.*?j", "wrf wrf"));
     }
 
     @Test

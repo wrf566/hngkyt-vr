@@ -52,22 +52,22 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
     @Override
     public void onBindViewHolder(VideoItemViewHolder holder, int position) {
-        final VideoBean listBean = mListBeanList.get(position);
+        final VideoBean videoBean = mListBeanList.get(position);
 
-        holder.mTextViewName.setText(listBean.getVedioName());
+        holder.mTextViewName.setText(videoBean.getVedioName());
         holder.mRelativeLayoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoBean.class.getCanonicalName(), listBean);
+                intent.putExtra(VideoBean.class.getCanonicalName(), videoBean);
                 mContext.startActivity(intent);
 
             }
         });
 
         Glide.with(mContext)
-                .load(listBean.getVedioImgUrl())
+                .load(videoBean.getVedioImgUrl())
                 .asBitmap()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.mImageViewCover);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:id="@+id/relativelayout_item_video_recommend"
+                android:paddingTop="10dp">
+    
+    <ImageView
+        android:id="@+id/imageview_item_video_recommend_cover"
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="15dp"
+    />
+    
+    <TextView android:id="@+id/textview_item_video_recommend_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/imageview_item_video_recommend_cover"
+              android:text="岳麓书院"
+              android:textColor="@color/text1"
+              android:textSize="@dimen/text_28px"/>
+    
+    <TextView android:id="@+id/textview_item_video_recommend_release_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/textview_item_video_recommend_name"
+              android:layout_marginBottom="10dp"
+              android:layout_marginTop="10dp"
+              android:layout_toRightOf="@id/imageview_item_video_recommend_cover"
+              android:text="2016-12-22"
+              android:textColor="@color/text3"
+              android:textSize="@dimen/text_22px"/>
+    
+    <TextView android:id="@+id/textview_item_video_recommend_play_counts"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/textview_item_video_recommend_release_time"
+              android:layout_toRightOf="@id/imageview_item_video_recommend_cover"
+              android:text="播放10次"
+              android:textColor="@color/text3"
+              android:textSize="@dimen/text_22px"/>
+
+</RelativeLayout>

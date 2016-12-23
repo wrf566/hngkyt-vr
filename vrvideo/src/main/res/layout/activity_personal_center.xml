@@ -17,15 +17,15 @@
             android:id="@+id/textview_personal_center_login_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/dip_70px"
-            android:textSize="@dimen/text_30px"
-            android:gravity="center"
             android:drawablePadding="@dimen/dip_40px"
-            android:textColor="@color/white"
             android:drawableTop="@drawable/profile_picture"
+            android:gravity="center"
             android:text="@string/login_or_signup"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_30px"
         />
     
     
@@ -58,10 +58,10 @@
         <RadioButton
             android:id="@+id/radiobutton_personal_center_loop"
             style="@style/personal_center_setting_item"
-            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_100px"
             android:button="@null"
+            android:checked="true"
             android:drawableRight="@drawable/abc_btn_radio_material"
             android:drawableTint="@color/yellow"
             android:paddingStart="0dp"
@@ -85,10 +85,12 @@
         android:text="@string/fullscreen_double_screen"/>
 
     <TextView
+        android:id="@+id/textview_personal_center_updata_version"
         style="@style/personal_center_setting_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_100px"
         android:gravity="center_vertical|start"
         android:text="@string/version_update"/>
+
 
 </LinearLayout>

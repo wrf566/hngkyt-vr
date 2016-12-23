@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,22 +19,29 @@ import android.widget.TextView;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.adapter.VideoRecommendAdapter;
+import com.hngkyt.vr.decoration.VideoRecommeneItemDecotation;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.CategoryVedios;
 import com.hngkyt.vr.net.been.DataUser;
 import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.net.been.VedioList;
 import com.hngkyt.vr.net.been.VideoBean;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by wrf on 2016/12/5.
  */
 
-public class VRVideoFragment extends BaseFragment implements View.OnClickListener {
+public class VRVideoFragment extends RecyclerViewFragment implements View.OnClickListener {
 
 
     private static final String STATE_IS_PLAY = "isPlay";
@@ -51,7 +60,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     private VrVideoView mVrVideoView;
     private ProgressBar mProgressBar;
     private SeekBar mSeekBar;
-    private VideoBean mListBean;//视频实体类
+    private VideoBean mVideoBean;//视频实体类
     private boolean isCompletion = false;
     private VideoLoaderTask mVideoLoaderTask;
 
@@ -73,7 +82,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                     mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
                 }
                 mVideoLoaderTask = new VideoLoaderTask();
-                mVideoLoaderTask.execute(mListBean.getVedioUrl());
+                mVideoLoaderTask.execute(mVideoBean.getVedioUrl());
                 //第一次运行后进度条才能拖动
                 mSeekBar.setEnabled(true);
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -130,6 +139,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
 
     };
+    private VideoRecommendAdapter mVideoRecommendAdapter;
 
     public static VRVideoFragment newInstance(VideoBean listBean) {
 
@@ -152,20 +162,33 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         } else {
             userId = userInfo.getId();
         }
-        Logger.e("mListBean.getId() = " + mListBean.getId());
+        Logger.e("mVideoBean.getId() = " + mVideoBean.getId());
         Logger.e("userId =  " + userId);
-        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mListBean.getId(), userId);
+        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mVideoBean.getId(), userId);
         ResultCall<String> resultCall = new ResultCall<>(getActivity(), String.class, false);
         responseBeanCall.enqueue(resultCall);
     }
 
     @Override
     protected int intLayoutResId() {
+        Logger.e("VRVideoFragment");
         return R.layout.fragment_vrvideo;
     }
 
     @Override
+    protected RecyclerView.ItemDecoration initRecyclerViewItemDecoration() {
+        return new VideoRecommeneItemDecotation(getActivity(), VideoRecommeneItemDecotation.VERTICAL_LIST);
+    }
+
+    @Override
+    protected RecyclerView.LayoutManager initRecyclerViewLayoutManager() {
+        return new LinearLayoutManager(getActivity());
+
+    }
+
+    @Override
     protected void initView(View view) {
+        super.initView(view);
 
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
@@ -195,7 +218,11 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         //第一次进来还没播放的时候就不让拖动
         mSeekBar.setEnabled(false);
 
-        mListBean = getArguments().getParcelable(VideoBean.class.getCanonicalName());
+        mVideoBean = getArguments().getParcelable(VideoBean.class.getCanonicalName());
+
+        //这里要单独获取视频详情是因为，用户点击了播放，添加了播放次数然后回到视频列表页面，再点击同样一个视频。
+        //由于回到视频列表，列表中的视频数据还是旧的，所以要单独拉取。
+        getVideoDetail();
 
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
@@ -204,13 +231,90 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
         mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
 
 
-        mTextViewName.setText(mListBean.getVedioName());
-        mTextViewPlayCounts.setText(getResources().getString(R.string.play_counts, mListBean.getPlayAmount()));
-        //        mTextViewReleaseTime.setText(getResources().getString(R.string.release_time,mListBean.get));
         hideDefaultViews(mVrVideoView);
 
+        setVideoInfo();
 
     }
+
+    /**
+     * 获取视频详情
+     */
+    private void getVideoDetail() {
+        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedioDetail(mVideoBean.getId());
+
+        ResultCall<VideoBean> responseBeanResultCall = new ResultCall<>(getActivity(), VideoBean.class, false);
+        responseBeanResultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                mVideoBean = (VideoBean) o;
+                Logger.e("mVideoBean = " + mVideoBean);
+                setVideoInfo();
+                initRecommendListData();
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+
+                initRecommendListData();
+            }
+        });
+        vedioDetailCall.enqueue(responseBeanResultCall);
+
+    }
+
+    private void setVideoInfo() {
+        mTextViewName.setText(mVideoBean.getVedioName());
+        mTextViewPlayCounts.setText(getResources().getString(R.string.play_counts, mVideoBean.getPlayAmount()));
+        mTextViewReleaseTime.setText(getResources().getString(R.string.release_time
+                , new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(mVideoBean.getAddTime()))
+        ));
+
+    }
+
+    /**
+     * 初始化推荐列表数据
+     */
+    private void initRecommendListData() {
+        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedios(mVideoBean.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
+
+        ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class, false);
+        resultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                VedioList vedioList = (VedioList) o;
+                if (vedioList.getVedioList() != null) {
+                    setAdapter(vedioList.getVedioList());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+        vedioDetailCall.enqueue(resultCall);
+
+    }
+
+    private void setAdapter(final List<VideoBean> videoBeanList) {
+        if (mVideoRecommendAdapter == null) {
+            mVideoRecommendAdapter = new VideoRecommendAdapter(getActivity(), videoBeanList);
+            mRecyclerView.setAdapter(mVideoRecommendAdapter);
+        } else {
+            mVideoRecommendAdapter.setVideoBeanList(videoBeanList);
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        initRecommendListData();
+    }
+
 
     /**
      * 隐藏默认的播放控制按钮
@@ -229,8 +333,9 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //        Logger.e("onActivityCreated");
+        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
+            Logger.e("当然不是空的啦");
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mSeekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
             mSeekBar.setProgress((int) savedInstanceState.getLong(STATE_CURRENT_POSITION));
@@ -240,7 +345,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        //        Logger.e("onSaveInstanceState");
+        Logger.e("onSaveInstanceState");
         savedInstanceState.putLong(STATE_CURRENT_POSITION, mVrVideoView.getCurrentPosition());
         savedInstanceState.putLong(STATE_VIDEO_DURATION, mVrVideoView.getDuration());
         savedInstanceState.putBoolean(STATE_IS_PLAY, mCheckBoxPlay.isChecked());
@@ -249,7 +354,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onResume() {
-        //        Logger.e("onResume");
+        Logger.e("onResume");
         mVrVideoView.resumeRendering();
 
         super.onResume();
@@ -257,7 +362,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onPause() {
-        //        Logger.e("onPause");
+        Logger.e("onPause");
         mVrVideoView.pauseRendering();
         //应用被遮盖要暂停
         mCheckBoxPlay.setChecked(false);
@@ -266,7 +371,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDestroy() {
-        //        mVrVideoView.pauseRendering();//要加上不然切换出去再进来会报错
+        Logger.e("onDestory");
         mVrVideoView.shutdown();
         super.onDestroy();
 
@@ -288,10 +393,17 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Logger.e("onCreate");
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         Logger.e("onDetach");
     }
+
 
     /**
      * Listen to the important events from widget.
@@ -337,10 +449,13 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
          */
         @Override
         public void onNewFrame() {
-            //            Logger.e("onNewFrame");
+//            if (mProgressBar.getVisibility() == View.VISIBLE) {
+//                mProgressBar.setVisibility(View.GONE);
+//            }
 
             mSeekBar.setProgress((int) mVrVideoView.getCurrentPosition());
             mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(mVrVideoView.getCurrentPosition() / 1000));
+
         }
 
 
@@ -375,6 +490,7 @@ public class VRVideoFragment extends BaseFragment implements View.OnClickListene
                     break;
 
             }
+//            mProgressBar.setVisibility(View.VISIBLE);
         }
 
 

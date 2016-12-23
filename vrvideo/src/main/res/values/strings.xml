@@ -44,7 +44,9 @@
     <string name="exit_login">是否要退出登录</string>
     <string name="unregister">注销</string>
     <string name="play_counts">已播放%1$d次</string>
-    <string name="release_time">发布时间%1$s</string>
+    <string name="release_time">发布于:%1$s</string>
+    <string name="download_now">立即下载</string>
+    <string name="more_recommend">更多推荐</string>
 
 
     <string-array name="array_religions">

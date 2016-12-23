@@ -31,5 +31,6 @@ public class VRApplication extends Application{
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
     }
 }

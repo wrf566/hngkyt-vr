@@ -9,29 +9,54 @@ import android.os.Parcelable;
 
 public class VideoBean implements Parcelable {
 
+    @Override
+    public String toString() {
+        return "VideoBean{" +
+                "id=" + id +
+                ", vedioCategoryPId=" + vedioCategoryPId +
+                ", vedioCategoryPName='" + vedioCategoryPName + '\'' +
+                ", vedioCategoryId=" + vedioCategoryId +
+                ", vedioCategoryName='" + vedioCategoryName + '\'' +
+                ", isFree=" + isFree +
+                ", money=" + money +
+                ", vedioName='" + vedioName + '\'' +
+                ", vedioNotes='" + vedioNotes + '\'' +
+                ", vedioImgUrl='" + vedioImgUrl + '\'' +
+                ", vedioUrl='" + vedioUrl + '\'' +
+                ", playAmount=" + playAmount +
+                ", addTime=" + addTime +
+                '}';
+    }
+
     /**
-     * id : 42
+     * id : 1
+     * vedioCategoryPId : 1
+     * vedioCategoryPName : 宗教文化
      * vedioCategoryId : 3
-     * isFree : 1
-     * money : 900
-     * vedioName : 反反复复丰富
-     * vedioImgUrl : http://anneprivate1.oss-cn-hangzhou.aliyuncs.com/1482115860774OSLB4ZCV.jpg
-     * vedioUrl : http://anneprivate1.oss-cn-hangzhou.aliyuncs.com/1482115870760QYA62O6G.mp4
-     * vedioStatus : 1
-     * playAmount : 0
-     * addTime : 1482115906000
-     * updateTime : 1482226357000
-     * sysFlag : 1
-     * vedioNotes : null
+     * vedioCategoryName : 基督教
+     * isFree : null
+     * money : null
+     * vedioName : 第一个视频
+     * vedioNotes : 简介简介
+     * vedioImgUrl : aaaa
+     * vedioUrl : aaa
+     * playAmount : 2
+     * addTime : null
      */
 
     private int id;
+    private int vedioCategoryPId;
+    private String vedioCategoryPName;
+    private int vedioCategoryId;
+    private String vedioCategoryName;
+    private boolean isFree;
+    private int money;
     private String vedioName;
+    private String vedioNotes;
     private String vedioImgUrl;
     private String vedioUrl;
     private int playAmount;
     private long addTime;
-    private String vedioNotes;
 
     public int getId() {
         return id;
@@ -41,7 +66,53 @@ public class VideoBean implements Parcelable {
         this.id = id;
     }
 
+    public int getVedioCategoryPId() {
+        return vedioCategoryPId;
+    }
 
+    public void setVedioCategoryPId(int vedioCategoryPId) {
+        this.vedioCategoryPId = vedioCategoryPId;
+    }
+
+    public String getVedioCategoryPName() {
+        return vedioCategoryPName;
+    }
+
+    public void setVedioCategoryPName(String vedioCategoryPName) {
+        this.vedioCategoryPName = vedioCategoryPName;
+    }
+
+    public int getVedioCategoryId() {
+        return vedioCategoryId;
+    }
+
+    public void setVedioCategoryId(int vedioCategoryId) {
+        this.vedioCategoryId = vedioCategoryId;
+    }
+
+    public String getVedioCategoryName() {
+        return vedioCategoryName;
+    }
+
+    public void setVedioCategoryName(String vedioCategoryName) {
+        this.vedioCategoryName = vedioCategoryName;
+    }
+
+    public boolean getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(boolean isFree) {
+        this.isFree = isFree;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public String getVedioName() {
         return vedioName;
@@ -49,6 +120,14 @@ public class VideoBean implements Parcelable {
 
     public void setVedioName(String vedioName) {
         this.vedioName = vedioName;
+    }
+
+    public String getVedioNotes() {
+        return vedioNotes;
+    }
+
+    public void setVedioNotes(String vedioNotes) {
+        this.vedioNotes = vedioNotes;
     }
 
     public String getVedioImgUrl() {
@@ -67,8 +146,6 @@ public class VideoBean implements Parcelable {
         this.vedioUrl = vedioUrl;
     }
 
-
-
     public int getPlayAmount() {
         return playAmount;
     }
@@ -85,26 +162,7 @@ public class VideoBean implements Parcelable {
         this.addTime = addTime;
     }
 
-
-    public String getVedioNotes() {
-        return vedioNotes;
-    }
-
-    public void setVedioNotes(String vedioNotes) {
-        this.vedioNotes = vedioNotes;
-    }
-
-    @Override
-    public String toString() {
-        return "VideoBean{" +
-                "id=" + id +
-                ", vedioName='" + vedioName + '\'' +
-                ", vedioImgUrl='" + vedioImgUrl + '\'' +
-                ", vedioUrl='" + vedioUrl + '\'' +
-                ", playAmount=" + playAmount +
-                ", addTime=" + addTime +
-                ", vedioNotes='" + vedioNotes + '\'' +
-                '}';
+    public VideoBean() {
     }
 
     @Override
@@ -115,28 +173,37 @@ public class VideoBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
+        dest.writeInt(this.vedioCategoryPId);
+        dest.writeString(this.vedioCategoryPName);
+        dest.writeInt(this.vedioCategoryId);
+        dest.writeString(this.vedioCategoryName);
+        dest.writeByte(this.isFree ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.money);
         dest.writeString(this.vedioName);
+        dest.writeString(this.vedioNotes);
         dest.writeString(this.vedioImgUrl);
         dest.writeString(this.vedioUrl);
         dest.writeInt(this.playAmount);
         dest.writeLong(this.addTime);
-        dest.writeString(this.vedioNotes);
-    }
-
-    public VideoBean() {
     }
 
     protected VideoBean(Parcel in) {
         this.id = in.readInt();
+        this.vedioCategoryPId = in.readInt();
+        this.vedioCategoryPName = in.readString();
+        this.vedioCategoryId = in.readInt();
+        this.vedioCategoryName = in.readString();
+        this.isFree = in.readByte() != 0;
+        this.money = in.readInt();
         this.vedioName = in.readString();
+        this.vedioNotes = in.readString();
         this.vedioImgUrl = in.readString();
         this.vedioUrl = in.readString();
         this.playAmount = in.readInt();
         this.addTime = in.readLong();
-        this.vedioNotes = in.readString();
     }
 
-    public static final Parcelable.Creator<VideoBean> CREATOR = new Parcelable.Creator<VideoBean>() {
+    public static final Creator<VideoBean> CREATOR = new Creator<VideoBean>() {
         @Override
         public VideoBean createFromParcel(Parcel source) {
             return new VideoBean(source);

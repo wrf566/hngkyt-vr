@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.hngkyt.vr.R;
+import com.orhanobut.logger.Logger;
 
 /**
  * Recyceler的Fragment
@@ -41,6 +42,8 @@ public abstract class RecyclerViewFragment extends BaseFragment implements Swipe
 
     @Override
     protected int intLayoutResId() {
+        Logger.e("RecyclerViewFragment");
+
         return R.layout.include_recyclerview;
     }
 
