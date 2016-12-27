@@ -38,6 +38,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
+ * 视频播放页面
  * Created by wrf on 2016/12/5.
  */
 
@@ -395,7 +396,11 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 getActivity().onBackPressed();
                 break;
             case R.id.imageview_vrvideo_stereo:
+                if(!mCheckBoxPlay.isChecked()){
+                    mCheckBoxPlay.performClick();
+                }
                 mVrVideoView.setDisplayMode(3);
+
                 break;
         }
     }

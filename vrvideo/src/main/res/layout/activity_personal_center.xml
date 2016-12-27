@@ -81,7 +81,7 @@
         style="@style/personal_center_setting_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_100px"
-        android:checked="false"
+        android:checked="true"
         android:text="@string/fullscreen_double_screen"/>
 
     <TextView

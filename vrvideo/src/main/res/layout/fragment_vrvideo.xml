@@ -35,12 +35,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
-            
+
             <ImageView
-                android:id="@+id/imageview_vrvideo_stereo"
+                android:id="@+id/imageview_vrvideo_fullscreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/selector_stereo"/>
+                android:src="@drawable/fullscreen"/>
         </LinearLayout>
         
         <LinearLayout
@@ -94,12 +94,12 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_28px"/>
             <ImageView
-                android:id="@+id/imageview_vrvideo_fullscreen"
+                android:id="@+id/imageview_vrvideo_stereo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
                 android:paddingRight="@dimen/dip_30px"
-                android:src="@drawable/fullscreen"/>
+                android:src="@drawable/selector_stereo"/>
         </LinearLayout>
         
         <ProgressBar
