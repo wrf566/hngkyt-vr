@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import com.hngkyt.vr.adapter.VideoItemAdapter;
 import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.Video;
+import com.hngkyt.vr.net.been.VideoGroupList;
 import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VideoBean;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -133,15 +133,15 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
 
     private void getVideoDataList() {
         Call<ResponseBean> categoryVediosCall = mBaseActivity.mRequestService.getCategoryVedios(0);
-        ResultCall<CategoryVedios> categoryVediosResultCall = new ResultCall<>(getActivity(), CategoryVedios.class,false);
+        ResultCall<VideoGroupList> categoryVediosResultCall = new ResultCall<>(getActivity(), VideoGroupList.class,false);
         categoryVediosResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                CategoryVedios categoryVedios = (CategoryVedios) o;
-                Logger.e("categoryVedios = " + categoryVedios);
-                List<CategoryVedios.VedioListBean> categoryVediosVedioList = categoryVedios.getVedioList();
-                CategoryVedios.VedioListBean vedioListBean = categoryVediosVedioList.get(0);
-                setAdapter(vedioListBean.getList());
+                VideoGroupList videoGroupList = (VideoGroupList) o;
+                Logger.e("videoGroupList = " + videoGroupList);
+                List<VideoGroupList.VideoList> categoryVediosVedioList = videoGroupList.getVedioList();
+                VideoGroupList.VideoList videoList = categoryVediosVedioList.get(0);
+                setAdapter(videoList.getList());
 
             }
 
@@ -158,10 +158,11 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
         categoryVediosCall.enqueue(categoryVediosResultCall);
     }
 
-    private void setAdapter(List<VideoBean> listBeen) {
+    private void setAdapter(List<Video> listBeen) {
         if(mVideoItemAdapter==null){
             mVideoItemAdapter = new VideoItemAdapter(getActivity(),listBeen);
             mRecyclerView.setAdapter(mVideoItemAdapter);
+
         }else{
             mVideoItemAdapter.setListBeanList(listBeen);
         }

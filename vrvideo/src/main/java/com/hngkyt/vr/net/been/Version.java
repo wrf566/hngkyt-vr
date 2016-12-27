@@ -4,7 +4,7 @@ package com.hngkyt.vr.net.been;
  * Created by wrf on 2016/12/22.
  */
 
-public class VersionBean {
+public class Version {
 
     /**
      * id : 1

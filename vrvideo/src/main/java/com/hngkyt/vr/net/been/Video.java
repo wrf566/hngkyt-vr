@@ -7,11 +7,11 @@ import android.os.Parcelable;
  * Created by wrf on 2016/12/21.
  */
 
-public class VideoBean implements Parcelable {
+public class Video implements Parcelable {
 
     @Override
     public String toString() {
-        return "VideoBean{" +
+        return "Video{" +
                 "id=" + id +
                 ", vedioCategoryPId=" + vedioCategoryPId +
                 ", vedioCategoryPName='" + vedioCategoryPName + '\'' +
@@ -162,7 +162,7 @@ public class VideoBean implements Parcelable {
         this.addTime = addTime;
     }
 
-    public VideoBean() {
+    public Video() {
     }
 
     @Override
@@ -187,7 +187,7 @@ public class VideoBean implements Parcelable {
         dest.writeLong(this.addTime);
     }
 
-    protected VideoBean(Parcel in) {
+    protected Video(Parcel in) {
         this.id = in.readInt();
         this.vedioCategoryPId = in.readInt();
         this.vedioCategoryPName = in.readString();
@@ -203,15 +203,15 @@ public class VideoBean implements Parcelable {
         this.addTime = in.readLong();
     }
 
-    public static final Creator<VideoBean> CREATOR = new Creator<VideoBean>() {
+    public static final Creator<Video> CREATOR = new Creator<Video>() {
         @Override
-        public VideoBean createFromParcel(Parcel source) {
-            return new VideoBean(source);
+        public Video createFromParcel(Parcel source) {
+            return new Video(source);
         }
 
         @Override
-        public VideoBean[] newArray(int size) {
-            return new VideoBean[size];
+        public Video[] newArray(int size) {
+            return new Video[size];
         }
     };
 }

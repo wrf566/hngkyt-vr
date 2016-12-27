@@ -8,10 +8,10 @@ import android.view.View;
 import com.hngkyt.vr.adapter.VideoItemAdapter;
 import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.CategoryVedios;
+import com.hngkyt.vr.net.been.VideoGroupList;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.net.been.VedioList;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 
 import java.util.List;
 
@@ -29,16 +29,16 @@ public class VideoSortFragment extends RecyclerViewFragment {
     public static final int SORT_BY_PLAY = 2;//播放排序
     private static final int ITEM_SPACE = 20;//item之间的距离
 
-    private CategoryVedios.VedioListBean mVedioListBean;
+    private VideoGroupList.VideoList mVideoList;
     private int sortby;
 
     private VideoItemAdapter mVideoItemAdapter;
 
-    public static VideoSortFragment newInstance(CategoryVedios.VedioListBean vedioListBean, int sortby) {
+    public static VideoSortFragment newInstance(VideoGroupList.VideoList videoList, int sortby) {
 
         Bundle args = new Bundle();
         args.putInt(VideoSortFragment.class.getCanonicalName(), sortby);
-        args.putParcelable(CategoryVedios.VedioListBean.class.getCanonicalName(), vedioListBean);
+        args.putParcelable(VideoGroupList.VideoList.class.getCanonicalName(), videoList);
         VideoSortFragment fragment = new VideoSortFragment();
         fragment.setArguments(args);
         return fragment;
@@ -48,13 +48,13 @@ public class VideoSortFragment extends RecyclerViewFragment {
     protected void initView(View view) {
         super.initView(view);
         sortby = getArguments().getInt(VideoSortFragment.class.getCanonicalName());
-        mVedioListBean = getArguments().getParcelable(CategoryVedios.VedioListBean.class.getCanonicalName());
+        mVideoList = getArguments().getParcelable(VideoGroupList.VideoList.class.getCanonicalName());
         getVideoList();
 
     }
 
     private void getVideoList() {
-        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.getVedios(mVedioListBean.getId(), sortby);
+        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.getVedios(mVideoList.getId(), sortby);
 
         ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class,false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
@@ -80,7 +80,7 @@ public class VideoSortFragment extends RecyclerViewFragment {
         responseBeanCall.enqueue(resultCall);
     }
 
-    private void setAdapter(List<VideoBean> listBeen) {
+    private void setAdapter(List<Video> listBeen) {
         if (mVideoItemAdapter == null) {
             mVideoItemAdapter = new VideoItemAdapter(getActivity(), listBeen);
             mRecyclerView.setAdapter(mVideoItemAdapter);

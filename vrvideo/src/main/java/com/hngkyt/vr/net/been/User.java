@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by wrf on 2016/12/19.
  */
 
-public class DataUser implements Parcelable {
+public class User implements Parcelable {
 
 
     /**
@@ -145,7 +145,7 @@ public class DataUser implements Parcelable {
 
     @Override
     public String toString() {
-        return "DataUser{" +
+        return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", realName='" + realName + '\'' +
@@ -183,10 +183,10 @@ public class DataUser implements Parcelable {
         dest.writeString(this.code);
     }
 
-    public DataUser() {
+    public User() {
     }
 
-    protected DataUser(Parcel in) {
+    protected User(Parcel in) {
         this.id = in.readInt();
         this.userName = in.readString();
         this.realName = in.readString();
@@ -201,15 +201,15 @@ public class DataUser implements Parcelable {
         this.code = in.readString();
     }
 
-    public static final Parcelable.Creator<DataUser> CREATOR = new Parcelable.Creator<DataUser>() {
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
         @Override
-        public DataUser createFromParcel(Parcel source) {
-            return new DataUser(source);
+        public User createFromParcel(Parcel source) {
+            return new User(source);
         }
 
         @Override
-        public DataUser[] newArray(int size) {
-            return new DataUser[size];
+        public User[] newArray(int size) {
+            return new User[size];
         }
     };
 }
