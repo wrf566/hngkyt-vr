@@ -38,6 +38,7 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
     private TimerBroadcastReceiver mTimerBroadcastReceiver;
     private DataSendCode mDataSendCode;//验证码返回结果bean
 
+
     @Override
     protected int intLayoutResId() {
         return R.layout.activity_message_verify;
@@ -94,6 +95,7 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
                     if (getEditTextContent(mEditTextVerifyCode).equals(mDataSendCode.getCode())) {
                         Intent intent = new Intent(this, PasswordActivity.class);
                         intent.putExtra(DataUser.USERNAME, getEditTextContent(mEditTextPhoneNumber));
+                        intent.putExtra(DataUser.PASSWORD_TYPE, getIntent().getIntExtra(DataUser.PASSWORD_TYPE,DataUser.TYPE_REGISTER));
                         startActivityForResult(intent, REQUEST_CODE_DEFAULT);
                     } else {
                         ToastUtils.showShortToast(this, R.string.verify_code_incorrect);

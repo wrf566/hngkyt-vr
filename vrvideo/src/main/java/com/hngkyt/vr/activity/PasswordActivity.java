@@ -16,6 +16,8 @@ import com.orhanobut.logger.Logger;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.hngkyt.vr.net.been.DataUser.TYPE_REGISTER;
+
 /**
  * Created by wrf on 2016/11/24.
  */
@@ -26,6 +28,8 @@ public class PasswordActivity extends TitleBarActivity {
     private EditText mEditTextPassword;
     private EditText mEditTextConfirmPassword;
     private Button mButtonOK;
+
+
 
     @Override
     protected int intLayoutResId() {
@@ -64,7 +68,13 @@ public class PasswordActivity extends TitleBarActivity {
         }
 
         if (password.equals(confirmPassword)) {
-            Call<ResponseBean> registerCall = mRequestService.register(getIntent().getStringExtra(DataUser.USERNAME), getEditTextContent(mEditTextPassword));
+
+
+            String username = getIntent().getStringExtra(DataUser.USERNAME);
+            int type = getIntent().getIntExtra(DataUser.PASSWORD_TYPE,TYPE_REGISTER);
+
+
+            Call<ResponseBean> registerCall = mRequestService.register(username, getEditTextContent(mEditTextPassword),type);
 
             ResultCall<DataUser> resultCall = new ResultCall<>(this, DataUser.class);
             resultCall.setOnCallListener(new ResultCall.OnCallListener() {

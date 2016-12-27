@@ -29,6 +29,8 @@ import cn.sharesdk.tencent.qq.QQ;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.hngkyt.vr.net.been.DataUser.PASSWORD_TYPE;
+
 /**
  * Created by wrf on 2016/11/23.
  */
@@ -50,6 +52,8 @@ public class LoginActivity extends TitleBarActivity {
 
 
     private DataUser mDataUser;
+
+    private static final int REQUEST_CODE_FORGET_PASSWORD = 2;
 
     @Override
     protected int intLayoutResId() {
@@ -90,10 +94,14 @@ public class LoginActivity extends TitleBarActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.button_login_signup:
-                startActivityForResult(new Intent(this, MessageVerifyActivity.class), REQUEST_CODE_DEFAULT);
+                Intent sigupIntent = new Intent(this, MessageVerifyActivity.class);
+                sigupIntent.putExtra(PASSWORD_TYPE,DataUser.TYPE_REGISTER);
+                startActivityForResult(sigupIntent, REQUEST_CODE_DEFAULT);
                 break;
             case R.id.textview_login_forget_password:
-//                startActivityOriginal(this, MessageVerifyActivity1.class);
+                Intent forgetPasswordIntent = new Intent(this, MessageVerifyActivity.class);
+                forgetPasswordIntent.putExtra(PASSWORD_TYPE,DataUser.TYPE_FORGET_PASSWORD);
+                startActivityForResult(forgetPasswordIntent, REQUEST_CODE_FORGET_PASSWORD);
                 break;
             case R.id.imageview_login_wechat:
 
