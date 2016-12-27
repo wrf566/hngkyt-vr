@@ -22,10 +22,10 @@ import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.VideoRecommendAdapter;
 import com.hngkyt.vr.decoration.VideoRecommeneItemDecotation;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.net.been.VedioList;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     private VrVideoView mVrVideoView;
     private ProgressBar mProgressBar;
     private SeekBar mSeekBar;
-    private VideoBean mVideoBean;//视频实体类
+    private Video mVideo;//视频实体类
     private boolean isCompletion = false;
     private VideoLoaderTask mVideoLoaderTask;
 
@@ -83,7 +83,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                     mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
                 }
                 mVideoLoaderTask = new VideoLoaderTask();
-                mVideoLoaderTask.execute(mVideoBean.getVedioUrl());
+                mVideoLoaderTask.execute(mVideo.getVedioUrl());
                 //第一次运行后进度条才能拖动
                 mSeekBar.setEnabled(true);
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -142,10 +142,10 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     };
     private VideoRecommendAdapter mVideoRecommendAdapter;
 
-    public static VRVideoFragment newInstance(VideoBean listBean) {
+    public static VRVideoFragment newInstance(Video listBean) {
 
         Bundle args = new Bundle();
-        args.putParcelable(VideoBean.class.getCanonicalName(), listBean);
+        args.putParcelable(Video.class.getCanonicalName(), listBean);
 
         VRVideoFragment fragment = new VRVideoFragment();
         fragment.setArguments(args);
@@ -156,16 +156,16 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * 向服务器提交播放记录
      */
     private void putPlaycount() {
-        DataUser userInfo = mBaseActivity.getUserInfo();
+        User userInfo = mBaseActivity.getUserInfo();
         int userId;
         if (userInfo == null) {
             userId = 0;
         } else {
             userId = userInfo.getId();
         }
-        Logger.e("mVideoBean.getId() = " + mVideoBean.getId());
+        Logger.e("mVideo.getId() = " + mVideo.getId());
         Logger.e("userId =  " + userId);
-        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mVideoBean.getId(), userId);
+        Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mVideo.getId(), userId);
         ResultCall<String> resultCall = new ResultCall<>(getActivity(), String.class, false);
         responseBeanCall.enqueue(resultCall);
     }
@@ -219,7 +219,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         //第一次进来还没播放的时候就不让拖动
         mSeekBar.setEnabled(false);
 
-        mVideoBean = getArguments().getParcelable(VideoBean.class.getCanonicalName());
+        mVideo = getArguments().getParcelable(Video.class.getCanonicalName());
 
         //这里要单独获取视频详情是因为，用户点击了播放，添加了播放次数然后回到视频列表页面，再点击同样一个视频。
         //由于回到视频列表，列表中的视频数据还是旧的，所以要单独拉取。
@@ -242,14 +242,14 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * 获取视频详情
      */
     private void getVideoDetail() {
-        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedioDetail(mVideoBean.getId());
+        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedioDetail(mVideo.getId());
 
-        ResultCall<VideoBean> responseBeanResultCall = new ResultCall<>(getActivity(), VideoBean.class, false);
+        ResultCall<Video> responseBeanResultCall = new ResultCall<>(getActivity(), Video.class, false);
         responseBeanResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                mVideoBean = (VideoBean) o;
-                Logger.e("mVideoBean = " + mVideoBean);
+                mVideo = (Video) o;
+                Logger.e("mVideo = " + mVideo);
                 setVideoInfo();
                 initRecommendListData();
 
@@ -270,10 +270,10 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     }
 
     private void setVideoInfo() {
-        mTextViewName.setText(mVideoBean.getVedioName());
-        mTextViewPlayCounts.setText(getResources().getString(R.string.play_counts, mVideoBean.getPlayAmount()));
+        mTextViewName.setText(mVideo.getVedioName());
+        mTextViewPlayCounts.setText(getResources().getString(R.string.play_counts, mVideo.getPlayAmount()));
         mTextViewReleaseTime.setText(getResources().getString(R.string.release_time
-                , new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(mVideoBean.getAddTime()))
+                , new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(mVideo.getAddTime()))
         ));
 
     }
@@ -282,7 +282,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * 初始化推荐列表数据
      */
     private void initRecommendListData() {
-        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedios(mVideoBean.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
+        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedios(mVideo.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
 
         ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class, false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
@@ -308,12 +308,12 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     }
 
-    private void setAdapter(final List<VideoBean> videoBeanList) {
+    private void setAdapter(final List<Video> videoList) {
         if (mVideoRecommendAdapter == null) {
-            mVideoRecommendAdapter = new VideoRecommendAdapter(getActivity(), videoBeanList);
+            mVideoRecommendAdapter = new VideoRecommendAdapter(getActivity(), videoList);
             mRecyclerView.setAdapter(mVideoRecommendAdapter);
         } else {
-            mVideoRecommendAdapter.setVideoBeanList(videoBeanList);
+            mVideoRecommendAdapter.setVideoList(videoList);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -396,6 +396,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 getActivity().onBackPressed();
                 break;
             case R.id.imageview_vrvideo_stereo:
+                //如果视频没有在播放那么播放
                 if(!mCheckBoxPlay.isChecked()){
                     mCheckBoxPlay.performClick();
                 }

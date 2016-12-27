@@ -21,7 +21,7 @@ public class VideoGroupList {
     public static final int TYPE_HASGROUP = 1;
     public static final int TYPE_NOGROUP = 0;
 
-    private VedioCategory vedioCategory;
+    private VideoGroup mVideoGroup;
     private List<VideoList> vedioList;
     private int type;
 
@@ -33,12 +33,12 @@ public class VideoGroupList {
         this.type = type;
     }
 
-    public VedioCategory getVedioCategory() {
-        return vedioCategory;
+    public VideoGroup getVideoGroup() {
+        return mVideoGroup;
     }
 
-    public void setVedioCategory(VedioCategory vedioCategory) {
-        this.vedioCategory = vedioCategory;
+    public void setVideoGroup(VideoGroup videoGroup) {
+        this.mVideoGroup = videoGroup;
     }
 
     public List<VideoList> getVedioList() {
@@ -52,13 +52,13 @@ public class VideoGroupList {
     @Override
     public String toString() {
         return "VideoGroupList{" +
-                "vedioCategory=" + vedioCategory +
+                "mVideoGroup=" + mVideoGroup +
                 ", vedioList=" + vedioList +
                 ", type=" + type +
                 '}';
     }
 
-    public static class VedioCategory {
+    public static class VideoGroup {
         /**
          * id : 1
          * pId : 0
@@ -155,7 +155,7 @@ public class VideoGroupList {
 
         @Override
         public String toString() {
-            return "VedioCategory{" +
+            return "VideoGroup{" +
                     "id=" + id +
                     ", pId=" + pId +
                     ", vedioCategoryName='" + vedioCategoryName + '\'' +
@@ -187,7 +187,7 @@ public class VideoGroupList {
 
         private int id;
         private String name;
-        private List<VideoBean> list;
+        private List<Video> list;
 
         public int getId() {
             return id;
@@ -205,11 +205,11 @@ public class VideoGroupList {
             this.name = name;
         }
 
-        public List<VideoBean> getList() {
+        public List<Video> getList() {
             return list;
         }
 
-        public void setList(List<VideoBean> list) {
+        public void setList(List<Video> list) {
             this.list = list;
         }
 
@@ -232,8 +232,8 @@ public class VideoGroupList {
         protected VideoList(Parcel in) {
             this.id = in.readInt();
             this.name = in.readString();
-            this.list = new ArrayList<VideoBean>();
-            in.readList(this.list, VideoBean.class.getClassLoader());
+            this.list = new ArrayList<Video>();
+            in.readList(this.list, Video.class.getClassLoader());
         }
 
         public static final Parcelable.Creator<VideoList> CREATOR = new Parcelable.Creator<VideoList>() {

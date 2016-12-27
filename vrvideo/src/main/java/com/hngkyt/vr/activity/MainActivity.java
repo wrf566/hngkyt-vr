@@ -27,11 +27,12 @@ import com.hngkyt.vr.fragment.VideoNewestChannelFragment;
 import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.BannerList;
 import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VedioCategoryList;
+import com.hngkyt.vr.net.been.VideoChannelList;
 import com.hngkyt.vr.view.InfiniteViewPager;
 import com.hzgktyt.vr.baselibrary.utils.ScreenUtils;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,7 +45,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int TYPE_HOME = 1;
     //c a b c a
-    int[] pics = {R.drawable.c, R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.a};
     private ImageView mImageViewPersonalCenter;
     private InfiniteViewPager mInfiniteViewPager;
     private ViewPager mViewPagerGroup;
@@ -69,10 +69,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 BannerList bannerList = (BannerList) o;
                 List<BannerList.Banner> bannerList1 = bannerList.getBannerList();
 
-                bannerList1.add(0,bannerList1.get(bannerList1.size()-1));
+                bannerList1.add(0, bannerList1.get(bannerList1.size() - 1));
                 bannerList1.add(bannerList1.get(1));//因为第一个已经是刚刚添加的了，所以要从第二个开始添加
 
-                Logger.e("bannerList1 = "+bannerList1);
+//                Logger.e("bannerList1 = " + bannerList1);
 
 
                 initBanner(bannerList1);
@@ -82,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
 
             }
+
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
@@ -129,26 +130,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     * 获取分类
+     * 获取频道
      */
     private void getVedioCategory() {
         Call<ResponseBean> vedioCateGoryCall = mRequestService.getVedioCategory(TYPE_HOME);
 
-        ResultCall<VedioCategoryList> listResultCall = new ResultCall<>(this, VedioCategoryList.class, false);
+        ResultCall<VideoChannelList> listResultCall = new ResultCall<>(this, VideoChannelList.class, false);
         listResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                VedioCategoryList vedioCategoryList = (VedioCategoryList) o;
+                VideoChannelList VideoChannelList = (VideoChannelList) o;
 
-                Logger.e("vedioCategoryList = " + vedioCategoryList);
+                Logger.e("VideoChannelList = " + VideoChannelList);
 
-                List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeanList = vedioCategoryList.getVedioCategoryList();
+                List<com.hngkyt.vr.net.been.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeanList = VideoChannelList.getVedioCategoryList();
+                if (vedioCategoryListBeanListBeanList == null) {
+                    vedioCategoryListBeanListBeanList = new ArrayList<>();
+                }
+
 
                 //Fragment的管理以后再优化，比如Activity杀死了，状态保存之类的
                 GroupFragmentAdapter groupFragmentAdapter = new GroupFragmentAdapter(MainActivity.this, mFragmentManager);
                 groupFragmentAdapter.addFragment(new VideoNewestChannelFragment());
-                groupFragmentAdapter.addFragment(VideoChannelFragment.newInstance(vedioCategoryListBeanList.get(0)));
-                groupFragmentAdapter.addFragment(VideoChannelFragment.newInstance(vedioCategoryListBeanList.get(1)));
+
+                for (com.hngkyt.vr.net.been.VideoChannelList.VedioChannel vedioChannel : vedioCategoryListBeanListBeanList) {
+                    groupFragmentAdapter.addFragment(VideoChannelFragment.newInstance(vedioChannel));
+
+                }
                 groupFragmentAdapter.addFragment(new MoreChannelFragment());
 
                 mViewPagerGroup.setAdapter(groupFragmentAdapter);
@@ -161,22 +169,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         , getTintDrawable(getResources().getDrawable(R.drawable.newest)
                                 , getResources().getColor(R.color.red)))
                         , R.string.newest_video));//默认选中的一开始就要染色成红的
-                mTabLayoutGroup.getTabAt(3).setCustomView(getTabLayoutCustomView(selectStateListDrawable(
+                //这里写成size+1是因为size不固定
+                mTabLayoutGroup.getTabAt(vedioCategoryListBeanListBeanList.size() + 1).setCustomView(getTabLayoutCustomView(selectStateListDrawable(
                         getResources().getDrawable(R.drawable.more)
                         , getTintDrawable(getResources().getDrawable(R.drawable.more)
                                 , getResources().getColor(R.color.red))), R.string.more_channel));
 
                 //这里是添加网络加载的频道，添加网络图片和文字，所以要和上面的分开
-                for (int i = 0; i < vedioCategoryListBeanList.size(); i++) {
-                    final VedioCategoryList.VedioCategoryListBean vedioCategoryListBean = vedioCategoryListBeanList.get(i);
+                for (int i = 0; i < vedioCategoryListBeanListBeanList.size(); i++) {
+                    final com.hngkyt.vr.net.been.VideoChannelList.VedioChannel VedioChannel = vedioCategoryListBeanListBeanList.get(i);
 
-                    TextViewSimpleTarget textViewSimpleTarget = new TextViewSimpleTarget(i, vedioCategoryListBean);
+                    TextViewSimpleTarget textViewSimpleTarget = new TextViewSimpleTarget(i, VedioChannel);
                     String imgUrl;
                     //720P的手机用小图，1080P的用大图
                     if (ScreenUtils.getScreenWidth() > 720 && ScreenUtils.getScreenHeight() > 1280) {
-                        imgUrl = vedioCategoryListBean.getLogoImgUrl();
+                        imgUrl = VedioChannel.getLogoImgUrl();
                     } else {
-                        imgUrl = vedioCategoryListBean.getSmallLogoImgUrl();
+                        imgUrl = VedioChannel.getSmallLogoImgUrl();
                     }
                     Glide.with(MainActivity.this)
                             .load(imgUrl)
@@ -202,7 +211,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initBanner(List<BannerList.Banner> bannerList) {
         mInfiniteViewPager = (InfiniteViewPager) findViewById(R.id.viewpager_banner);
 
-        final BannerAdapter bannerAdapter = new BannerAdapter(this,bannerList);
+        final BannerAdapter bannerAdapter = new BannerAdapter(this, bannerList);
 
         mInfiniteViewPager.setAdapter(bannerAdapter);
 
@@ -256,12 +265,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         private int i;
 
-        private VedioCategoryList.VedioCategoryListBean mVedioCategoryListBean;
+        private VideoChannelList.VedioChannel mVedioChannel;
 
-        TextViewSimpleTarget(int i, VedioCategoryList.VedioCategoryListBean vedioCategoryListBean) {
+        TextViewSimpleTarget(int i, VideoChannelList.VedioChannel VedioChannel) {
             //            super(90,90);
             this.i = i;
-            this.mVedioCategoryListBean = vedioCategoryListBean;
+            this.mVedioChannel = VedioChannel;
         }
 
         @Override
@@ -269,12 +278,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mTabLayoutGroup.getTabAt(i + 1).setCustomView(getTabLayoutCustomView(selectStateListDrawable(
                     new BitmapDrawable(getResources(), bitmap)
                     , getTintDrawable(new BitmapDrawable(getResources(), bitmap)
-                            , getResources().getColor(R.color.red))), mVedioCategoryListBean.getVedioCategoryName()));
+                            , getResources().getColor(R.color.red))), mVedioChannel.getVedioCategoryName()));
         }
 
 
     }
-
 
 
 }

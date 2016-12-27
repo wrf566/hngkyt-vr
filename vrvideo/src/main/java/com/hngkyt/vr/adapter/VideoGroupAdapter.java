@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.MoreGroupActivity;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.CategoryVedios;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
+import com.hngkyt.vr.net.been.VideoGroupList;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
 
     private Context mContext;
-    private List<CategoryVedios.VedioListBean> mCategoryVediosVedioList;
+    private List<VideoGroupList.VideoList> mCategoryVediosVedioList;
 
-    public VideoGroupAdapter(Context context, List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
+    public VideoGroupAdapter(Context context, List<VideoGroupList.VideoList> categoryVediosVedioList) {
         mContext = context;
         mCategoryVediosVedioList = categoryVediosVedioList;
     }
@@ -47,28 +47,28 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
     public void onBindViewHolder(VideoGroupHolder holder, int position) {
 
 
-        final CategoryVedios.VedioListBean vedioListBean = mCategoryVediosVedioList.get(position);
+        final VideoGroupList.VideoList videoList = mCategoryVediosVedioList.get(position);
 
-        Logger.e("vedioListBean = "+vedioListBean);
+        Logger.e("videoList = "+ videoList);
 
 
-        final List<VideoBean> vedioListBeanList = vedioListBean.getList();
+        final List<Video> vedioListBeanList = videoList.getList();
 
         holder.mTextViewVideoGroupMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MoreGroupActivity.class);
-                intent.putExtra(CategoryVedios.VedioListBean.class.getCanonicalName(), vedioListBean);
+                intent.putExtra(VideoGroupList.VideoList.class.getCanonicalName(), videoList);
                 mContext.startActivity(intent);
             }
         });
 
 
-        holder.mTextViewVideoGroupName.setText(vedioListBean.getName());
+        holder.mTextViewVideoGroupName.setText(videoList.getName());
 
 
         for (int i = 0; i < vedioListBeanList.size(); i++) {
-            VideoBean listBean = vedioListBeanList.get(i);
+            Video listBean = vedioListBeanList.get(i);
 
             if (vedioListBeanList.size() == 1) {
                 holder.includeView2.setVisibility(View.INVISIBLE);
@@ -91,11 +91,11 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         return mCategoryVediosVedioList.size();
     }
 
-    public List<CategoryVedios.VedioListBean> getCategoryVediosVedioList() {
+    public List<VideoGroupList.VideoList> getCategoryVediosVedioList() {
         return mCategoryVediosVedioList;
     }
 
-    public void setCategoryVediosVedioList(List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
+    public void setCategoryVediosVedioList(List<VideoGroupList.VideoList> categoryVediosVedioList) {
         mCategoryVediosVedioList = categoryVediosVedioList;
         notifyDataSetChanged();
     }
@@ -136,7 +136,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
         }
 
         void setItemData(final Context context
-                , final VideoBean listBean
+                , final Video listBean
                 , TextView videoNameTextView
                 , ImageView imageView, View includeView) {
 
@@ -152,7 +152,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, VRVideoActivity.class);
-                    intent.putExtra(VideoBean.class.getCanonicalName(), listBean);
+                    intent.putExtra(Video.class.getCanonicalName(), listBean);
                     context.startActivity(intent);
                 }
             });

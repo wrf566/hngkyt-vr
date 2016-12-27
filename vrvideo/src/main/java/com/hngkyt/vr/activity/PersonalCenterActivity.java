@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.DownloadTask;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VersionBean;
+import com.hngkyt.vr.net.been.Version;
 import com.hzgktyt.vr.baselibrary.utils.AppUtils;
 import com.orhanobut.logger.Logger;
 
@@ -44,7 +44,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
     private Switch mSwitch;
     private TextView mTextViewUsername;
     private TextView mTextViewUpdateVersion;
-    private DataUser mDataUser;
+    private User mUser;
 
     @Override
     protected int intLayoutResId() {
@@ -77,12 +77,12 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         mTextViewUsername = (TextView) findViewById(R.id.textview_personal_center_login_signup);
 
 
-        mDataUser = getUserInfo();
+        mUser = getUserInfo();
 
-        if (mDataUser == null) {
+        if (mUser == null) {
             mTextViewUsername.setText(R.string.login_or_signup);
         } else {
-            mTextViewUsername.setText(mDataUser.getUserName());
+            mTextViewUsername.setText(mUser.getUserName());
         }
 
         mTextViewUsername.setOnClickListener(this);
@@ -167,7 +167,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         switch (v.getId()) {
             case R.id.textview_personal_center_login_signup:
 
-                if (mDataUser != null) {
+                if (mUser != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.unregister);
                     builder.setMessage(R.string.exit_login);
@@ -175,7 +175,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             saveUserInfo(null);
-                            mDataUser = null;
+                            mUser = null;
                             mTextViewUsername.setText(R.string.login_or_signup);
 
                         }
@@ -205,8 +205,8 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (REQUEST_CODE == requestCode) {
-                mDataUser = data.getParcelableExtra(DataUser.class.getCanonicalName());
-                mTextViewUsername.setText(mDataUser.getUserName());
+                mUser = data.getParcelableExtra(User.class.getCanonicalName());
+                mTextViewUsername.setText(mUser.getUserName());
             }
         }
 
@@ -217,14 +217,14 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
      */
     private void checkVersion() {
         Call<ResponseBean> responseBeanCall = mRequestService.getVersion();
-        ResultCall<VersionBean> versionBeanResultCall = new ResultCall<>(this, VersionBean.class, false);
+        ResultCall<Version> versionBeanResultCall = new ResultCall<>(this, Version.class, false);
         versionBeanResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                VersionBean versionBean = (VersionBean) o;
-                versionBean.setVesionCode(999999);//仅供测试
-                if (versionBean.getVesionCode() > AppUtils.getAppVersionCode(PersonalCenterActivity.this)) {
-                    initDownloadDialog(versionBean);
+                Version version = (Version) o;
+                version.setVesionCode(999999);//仅供测试
+                if (version.getVesionCode() > AppUtils.getAppVersionCode(PersonalCenterActivity.this)) {
+                    initDownloadDialog(version);
                 }
 
             }
@@ -243,13 +243,13 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
 
     }
 
-    private void initDownloadDialog(VersionBean versionBean) {
+    private void initDownloadDialog(Version version) {
         //用这个可以android.support.v7.appcompat.R.style.ThemeOverlay_AppCompat_Dialog_Alert可以符合当前的主题颜色
         //不然尼玛的都是默认绿色
         ProgressDialog progressDialog = new ProgressDialog(PersonalCenterActivity.this
                 , android.support.v7.appcompat.R.style.ThemeOverlay_AppCompat_Dialog_Alert);
-        progressDialog.setTitle(versionBean.getUpdateTitle());
-        progressDialog.setMessage(versionBean.getUpdateContent());
+        progressDialog.setTitle(version.getUpdateTitle());
+        progressDialog.setMessage(version.getUpdateContent());
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setCanceledOnTouchOutside(false);

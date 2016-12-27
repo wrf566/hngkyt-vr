@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
@@ -29,7 +29,7 @@ import cn.sharesdk.tencent.qq.QQ;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.DataUser.PASSWORD_TYPE;
+import static com.hngkyt.vr.net.been.User.PASSWORD_TYPE;
 
 /**
  * 登陆页面
@@ -51,7 +51,7 @@ public class LoginActivity extends TitleBarActivity {
     private EditText mEditTextUsername;
     private EditText mEditTextPassword;
     private LoginHandler mLoginHandler = new LoginHandler(this);
-    private DataUser mDataUser;
+    private User mUser;
 
     @Override
     protected int intLayoutResId() {
@@ -93,12 +93,12 @@ public class LoginActivity extends TitleBarActivity {
         switch (v.getId()) {
             case R.id.button_login_signup:
                 Intent sigupIntent = new Intent(this, MessageVerifyActivity.class);
-                sigupIntent.putExtra(PASSWORD_TYPE, DataUser.TYPE_REGISTER);
+                sigupIntent.putExtra(PASSWORD_TYPE, User.TYPE_REGISTER);
                 startActivityForResult(sigupIntent, REQUEST_CODE_DEFAULT);
                 break;
             case R.id.textview_login_forget_password:
                 Intent forgetPasswordIntent = new Intent(this, MessageVerifyActivity.class);
-                forgetPasswordIntent.putExtra(PASSWORD_TYPE, DataUser.TYPE_FORGET_PASSWORD);
+                forgetPasswordIntent.putExtra(PASSWORD_TYPE, User.TYPE_FORGET_PASSWORD);
                 startActivityForResult(forgetPasswordIntent, REQUEST_CODE_FORGET_PASSWORD);
                 break;
             case R.id.imageview_login_wechat:
@@ -148,15 +148,15 @@ public class LoginActivity extends TitleBarActivity {
 
         }
         Call<ResponseBean> loginCall = mRequestService.login(username, password);
-        ResultCall<DataUser> mResultCall = new ResultCall<>(this, DataUser.class);
+        ResultCall<User> mResultCall = new ResultCall<>(this, User.class);
         mResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                mDataUser = (DataUser) o;
-                Logger.e("mDataUser =  " + mDataUser);
-                saveUserInfo(mDataUser);
+                mUser = (User) o;
+                Logger.e("mUser =  " + mUser);
+                saveUserInfo(mUser);
                 Intent intent = new Intent();
-                intent.putExtra(DataUser.class.getCanonicalName(), mDataUser);
+                intent.putExtra(User.class.getCanonicalName(), mUser);
                 setResult(RESULT_OK, intent);
                 onBackPressed();
             }

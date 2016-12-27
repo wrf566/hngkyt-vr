@@ -8,8 +8,9 @@ import com.hngkyt.vr.adapter.VideoMoreChannelAdapter;
 import com.hngkyt.vr.decoration.VideoChannelDecoration;
 import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VedioCategoryList;
+import com.hngkyt.vr.net.been.VideoChannelList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,14 +42,17 @@ public class MoreChannelFragment extends RecyclerViewFragment {
     private void initData() {
         Call<ResponseBean> vedioCateGoryCall = mBaseActivity.mRequestService.getVedioCategory(TYPE_MORE);
 
-        ResultCall<VedioCategoryList> listResultCall = new ResultCall<>(getActivity(), VedioCategoryList.class,false);
+        ResultCall<VideoChannelList> listResultCall = new ResultCall<>(getActivity(), VideoChannelList.class,false);
 
         listResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                VedioCategoryList vedioCategoryList = (VedioCategoryList) o;
-                List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen = vedioCategoryList.getVedioCategoryList();
-                setAdapter(vedioCategoryListBeen);
+                VideoChannelList VideoChannelList = (VideoChannelList) o;
+                List<com.hngkyt.vr.net.been.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen = VideoChannelList.getVedioCategoryList();
+                if(vedioCategoryListBeanListBeen ==null){
+                    vedioCategoryListBeanListBeen =new ArrayList<>();
+                }
+                setAdapter(vedioCategoryListBeanListBeen);
 
 
             }
@@ -66,12 +70,12 @@ public class MoreChannelFragment extends RecyclerViewFragment {
         vedioCateGoryCall.enqueue(listResultCall);
     }
 
-    private void setAdapter(List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
+    private void setAdapter(List<VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen) {
         if(mVideoMoreChannelAdapter==null){
-            mVideoMoreChannelAdapter = new VideoMoreChannelAdapter(getActivity(),vedioCategoryListBeen);
+            mVideoMoreChannelAdapter = new VideoMoreChannelAdapter(getActivity(), vedioCategoryListBeanListBeen);
             mRecyclerView.setAdapter(mVideoMoreChannelAdapter);
         }else{
-            mVideoMoreChannelAdapter.setVedioCategoryListBeen(vedioCategoryListBeen);
+            mVideoMoreChannelAdapter.setVedioCategoryListBeanListBeen(vedioCategoryListBeanListBeen);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }

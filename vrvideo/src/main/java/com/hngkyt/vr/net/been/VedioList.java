@@ -14,7 +14,7 @@ public class VedioList {
      */
 
     private String vedioCategoryName;
-    private List<VideoBean> vedioList;
+    private List<Video> vedioList;
 
     public String getVedioCategoryName() {
         return vedioCategoryName;
@@ -24,11 +24,11 @@ public class VedioList {
         this.vedioCategoryName = vedioCategoryName;
     }
 
-    public List<VideoBean> getVedioList() {
+    public List<Video> getVedioList() {
         return vedioList;
     }
 
-    public void setVedioList(List<VideoBean> vedioList) {
+    public void setVedioList(List<Video> vedioList) {
         this.vedioList = vedioList;
     }
 

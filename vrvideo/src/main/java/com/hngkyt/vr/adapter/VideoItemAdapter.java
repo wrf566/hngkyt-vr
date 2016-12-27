@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 
 import java.util.List;
 
@@ -26,18 +26,18 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
 
     private Context mContext;
-    private List<VideoBean> mListBeanList;
+    private List<Video> mListBeanList;
 
-    public VideoItemAdapter(Context context, List<VideoBean> listBeanList) {
+    public VideoItemAdapter(Context context, List<Video> listBeanList) {
         mContext = context;
         mListBeanList = listBeanList;
     }
 
-    public List<VideoBean> getListBeanList() {
+    public List<Video> getListBeanList() {
         return mListBeanList;
     }
 
-    public void setListBeanList(List<VideoBean> listBeanList) {
+    public void setListBeanList(List<Video> listBeanList) {
         mListBeanList = listBeanList;
         notifyDataSetChanged();
     }
@@ -52,22 +52,22 @@ public class VideoItemAdapter extends RecyclerView.Adapter<VideoItemAdapter.Vide
 
     @Override
     public void onBindViewHolder(VideoItemViewHolder holder, int position) {
-        final VideoBean videoBean = mListBeanList.get(position);
+        final Video video = mListBeanList.get(position);
 
-        holder.mTextViewName.setText(videoBean.getVedioName());
+        holder.mTextViewName.setText(video.getVedioName());
         holder.mRelativeLayoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoBean.class.getCanonicalName(), videoBean);
+                intent.putExtra(Video.class.getCanonicalName(), video);
                 mContext.startActivity(intent);
 
             }
         });
 
         Glide.with(mContext)
-                .load(videoBean.getVedioImgUrl())
+                .load(video.getVedioImgUrl())
                 .asBitmap()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.mImageViewCover);

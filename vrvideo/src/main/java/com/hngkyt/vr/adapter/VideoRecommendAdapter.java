@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,11 +26,11 @@ import java.util.Locale;
 
 public class VideoRecommendAdapter extends RecyclerView.Adapter<VideoRecommendAdapter.RecommendViewHolder> {
     private Context mContext;
-    private List<VideoBean> mVideoBeanList;
+    private List<Video> mVideoList;
 
-    public VideoRecommendAdapter(Context context, List<VideoBean> videoBeanList) {
+    public VideoRecommendAdapter(Context context, List<Video> videoList) {
         mContext = context;
-        mVideoBeanList = videoBeanList;
+        mVideoList = videoList;
     }
 
     @Override
@@ -44,23 +44,23 @@ public class VideoRecommendAdapter extends RecyclerView.Adapter<VideoRecommendAd
 
     @Override
     public void onBindViewHolder(RecommendViewHolder holder, int position) {
-        final VideoBean videoBean = mVideoBeanList.get(position);
+        final Video video = mVideoList.get(position);
 
 
         Glide.with(mContext)
-                .load(videoBean.getVedioImgUrl())
+                .load(video.getVedioImgUrl())
                 .asBitmap()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(holder.mImageViewCover);
-        holder.mTextViewName.setText(videoBean.getVedioName());
-        holder.mTextViewPlayTimes.setText(mContext.getResources().getString(R.string.play_counts, videoBean.getPlayAmount()));
+        holder.mTextViewName.setText(video.getVedioName());
+        holder.mTextViewPlayTimes.setText(mContext.getResources().getString(R.string.play_counts, video.getPlayAmount()));
         holder.mTextViewReleaseTime.setText(mContext.getResources().getString(R.string.release_time
-                ,  new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(videoBean.getAddTime()))));
+                ,  new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(video.getAddTime()))));
         holder.mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, VRVideoActivity.class);
-                intent.putExtra(VideoBean.class.getCanonicalName(), videoBean);
+                intent.putExtra(Video.class.getCanonicalName(), video);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
             }
@@ -70,11 +70,11 @@ public class VideoRecommendAdapter extends RecyclerView.Adapter<VideoRecommendAd
 
     @Override
     public int getItemCount() {
-        return mVideoBeanList.size();
+        return mVideoList.size();
     }
 
-    public void setVideoBeanList(List<VideoBean> videoBeanList) {
-        mVideoBeanList = videoBeanList;
+    public void setVideoList(List<Video> videoList) {
+        mVideoList = videoList;
         notifyDataSetChanged();
     }
 

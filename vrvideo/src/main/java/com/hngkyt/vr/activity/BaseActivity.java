@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.VRApplication;
 import com.hngkyt.vr.net.RequestService;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 
 /**
@@ -68,22 +68,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public DataUser getUserInfo() {
-        String userJson = mSPUtils.getString(DataUser.class.getCanonicalName(), "");
+    public User getUserInfo() {
+        String userJson = mSPUtils.getString(User.class.getCanonicalName(), "");
         if (TextUtils.isEmpty(userJson)) {
             return null;
         }
-        return new Gson().fromJson(userJson, DataUser.class);
+        return new Gson().fromJson(userJson, User.class);
     }
 
 
-    public void saveUserInfo(DataUser dataUser) {
-        if (dataUser == null) {
-            mSPUtils.putString(DataUser.class.getCanonicalName(), "");
+    public void saveUserInfo(User user) {
+        if (user == null) {
+            mSPUtils.putString(User.class.getCanonicalName(), "");
             return;
         }
-        String userJson = new Gson().toJson(dataUser);
-        mSPUtils.putString(DataUser.class.getCanonicalName(), userJson);
+        String userJson = new Gson().toJson(user);
+        mSPUtils.putString(User.class.getCanonicalName(), userJson);
     }
 
 }

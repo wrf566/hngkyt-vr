@@ -13,20 +13,20 @@ import java.util.List;
 public class VideoChannelList implements Parcelable {
 
 
-    private List<VedioCategoryListBean> vedioCategoryList;
+    private List<VedioChannel> vedioCategoryList;
 
-    public List<VedioCategoryListBean> getVedioCategoryList() {
+    public List<VedioChannel> getVedioCategoryList() {
         return vedioCategoryList;
     }
 
-    public void setVedioCategoryList(List<VedioCategoryListBean> vedioCategoryList) {
+    public void setVedioCategoryList(List<VedioChannel> vedioCategoryList) {
         this.vedioCategoryList = vedioCategoryList;
     }
 
-    public static class VedioCategoryListBean implements Parcelable {
+    public static class VedioChannel implements Parcelable {
         @Override
         public String toString() {
-            return "VedioCategoryListBean{" +
+            return "VedioChannel{" +
                     "id=" + id +
                     ", logoImgUrl='" + logoImgUrl + '\'' +
                     ", smallLogoImgUrl='" + smallLogoImgUrl + '\'' +
@@ -91,25 +91,25 @@ public class VideoChannelList implements Parcelable {
             dest.writeString(this.vedioCategoryName);
         }
 
-        public VedioCategoryListBean() {
+        public VedioChannel() {
         }
 
-        protected VedioCategoryListBean(Parcel in) {
+        protected VedioChannel(Parcel in) {
             this.id = in.readInt();
             this.logoImgUrl = in.readString();
             this.smallLogoImgUrl = in.readString();
             this.vedioCategoryName = in.readString();
         }
 
-        public static final Creator<VedioCategoryListBean> CREATOR = new Creator<VedioCategoryListBean>() {
+        public static final Creator<VedioChannel> CREATOR = new Creator<VedioChannel>() {
             @Override
-            public VedioCategoryListBean createFromParcel(Parcel source) {
-                return new VedioCategoryListBean(source);
+            public VedioChannel createFromParcel(Parcel source) {
+                return new VedioChannel(source);
             }
 
             @Override
-            public VedioCategoryListBean[] newArray(int size) {
-                return new VedioCategoryListBean[size];
+            public VedioChannel[] newArray(int size) {
+                return new VedioChannel[size];
             }
         };
     }
@@ -129,8 +129,8 @@ public class VideoChannelList implements Parcelable {
     }
 
     protected VideoChannelList(Parcel in) {
-        this.vedioCategoryList = new ArrayList<VedioCategoryListBean>();
-        in.readList(this.vedioCategoryList, VedioCategoryListBean.class.getClassLoader());
+        this.vedioCategoryList = new ArrayList<VedioChannel>();
+        in.readList(this.vedioCategoryList, VedioChannel.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<VideoChannelList> CREATOR = new Parcelable.Creator<VideoChannelList>() {

@@ -45,10 +45,10 @@ public class ResultCall<T> implements Callback<ResponseBean> {
     @Override
     public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response) {
         Logger.e("response.raw() = " + response.raw());
-        Logger.e("response.headers() = " + response.headers());
-        Logger.e("response.message() = " + response.message());
         Logger.e("response.body() = " + response.body());
-        Logger.e("response.code() = " + response.code());
+        //        Logger.e("response.headers() = " + response.headers());
+        //        Logger.e("response.message() = " + response.message());
+        //        Logger.e("response.code() = " + response.code());
         //        try {这里暂时不打印，正常访问的时候会报空异常
         //            Logger.e("response.errorBody() = " + response.errorBody().string());
         //        } catch (IOException e) {
@@ -65,7 +65,6 @@ public class ResultCall<T> implements Callback<ResponseBean> {
                 Gson gson = new Gson();
                 T t = gson.fromJson(data.toString(), mClassOf);
                 if (mOnCallListener != null) {
-
                     mOnCallListener.onResponse(call, response, t);
                 }
             } else {

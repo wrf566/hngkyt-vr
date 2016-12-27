@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.fragment.VRVideoFragment;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -33,9 +33,9 @@ public class VRVideoActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        VideoBean videoBean = getIntent().getParcelableExtra(VideoBean.class.getCanonicalName());
+        Video video = getIntent().getParcelableExtra(Video.class.getCanonicalName());
 
-        Logger.e("videoBean = "+videoBean);
+        Logger.e("video = "+ video);
 
 
         //当Activity被系统销毁的时候，回复状态要判断Fragment会不会为空，不然Fragment中onActivityCreated会执行两次
@@ -53,7 +53,7 @@ public class VRVideoActivity extends BaseActivity {
 
             fragmentTransaction.commit();
         } else {
-            replaceFragment(VRVideoFragment.newInstance(videoBean), VRVideoFragment.class.getCanonicalName());
+            replaceFragment(VRVideoFragment.newInstance(video), VRVideoFragment.class.getCanonicalName());
         }
 
         showStatsBar();

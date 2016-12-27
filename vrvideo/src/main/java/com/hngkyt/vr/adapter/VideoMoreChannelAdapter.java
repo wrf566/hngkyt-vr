@@ -15,8 +15,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.MoreGroupActivity;
-import com.hngkyt.vr.net.been.CategoryVedios;
-import com.hngkyt.vr.net.been.VedioCategoryList;
+import com.hngkyt.vr.net.been.VideoChannelList;
+import com.hngkyt.vr.net.been.VideoGroupList;
 
 import java.util.List;
 
@@ -30,12 +30,12 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     private Context mContext;
 
-    private List<VedioCategoryList.VedioCategoryListBean> mVedioCategoryListBeen;
+    private List<VideoChannelList.VedioChannel> mVedioCategoryListBeanListBeen;
 
 
-    public VideoMoreChannelAdapter(Context context, List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
+    public VideoMoreChannelAdapter(Context context, List<VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen) {
         mContext = context;
-        mVedioCategoryListBeen = vedioCategoryListBeen;
+        mVedioCategoryListBeanListBeen = vedioCategoryListBeanListBeen;
     }
 
 
@@ -48,26 +48,26 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     @Override
     public void onBindViewHolder(VideoChannelHolder holder, int position) {
-       final VedioCategoryList.VedioCategoryListBean vedioCategoryListBean = mVedioCategoryListBeen.get(position);
+       final VideoChannelList.VedioChannel VedioChannel = mVedioCategoryListBeanListBeen.get(position);
 
 
-        holder.mButtonChannel.setText(vedioCategoryListBean.getVedioCategoryName());
+        holder.mButtonChannel.setText(VedioChannel.getVedioCategoryName());
         holder.mButtonChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MoreGroupActivity.class);
-                //这里为了界面接受统一，接口其实也是统一的所以转成了CategoryVedios.VedioListBean
-                CategoryVedios.VedioListBean vedioListBean = new CategoryVedios.VedioListBean();
-                vedioListBean.setName(vedioCategoryListBean.getVedioCategoryName());
-                vedioListBean.setId(vedioCategoryListBean.getId());
+                //这里为了界面接受统一，接口其实也是统一的所以转成了CategoryVedios.VideoList
+                VideoGroupList.VideoList videoList = new VideoGroupList.VideoList();
+                videoList.setName(VedioChannel.getVedioCategoryName());
+                videoList.setId(VedioChannel.getId());
 
-                intent.putExtra(CategoryVedios.VedioListBean.class.getCanonicalName(), vedioListBean);
+                intent.putExtra(VideoGroupList.VideoList.class.getCanonicalName(), videoList);
                 mContext.startActivity(intent);
             }
         });
 
         Glide.with(mContext)
-                .load(vedioCategoryListBean.getLogoImgUrl())
+                .load(VedioChannel.getLogoImgUrl())
                 .asBitmap()
                 .into(new ButtonSimpleTarget(holder.mButtonChannel));
 
@@ -75,7 +75,7 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
 
     @Override
     public int getItemCount() {
-        return mVedioCategoryListBeen.size();
+        return mVedioCategoryListBeanListBeen.size();
     }
 
     static class VideoChannelHolder extends RecyclerView.ViewHolder {
@@ -88,12 +88,12 @@ public class VideoMoreChannelAdapter extends RecyclerView.Adapter<VideoMoreChann
         }
     }
 
-    public List<VedioCategoryList.VedioCategoryListBean> getVedioCategoryListBeen() {
-        return mVedioCategoryListBeen;
+    public List<VideoChannelList.VedioChannel> getVedioCategoryListBeanListBeen() {
+        return mVedioCategoryListBeanListBeen;
     }
 
-    public void setVedioCategoryListBeen(List<VedioCategoryList.VedioCategoryListBean> vedioCategoryListBeen) {
-        mVedioCategoryListBeen = vedioCategoryListBeen;
+    public void setVedioCategoryListBeanListBeen(List<VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen) {
+        mVedioCategoryListBeanListBeen = vedioCategoryListBeanListBeen;
         notifyDataSetChanged();
     }
 

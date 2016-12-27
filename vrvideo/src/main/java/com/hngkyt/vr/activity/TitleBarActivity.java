@@ -52,9 +52,9 @@ public  abstract class TitleBarActivity extends BaseActivity implements View.OnC
 
     protected  void onTitleBarLeftClick(){
         onBackPressed();
-    };
-    protected  void onTitleBarTitleClick(){};
-    protected  void onTitleBarRightClick(){};
+    }
+    protected  void onTitleBarTitleClick(){}
+    protected  void onTitleBarRightClick(){}
 
 
     protected void setTextViewTitle(int stringId){

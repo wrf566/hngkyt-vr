@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
 import com.hngkyt.vr.net.been.BannerList;
-import com.hngkyt.vr.net.been.VideoBean;
+import com.hngkyt.vr.net.been.Video;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -64,10 +64,10 @@ public class BannerAdapter extends PagerAdapter {
                 switch (banner.getType()) {
                     case BannerList.TYPE_VIDEO:
                         Logger.e("点击");
-                        VideoBean videoBean = new VideoBean();
-                        videoBean.setId(banner.getVedioId());
+                        Video video = new Video();
+                        video.setId(banner.getVedioId());
                         Intent intent = new Intent(mContext, VRVideoActivity.class);
-                        intent.putExtra(VideoBean.class.getCanonicalName(), videoBean);
+                        intent.putExtra(Video.class.getCanonicalName(), video);
                         mContext.startActivity(intent);
                         break;
                     case BannerList.TYPE_URL:

@@ -58,12 +58,4 @@
     </string-array>
 
 
-    <string-array name="array_channel_more">
-        <item>创意</item>
-        <item>综艺</item>
-        <item>惊悚</item>
-        <item>萌宠</item>
-        <item>音乐</item>
-        <item>运动</item>
-    </string-array>
 </resources>

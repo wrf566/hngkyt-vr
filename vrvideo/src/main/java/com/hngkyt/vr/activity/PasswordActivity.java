@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
@@ -16,7 +16,7 @@ import com.orhanobut.logger.Logger;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.DataUser.TYPE_REGISTER;
+import static com.hngkyt.vr.net.been.User.TYPE_REGISTER;
 
 /**
  * Created by wrf on 2016/11/24.
@@ -70,22 +70,22 @@ public class PasswordActivity extends TitleBarActivity {
         if (password.equals(confirmPassword)) {
 
 
-            String username = getIntent().getStringExtra(DataUser.USERNAME);
-            int type = getIntent().getIntExtra(DataUser.PASSWORD_TYPE,TYPE_REGISTER);
+            String username = getIntent().getStringExtra(User.USERNAME);
+            int type = getIntent().getIntExtra(User.PASSWORD_TYPE,TYPE_REGISTER);
             Logger.e("username = "+username);
             Logger.e("type = "+type);
 
             Call<ResponseBean> registerCall = mRequestService.register(username, getEditTextContent(mEditTextPassword),type);
 
-            ResultCall<DataUser> resultCall = new ResultCall<>(this, DataUser.class);
+            ResultCall<User> resultCall = new ResultCall<>(this, User.class);
             resultCall.setOnCallListener(new ResultCall.OnCallListener() {
                 @Override
                 public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                    DataUser dataUser = (DataUser) o;
-                    Logger.e("dataUser = " + dataUser);
-                    saveUserInfo(dataUser);
+                    User user = (User) o;
+                    Logger.e("user = " + user);
+                    saveUserInfo(user);
                     Intent intent = new Intent();
-                    intent.putExtra(DataUser.class.getCanonicalName(), dataUser);
+                    intent.putExtra(User.class.getCanonicalName(), user);
                     setResult(RESULT_OK, intent);
                     onBackPressed();
 

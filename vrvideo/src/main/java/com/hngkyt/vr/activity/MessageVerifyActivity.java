@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.net.been.DataSendCode;
-import com.hngkyt.vr.net.been.DataUser;
+import com.hngkyt.vr.net.been.User;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.receiver.TimerBroadcastReceiver;
 import com.hngkyt.vr.services.TimerServices;
@@ -94,8 +94,8 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
                 if (mDataSendCode != null) {
                     if (getEditTextContent(mEditTextVerifyCode).equals(mDataSendCode.getCode())) {
                         Intent intent = new Intent(this, PasswordActivity.class);
-                        intent.putExtra(DataUser.USERNAME, getEditTextContent(mEditTextPhoneNumber));
-                        intent.putExtra(DataUser.PASSWORD_TYPE, getIntent().getIntExtra(DataUser.PASSWORD_TYPE,DataUser.TYPE_REGISTER));
+                        intent.putExtra(User.USERNAME, getEditTextContent(mEditTextPhoneNumber));
+                        intent.putExtra(User.PASSWORD_TYPE, getIntent().getIntExtra(User.PASSWORD_TYPE, User.TYPE_REGISTER));
                         startActivityForResult(intent, REQUEST_CODE_DEFAULT);
                     } else {
                         ToastUtils.showShortToast(this, R.string.verify_code_incorrect);
