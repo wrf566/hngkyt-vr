@@ -8,11 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,11 +19,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.adapter.BannerAdapter;
 import com.hngkyt.vr.adapter.GroupFragmentAdapter;
 import com.hngkyt.vr.fragment.MoreChannelFragment;
 import com.hngkyt.vr.fragment.VideoChannelFragment;
 import com.hngkyt.vr.fragment.VideoNewestChannelFragment;
 import com.hngkyt.vr.net.ResultCall;
+import com.hngkyt.vr.net.been.BannerList;
 import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.net.been.VedioCategoryList;
 import com.hngkyt.vr.view.InfiniteViewPager;
@@ -59,6 +59,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    private void getBanner() {
+        Call<ResponseBean> responseBeanCall = mRequestService.getBanners();
+
+        ResultCall<BannerList> bannerBeanResultCall = new ResultCall<>(this, BannerList.class, false);
+        bannerBeanResultCall.setOnCallListener(new ResultCall.OnCallListener() {
+            @Override
+            public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                BannerList bannerList = (BannerList) o;
+                List<BannerList.Banner> bannerList1 = bannerList.getBannerList();
+
+                bannerList1.add(0,bannerList1.get(bannerList1.size()-1));
+                bannerList1.add(bannerList1.get(1));//因为第一个已经是刚刚添加的了，所以要从第二个开始添加
+
+                Logger.e("bannerList1 = "+bannerList1);
+
+
+                initBanner(bannerList1);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBean> call, Throwable t) {
+
+            }
+        });
+        responseBeanCall.enqueue(bannerBeanResultCall);
+    }
+
     @Override
     protected int intLayoutResId() {
         return R.layout.activity_main;
@@ -76,9 +103,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-
+        getBanner();
         initVideoChannel();
-        initBanner();
+        //        initBanner();
 
 
         mImageViewPersonalCenter = (ImageView) findViewById(R.id.imageview_main_personal_center);
@@ -103,7 +130,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void getVedioCategory() {
         Call<ResponseBean> vedioCateGoryCall = mRequestService.getVedioCategory(TYPE_HOME);
 
-        ResultCall<VedioCategoryList> listResultCall = new ResultCall<>(this, VedioCategoryList.class,false);
+        ResultCall<VedioCategoryList> listResultCall = new ResultCall<>(this, VedioCategoryList.class, false);
         listResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
@@ -163,12 +190,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         vedioCateGoryCall.enqueue(listResultCall);
     }
 
-    private void initBanner() {
+    private void initBanner(List<BannerList.Banner> bannerList) {
         mInfiniteViewPager = (InfiniteViewPager) findViewById(R.id.viewpager_banner);
 
-        final ImageViewAdapter imageViewAdapter = new ImageViewAdapter();
+        final BannerAdapter bannerAdapter = new BannerAdapter(this,bannerList);
 
-        mInfiniteViewPager.setAdapter(imageViewAdapter);
+        mInfiniteViewPager.setAdapter(bannerAdapter);
 
         mInfiniteViewPager.setCurrentItem(1);
 
@@ -177,11 +204,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tabLayout.setupWithViewPager(mInfiniteViewPager);
 
 
-        for (int i = 0; i < imageViewAdapter.getCount(); i++) {
+        for (int i = 0; i < bannerAdapter.getCount(); i++) {
             ImageView imageView = new ImageView(MainActivity.this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(40, 40);
             imageView.setLayoutParams(layoutParams);
-            if (i == 0 || i == imageViewAdapter.getCount() - 1) {
+            if (i == 0 || i == bannerAdapter.getCount() - 1) {
                 imageView.setVisibility(View.GONE);
             }
             imageView.setImageResource(R.drawable.indicator);
@@ -239,45 +266,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    class ImageViewAdapter extends PagerAdapter {
-
-
-        @Override
-        public int getCount() {
-            return pics.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, final int position) {
-
-            ImageView imageView = new ImageView(MainActivity.this);
-            imageView.setImageResource(pics[position]);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //                    ToastUtils.showShortToast(MainActivity.this,"position = "+position);
-                }
-            });
-
-            container.addView(imageView);
-
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((ImageView) object);
-        }
-
-
-    }
 
 
 }

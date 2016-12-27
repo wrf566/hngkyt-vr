@@ -99,6 +99,8 @@ public class PasswordActivity extends TitleBarActivity {
             registerCall.enqueue(resultCall);
 
 
+        }else{
+            ToastUtils.showShortToast(this,R.string.password_not_equals);
         }
     }
 }

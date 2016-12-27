@@ -62,10 +62,16 @@ public class ResultCall<T> implements Callback<ResponseBean> {
             }
             JsonObject data = responseBean.getData();
             if (data.size() > 0) {
-//                Logger.e("非空");
                 Gson gson = new Gson();
                 T t = gson.fromJson(data.toString(), mClassOf);
-                mOnCallListener.onResponse(call, response, t);
+                if (mOnCallListener != null) {
+
+                    mOnCallListener.onResponse(call, response, t);
+                }
+            } else {
+                if (mOnCallListener != null) {
+                    mOnCallListener.onResponseNoData(call, response, null);
+                }
             }
 
         }
@@ -85,6 +91,8 @@ public class ResultCall<T> implements Callback<ResponseBean> {
         //这里最后一个参数不能用T，因为这个接口类相当于外部类，访问不到T，所以只能用Obejct替代
         //暂时没找到什么好方法
         void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o);
+
+        void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o);
 
         void onFailure(Call<ResponseBean> call, Throwable t);
     }
