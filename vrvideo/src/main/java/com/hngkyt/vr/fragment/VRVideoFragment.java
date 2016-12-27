@@ -21,11 +21,11 @@ import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.VideoRecommendAdapter;
 import com.hngkyt.vr.decoration.VideoRecommeneItemDecotation;
+import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.VedioList;
+import com.hngkyt.vr.model.Video;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.User;
-import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VedioList;
-import com.hngkyt.vr.net.been.Video;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -82,6 +82,9 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 } else {
                     mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
                 }
+                mSeekBar.setProgress(0);
+//                mVrVideoView.pauseRendering();
+//                mVrVideoView.shutdown();
                 mVideoLoaderTask = new VideoLoaderTask();
                 mVideoLoaderTask.execute(mVideo.getVedioUrl());
                 //第一次运行后进度条才能拖动
@@ -93,6 +96,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             //重新播放
             if (isCompletion) {
                 if (isChecked) {
+                    Logger.e("重新播放");
                     mVrVideoView.seekTo(0);
                     isCompletion = false;
                 }
@@ -122,7 +126,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Logger.e("onStopTrackingTouch");
+            mProgressBar.setVisibility(View.VISIBLE);
             if (seekBar.getProgress() != seekBar.getMax()) {
                 isCompletion = false;
             }
@@ -141,6 +146,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     };
     private VideoRecommendAdapter mVideoRecommendAdapter;
+    private List<Video> mListVideo;
 
     public static VRVideoFragment newInstance(Video listBean) {
 
@@ -187,9 +193,13 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     }
 
+    private boolean isAutoNext;
+
     @Override
     protected void initView(View view) {
         super.initView(view);
+
+        isAutoNext =  !mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop));
 
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
@@ -234,8 +244,17 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         hideDefaultViews(mVrVideoView);
 
+//        initVrVideoView(view);
+
         setVideoInfo();
 
+    }
+
+    private void initVrVideoView(View view){
+        mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
+        mVrVideoView.setEventListener(new ActivityEventListener());
+        mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
+        hideDefaultViews(mVrVideoView);
     }
 
     /**
@@ -249,7 +268,6 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 mVideo = (Video) o;
-                Logger.e("mVideo = " + mVideo);
                 setVideoInfo();
                 initRecommendListData();
 
@@ -259,6 +277,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
 
             }
+
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
@@ -290,6 +309,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VedioList vedioList = (VedioList) o;
                 if (vedioList.getVedioList() != null) {
+                    mListVideo = vedioList.getVedioList();
+                    mListVideo.remove(mVideo);//这里要把自己排除掉
                     setAdapter(vedioList.getVedioList());
                 }
             }
@@ -298,6 +319,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
 
             }
+
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -342,7 +364,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Logger.e("onActivityCreated");
+//        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
             Logger.e("当然不是空的啦");
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
@@ -354,7 +376,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Logger.e("onSaveInstanceState");
+//        Logger.e("onSaveInstanceState");
         savedInstanceState.putLong(STATE_CURRENT_POSITION, mVrVideoView.getCurrentPosition());
         savedInstanceState.putLong(STATE_VIDEO_DURATION, mVrVideoView.getDuration());
         savedInstanceState.putBoolean(STATE_IS_PLAY, mCheckBoxPlay.isChecked());
@@ -363,7 +385,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onResume() {
-        Logger.e("onResume");
+//        Logger.e("onResume");
         mVrVideoView.resumeRendering();
 
         super.onResume();
@@ -371,7 +393,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onPause() {
-        Logger.e("onPause");
+//        Logger.e("onPause");
         mVrVideoView.pauseRendering();
         //应用被遮盖要暂停
         mCheckBoxPlay.setChecked(false);
@@ -380,7 +402,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onDestroy() {
-        Logger.e("onDestory");
+//        Logger.e("onDestory");
         mVrVideoView.shutdown();
         super.onDestroy();
 
@@ -397,7 +419,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 break;
             case R.id.imageview_vrvideo_stereo:
                 //如果视频没有在播放那么播放
-                if(!mCheckBoxPlay.isChecked()){
+                if (!mCheckBoxPlay.isChecked()) {
                     mCheckBoxPlay.performClick();
                 }
                 mVrVideoView.setDisplayMode(3);
@@ -409,13 +431,13 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logger.e("onCreate");
+//        Logger.e("onCreate");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Logger.e("onDetach");
+//        Logger.e("onDetach");
     }
 
 
@@ -463,9 +485,9 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onNewFrame() {
-            //            if (mProgressBar.getVisibility() == View.VISIBLE) {
-            //                mProgressBar.setVisibility(View.GONE);
-            //            }
+            if (mProgressBar.getVisibility() == View.VISIBLE) {
+                mProgressBar.setVisibility(View.GONE);
+            }
 
             mSeekBar.setProgress((int) mVrVideoView.getCurrentPosition());
             mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(mVrVideoView.getCurrentPosition() / 1000));
@@ -485,6 +507,31 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             } else {
                 isCompletion = true;
                 mCheckBoxPlay.setChecked(false);
+            }
+
+            if (isAutoNext) {
+                Logger.e("自动下一个视频");
+                int i = mListVideo.indexOf(mVideo);
+                if (i != mListVideo.size() - 1) {
+                    mVideo = mListVideo.get(i + 1);
+                    Logger.e("mVideo = "+mVideo);
+                    mListVideo.remove(mVideo);
+                    mVideoRecommendAdapter.notifyDataSetChanged();
+                    setVideoInfo();
+
+
+                    mSeekBar.setProgress(0);
+                    //                mVrVideoView.pauseRendering();
+                    //                mVrVideoView.shutdown();
+                    mVideoLoaderTask = new VideoLoaderTask();
+                    mVideoLoaderTask.execute(mVideo.getVedioUrl());
+
+
+//                    mVideoLoaderTask.cancel(true);
+//                    mVideoLoaderTask=null;//置空是第一次播放的标志，这里自动播放下一个每个视频都是第一次播放
+//                    mCheckBoxPlay.performClick();
+                }
+
             }
 
 
@@ -521,7 +568,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 VrVideoView.Options options = new VrVideoView.Options();
                 options.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
                 //                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
-                Logger.e("在线视频URL = "+Uri.parse(urls[0]));
+                Logger.e("在线视频URL = " + Uri.parse(urls[0]));
                 mVrVideoView.loadVideo(Uri.parse(urls[0]), options);
             } catch (IOException e) {
                 e.printStackTrace();

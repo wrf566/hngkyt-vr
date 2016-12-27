@@ -7,8 +7,8 @@ import android.view.View;
 import com.hngkyt.vr.adapter.VideoMoreChannelAdapter;
 import com.hngkyt.vr.decoration.VideoChannelDecoration;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VideoChannelList;
+import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.VideoChannelList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class MoreChannelFragment extends RecyclerViewFragment {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VideoChannelList VideoChannelList = (VideoChannelList) o;
-                List<com.hngkyt.vr.net.been.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen = VideoChannelList.getVedioCategoryList();
+                List<com.hngkyt.vr.model.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeen = VideoChannelList.getVedioCategoryList();
                 if(vedioCategoryListBeanListBeen ==null){
                     vedioCategoryListBeanListBeen =new ArrayList<>();
                 }

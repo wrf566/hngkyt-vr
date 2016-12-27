@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.fragment.VRVideoFragment;
-import com.hngkyt.vr.net.been.Video;
+import com.hngkyt.vr.model.Video;
 import com.orhanobut.logger.Logger;
 
 /**

@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.User;
-import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
@@ -29,7 +29,7 @@ import cn.sharesdk.tencent.qq.QQ;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.User.PASSWORD_TYPE;
+import static com.hngkyt.vr.model.User.PASSWORD_TYPE;
 
 /**
  * 登陆页面

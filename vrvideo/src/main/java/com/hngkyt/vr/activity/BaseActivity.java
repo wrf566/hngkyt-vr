@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.VRApplication;
 import com.hngkyt.vr.net.RequestService;
-import com.hngkyt.vr.net.been.User;
+import com.hngkyt.vr.model.User;
 import com.hzgktyt.vr.baselibrary.utils.SPUtils;
 
 /**

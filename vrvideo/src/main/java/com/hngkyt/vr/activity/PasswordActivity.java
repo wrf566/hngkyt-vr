@@ -8,15 +8,15 @@ import android.widget.EditText;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.User;
-import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.ResponseBean;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-import static com.hngkyt.vr.net.been.User.TYPE_REGISTER;
+import static com.hngkyt.vr.model.User.TYPE_REGISTER;
 
 /**
  * Created by wrf on 2016/11/24.

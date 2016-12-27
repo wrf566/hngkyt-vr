@@ -15,8 +15,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.MoreGroupActivity;
-import com.hngkyt.vr.net.been.VideoChannelList;
-import com.hngkyt.vr.net.been.VideoGroupList;
+import com.hngkyt.vr.model.VideoChannelList;
+import com.hngkyt.vr.model.VideoGroupList;
 
 import java.util.List;
 

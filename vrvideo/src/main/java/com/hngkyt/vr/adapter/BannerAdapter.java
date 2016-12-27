@@ -2,6 +2,7 @@ package com.hngkyt.vr.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.BannerList;
-import com.hngkyt.vr.net.been.Video;
+import com.hngkyt.vr.model.BannerList;
+import com.hngkyt.vr.model.Video;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -71,7 +72,8 @@ public class BannerAdapter extends PagerAdapter {
                         mContext.startActivity(intent);
                         break;
                     case BannerList.TYPE_URL:
-
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrl()));
+                        mContext.startActivity(browserIntent);
                         break;
 
                 }

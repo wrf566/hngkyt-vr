@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.DownloadTask;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.User;
-import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.Version;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.Version;
 import com.hzgktyt.vr.baselibrary.utils.AppUtils;
 import com.orhanobut.logger.Logger;
 

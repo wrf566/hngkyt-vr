@@ -1,6 +1,6 @@
 package com.hngkyt.vr.net;
 
-import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.model.ResponseBean;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -9,25 +9,17 @@ import android.os.Parcelable;
 
 public class Video implements Parcelable {
 
-    @Override
-    public String toString() {
-        return "Video{" +
-                "id=" + id +
-                ", vedioCategoryPId=" + vedioCategoryPId +
-                ", vedioCategoryPName='" + vedioCategoryPName + '\'' +
-                ", vedioCategoryId=" + vedioCategoryId +
-                ", vedioCategoryName='" + vedioCategoryName + '\'' +
-                ", isFree=" + isFree +
-                ", money=" + money +
-                ", vedioName='" + vedioName + '\'' +
-                ", vedioNotes='" + vedioNotes + '\'' +
-                ", vedioImgUrl='" + vedioImgUrl + '\'' +
-                ", vedioUrl='" + vedioUrl + '\'' +
-                ", playAmount=" + playAmount +
-                ", addTime=" + addTime +
-                '}';
-    }
+    public static final Creator<Video> CREATOR = new Creator<Video>() {
+        @Override
+        public Video createFromParcel(Parcel source) {
+            return new Video(source);
+        }
 
+        @Override
+        public Video[] newArray(int size) {
+            return new Video[size];
+        }
+    };
     /**
      * id : 1
      * vedioCategoryPId : 1
@@ -57,6 +49,44 @@ public class Video implements Parcelable {
     private String vedioUrl;
     private int playAmount;
     private long addTime;
+
+    public Video() {
+    }
+
+    protected Video(Parcel in) {
+        this.id = in.readInt();
+        this.vedioCategoryPId = in.readInt();
+        this.vedioCategoryPName = in.readString();
+        this.vedioCategoryId = in.readInt();
+        this.vedioCategoryName = in.readString();
+        this.isFree = in.readByte() != 0;
+        this.money = in.readInt();
+        this.vedioName = in.readString();
+        this.vedioNotes = in.readString();
+        this.vedioImgUrl = in.readString();
+        this.vedioUrl = in.readString();
+        this.playAmount = in.readInt();
+        this.addTime = in.readLong();
+    }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id=" + id +
+                ", vedioCategoryPId=" + vedioCategoryPId +
+                ", vedioCategoryPName='" + vedioCategoryPName + '\'' +
+                ", vedioCategoryId=" + vedioCategoryId +
+                ", vedioCategoryName='" + vedioCategoryName + '\'' +
+                ", isFree=" + isFree +
+                ", money=" + money +
+                ", vedioName='" + vedioName + '\'' +
+                ", vedioNotes='" + vedioNotes + '\'' +
+                ", vedioImgUrl='" + vedioImgUrl + '\'' +
+                ", vedioUrl='" + vedioUrl + '\'' +
+                ", playAmount=" + playAmount +
+                ", addTime=" + addTime +
+                '}';
+    }
 
     public int getId() {
         return id;
@@ -162,9 +192,6 @@ public class Video implements Parcelable {
         this.addTime = addTime;
     }
 
-    public Video() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -187,31 +214,18 @@ public class Video implements Parcelable {
         dest.writeLong(this.addTime);
     }
 
-    protected Video(Parcel in) {
-        this.id = in.readInt();
-        this.vedioCategoryPId = in.readInt();
-        this.vedioCategoryPName = in.readString();
-        this.vedioCategoryId = in.readInt();
-        this.vedioCategoryName = in.readString();
-        this.isFree = in.readByte() != 0;
-        this.money = in.readInt();
-        this.vedioName = in.readString();
-        this.vedioNotes = in.readString();
-        this.vedioImgUrl = in.readString();
-        this.vedioUrl = in.readString();
-        this.playAmount = in.readInt();
-        this.addTime = in.readLong();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null == o) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        Video video = (Video) o;
+        return video.getId() == getId();
     }
-
-    public static final Creator<Video> CREATOR = new Creator<Video>() {
-        @Override
-        public Video createFromParcel(Parcel source) {
-            return new Video(source);
-        }
-
-        @Override
-        public Video[] newArray(int size) {
-            return new Video[size];
-        }
-    };
 }

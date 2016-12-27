@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import com.hngkyt.vr.adapter.VideoItemAdapter;
 import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.Video;
-import com.hngkyt.vr.net.been.VideoGroupList;
-import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.model.Video;
+import com.hngkyt.vr.model.VideoGroupList;
+import com.hngkyt.vr.model.ResponseBean;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;

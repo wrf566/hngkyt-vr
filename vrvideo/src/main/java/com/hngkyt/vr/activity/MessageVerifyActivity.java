@@ -10,9 +10,9 @@ import android.widget.EditText;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.DataSendCode;
-import com.hngkyt.vr.net.been.User;
-import com.hngkyt.vr.net.been.ResponseBean;
+import com.hngkyt.vr.model.DataSendCode;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.ResponseBean;
 import com.hngkyt.vr.receiver.TimerBroadcastReceiver;
 import com.hngkyt.vr.services.TimerServices;
 import com.hzgktyt.vr.baselibrary.utils.RegexUtils;

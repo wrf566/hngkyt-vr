@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.GroupFragmentAdapter;
 import com.hngkyt.vr.fragment.VideoSortFragment;
-import com.hngkyt.vr.net.been.VideoGroupList;
+import com.hngkyt.vr.model.VideoGroupList;
 import com.orhanobut.logger.Logger;
 
 /**

@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.MoreGroupActivity;
 import com.hngkyt.vr.activity.VRVideoActivity;
-import com.hngkyt.vr.net.been.Video;
-import com.hngkyt.vr.net.been.VideoGroupList;
+import com.hngkyt.vr.model.Video;
+import com.hngkyt.vr.model.VideoGroupList;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;

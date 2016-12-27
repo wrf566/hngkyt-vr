@@ -25,9 +25,9 @@ import com.hngkyt.vr.fragment.MoreChannelFragment;
 import com.hngkyt.vr.fragment.VideoChannelFragment;
 import com.hngkyt.vr.fragment.VideoNewestChannelFragment;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.net.been.BannerList;
-import com.hngkyt.vr.net.been.ResponseBean;
-import com.hngkyt.vr.net.been.VideoChannelList;
+import com.hngkyt.vr.model.BannerList;
+import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.VideoChannelList;
 import com.hngkyt.vr.view.InfiniteViewPager;
 import com.hzgktyt.vr.baselibrary.utils.ScreenUtils;
 import com.orhanobut.logger.Logger;
@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 Logger.e("VideoChannelList = " + VideoChannelList);
 
-                List<com.hngkyt.vr.net.been.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeanList = VideoChannelList.getVedioCategoryList();
+                List<com.hngkyt.vr.model.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeanList = VideoChannelList.getVedioCategoryList();
                 if (vedioCategoryListBeanListBeanList == null) {
                     vedioCategoryListBeanListBeanList = new ArrayList<>();
                 }
@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 GroupFragmentAdapter groupFragmentAdapter = new GroupFragmentAdapter(MainActivity.this, mFragmentManager);
                 groupFragmentAdapter.addFragment(new VideoNewestChannelFragment());
 
-                for (com.hngkyt.vr.net.been.VideoChannelList.VedioChannel vedioChannel : vedioCategoryListBeanListBeanList) {
+                for (com.hngkyt.vr.model.VideoChannelList.VedioChannel vedioChannel : vedioCategoryListBeanListBeanList) {
                     groupFragmentAdapter.addFragment(VideoChannelFragment.newInstance(vedioChannel));
 
                 }
@@ -177,7 +177,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 //这里是添加网络加载的频道，添加网络图片和文字，所以要和上面的分开
                 for (int i = 0; i < vedioCategoryListBeanListBeanList.size(); i++) {
-                    final com.hngkyt.vr.net.been.VideoChannelList.VedioChannel VedioChannel = vedioCategoryListBeanListBeanList.get(i);
+                    final com.hngkyt.vr.model.VideoChannelList.VedioChannel VedioChannel = vedioCategoryListBeanListBeanList.get(i);
 
                     TextViewSimpleTarget textViewSimpleTarget = new TextViewSimpleTarget(i, VedioChannel);
                     String imgUrl;
