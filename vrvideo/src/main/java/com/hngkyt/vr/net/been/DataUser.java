@@ -29,6 +29,11 @@ public class DataUser implements Parcelable {
     public static final String PASSWORD = "password";
     public static final String ID = "id";
 
+    public static final String PASSWORD_TYPE = "passwordType";
+
+    public static final int TYPE_REGISTER =1;
+    public static final int TYPE_FORGET_PASSWORD =2;
+
     private int id;
     private String userName;
     private String realName;

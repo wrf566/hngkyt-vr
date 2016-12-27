@@ -47,6 +47,7 @@
     <string name="release_time">发布于:%1$s</string>
     <string name="download_now">立即下载</string>
     <string name="more_recommend">更多推荐</string>
+    <string name="password_not_equals">两次输入的密码不一致</string>
 
 
     <string-array name="array_religions">

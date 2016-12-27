@@ -72,7 +72,8 @@ public class PasswordActivity extends TitleBarActivity {
 
             String username = getIntent().getStringExtra(DataUser.USERNAME);
             int type = getIntent().getIntExtra(DataUser.PASSWORD_TYPE,TYPE_REGISTER);
-
+            Logger.e("username = "+username);
+            Logger.e("type = "+type);
 
             Call<ResponseBean> registerCall = mRequestService.register(username, getEditTextContent(mEditTextPassword),type);
 
@@ -91,6 +92,11 @@ public class PasswordActivity extends TitleBarActivity {
 
                 }
 
+                @Override
+                public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+                    setResult(RESULT_OK);
+                    onBackPressed();
+                }
                 @Override
                 public void onFailure(Call<ResponseBean> call, Throwable t) {
 

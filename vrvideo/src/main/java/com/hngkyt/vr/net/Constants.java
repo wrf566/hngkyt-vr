@@ -21,6 +21,7 @@ public interface Constants {
     String PATH_GETVEDIODETAIL = PATH_YUEXINVR + PATH_VEDIOAPP + "getVedioDetail";
     //又不同了...
     String PATH_GETVERSION = PATH_YUEXINVR + PATH_APP + "getVersion";
+    String PATH_GETBANNERS = PATH_YUEXINVR + PATH_APP + "getBanners";
 
     String PHONE = "phone";
 

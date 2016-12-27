@@ -33,9 +33,9 @@ public class VRVideoActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        VideoBean listBean = getIntent().getParcelableExtra(VideoBean.class.getCanonicalName());
+        VideoBean videoBean = getIntent().getParcelableExtra(VideoBean.class.getCanonicalName());
 
-        Logger.e("listBean = "+listBean);
+        Logger.e("videoBean = "+videoBean);
 
 
         //当Activity被系统销毁的时候，回复状态要判断Fragment会不会为空，不然Fragment中onActivityCreated会执行两次
@@ -53,7 +53,7 @@ public class VRVideoActivity extends BaseActivity {
 
             fragmentTransaction.commit();
         } else {
-            replaceFragment(VRVideoFragment.newInstance(listBean), VRVideoFragment.class.getCanonicalName());
+            replaceFragment(VRVideoFragment.newInstance(videoBean), VRVideoFragment.class.getCanonicalName());
         }
 
         showStatsBar();

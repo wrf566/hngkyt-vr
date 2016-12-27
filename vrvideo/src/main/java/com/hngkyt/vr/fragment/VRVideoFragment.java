@@ -255,6 +255,10 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             }
 
             @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
+            @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
                 initRecommendListData();
@@ -289,6 +293,10 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 }
             }
 
+            @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -449,9 +457,9 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onNewFrame() {
-//            if (mProgressBar.getVisibility() == View.VISIBLE) {
-//                mProgressBar.setVisibility(View.GONE);
-//            }
+            //            if (mProgressBar.getVisibility() == View.VISIBLE) {
+            //                mProgressBar.setVisibility(View.GONE);
+            //            }
 
             mSeekBar.setProgress((int) mVrVideoView.getCurrentPosition());
             mTextViewCurrentTime.setText(DateUtils.formatElapsedTime(mVrVideoView.getCurrentPosition() / 1000));
@@ -490,7 +498,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                     break;
 
             }
-//            mProgressBar.setVisibility(View.VISIBLE);
+            //            mProgressBar.setVisibility(View.VISIBLE);
         }
 
 
@@ -505,9 +513,10 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
-                options.inputFormat = VrVideoView.Options.FORMAT_HLS;
-                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
-                //                mVrVideoView.loadVideo(Uri.parse(urls[0]),options);
+                options.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
+                //                mVrVideoView.loadVideo(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"), options);
+                Logger.e("在线视频URL = "+Uri.parse(urls[0]));
+                mVrVideoView.loadVideo(Uri.parse(urls[0]), options);
             } catch (IOException e) {
                 e.printStackTrace();
 

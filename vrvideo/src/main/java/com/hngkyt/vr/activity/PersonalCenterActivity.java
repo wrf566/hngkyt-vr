@@ -230,6 +230,10 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
             }
 
             @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
+            @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
             }

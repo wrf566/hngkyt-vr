@@ -138,6 +138,10 @@ public class MessageVerifyActivity extends TitleBarActivity implements TimerBroa
             }
 
             @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
+            @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
             }

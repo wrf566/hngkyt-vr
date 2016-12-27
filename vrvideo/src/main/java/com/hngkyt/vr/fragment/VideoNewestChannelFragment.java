@@ -146,6 +146,10 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
             }
 
             @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
+            @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
 

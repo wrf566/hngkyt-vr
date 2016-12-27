@@ -49,7 +49,7 @@ public class VideoGroupAdapter extends RecyclerView.Adapter<VideoGroupAdapter.Vi
 
         final CategoryVedios.VedioListBean vedioListBean = mCategoryVediosVedioList.get(position);
 
-        Logger.e("vedioListBean) = "+vedioListBean);
+        Logger.e("vedioListBean = "+vedioListBean);
 
 
         final List<VideoBean> vedioListBeanList = vedioListBean.getList();

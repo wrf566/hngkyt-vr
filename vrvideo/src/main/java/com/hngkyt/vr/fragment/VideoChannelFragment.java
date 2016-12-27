@@ -13,6 +13,7 @@ import com.hngkyt.vr.net.been.ResponseBean;
 import com.hngkyt.vr.net.been.VedioCategoryList;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 public class VideoChannelFragment extends RecyclerViewFragment {
 
     private VedioCategoryList.VedioCategoryListBean mVedioCategoryListBean;
+    private VideoGroupAdapter mVideoGroupAdapter;
 
     public static VideoChannelFragment newInstance(VedioCategoryList.VedioCategoryListBean vedioCategoryListBean) {
 
@@ -34,8 +36,6 @@ public class VideoChannelFragment extends RecyclerViewFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private VideoGroupAdapter mVideoGroupAdapter;
 
     @Override
     protected void initView(View view) {
@@ -52,20 +52,25 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     private void getVideoDataList() {
         Call<ResponseBean> categoryVediosCall = mBaseActivity.mRequestService.getCategoryVedios(mVedioCategoryListBean.getId());
 
-        ResultCall<CategoryVedios> categoryVediosResultCall = new ResultCall<>(getActivity(),CategoryVedios.class,false);
+        ResultCall<CategoryVedios> categoryVediosResultCall = new ResultCall<>(getActivity(), CategoryVedios.class, false);
 
         categoryVediosResultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 CategoryVedios categoryVedios = (CategoryVedios) o;
-                Logger.e("categoryVedios = " + categoryVedios);
-                List<CategoryVedios.VedioListBean> categoryVediosVedioList = categoryVedios.getVedioList();
-//                CategoryVedios.VideoBean vedioListBean = categoryVediosVedioList.get(0);
-//                setAdapter(vedioListBean.getList());
+                List<CategoryVedios.VedioListBean> vedioListBeen = categoryVedios.getVedioList();
+                Logger.e("vedioListBeen = " + vedioListBeen);
 
-                setAdapter(categoryVediosVedioList);
+                if (vedioListBeen == null) {
+                    vedioListBeen = new ArrayList<>();
+                }
+                setAdapter(vedioListBeen);
             }
 
+            @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
             @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -77,10 +82,10 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     }
 
     private void setAdapter(List<CategoryVedios.VedioListBean> categoryVediosVedioList) {
-        if(mVideoGroupAdapter==null){
-            mVideoGroupAdapter = new VideoGroupAdapter(getActivity(),categoryVediosVedioList);
+        if (mVideoGroupAdapter == null) {
+            mVideoGroupAdapter = new VideoGroupAdapter(getActivity(), categoryVediosVedioList);
             mRecyclerView.setAdapter(mVideoGroupAdapter);
-        }else{
+        } else {
             mVideoGroupAdapter.setCategoryVediosVedioList(categoryVediosVedioList);
         }
         mSwipeRefreshLayout.setRefreshing(false);
@@ -95,8 +100,6 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     protected RecyclerView.LayoutManager initRecyclerViewLayoutManager() {
         return new LinearLayoutManager(getActivity());
     }
-
-
 
 
     @Override

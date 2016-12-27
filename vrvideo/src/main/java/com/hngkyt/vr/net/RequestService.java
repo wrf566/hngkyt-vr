@@ -27,11 +27,11 @@ public interface RequestService {
 
     @FormUrlEncoded
     @POST(Constants.PATH_LOGIN)
-    Call<ResponseBean> login(@Field("username") String username,@Field("password") String password);//登录
+    Call<ResponseBean> login(@Field("username") String username, @Field("password") String password);//登录
 
     @FormUrlEncoded
     @POST(Constants.PATH_REGISTER)
-    Call<ResponseBean> register(@Field("username") String username,@Field("password") String password);//注册
+    Call<ResponseBean> register(@Field("username") String username, @Field("password") String password, @Field("type") int type);//注册
 
     @GET(Constants.PATH_GETVEDIOCATEGORY)
     Call<ResponseBean> getVedioCategory(@Query("type") int type);//获取视频分类
@@ -41,17 +41,20 @@ public interface RequestService {
 
     @FormUrlEncoded
     @POST(Constants.PATH_PLAYAMONT)
-    Call<ResponseBean> playAmont(@Field("vedioId") int vedioId,@Field("userId") int userId);//分类视频列表
+    Call<ResponseBean> playAmont(@Field("vedioId") int vedioId, @Field("userId") int userId);//播放次数
 
 
     @GET(Constants.PATH_GETVEDIOS)
-    Call<ResponseBean> getVedios(@Query("vedioCategoryId") int vedioCategoryId,@Query("sortType") int sortType);//视频列表
+    Call<ResponseBean> getVedios(@Query("vedioCategoryId") int vedioCategoryId, @Query("sortType") int sortType);//排序视频列表
 
     @GET(Constants.PATH_GETVEDIODETAIL)
     Call<ResponseBean> getVedioDetail(@Query("vedioId") int id);//视频详情
 
     @GET(Constants.PATH_GETVERSION)
     Call<ResponseBean> getVersion();//获取版本更新
+
+    @GET(Constants.PATH_GETBANNERS)
+    Call<ResponseBean> getBanners();//获取Banner
 
     @Streaming
     @GET

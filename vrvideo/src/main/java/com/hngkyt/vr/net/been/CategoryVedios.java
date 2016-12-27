@@ -138,6 +138,21 @@ public class CategoryVedios {
         public void setSysFlag(int sysFlag) {
             this.sysFlag = sysFlag;
         }
+
+        @Override
+        public String toString() {
+            return "VedioCategoryBean{" +
+                    "id=" + id +
+                    ", pId=" + pId +
+                    ", vedioCategoryName='" + vedioCategoryName + '\'' +
+                    ", smallLogoImgUrl='" + smallLogoImgUrl + '\'' +
+                    ", logoImgUrl='" + logoImgUrl + '\'' +
+                    ", type=" + type +
+                    ", addTime=" + addTime +
+                    ", updateTime=" + updateTime +
+                    ", sysFlag=" + sysFlag +
+                    '}';
+        }
     }
 
     public static class VedioListBean implements Parcelable {
@@ -219,4 +234,6 @@ public class CategoryVedios {
             }
         };
     }
+
+
 }

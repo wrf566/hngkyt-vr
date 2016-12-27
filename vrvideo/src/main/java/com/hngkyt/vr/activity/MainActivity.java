@@ -79,6 +79,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
 
             @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
+            }
+            @Override
             public void onFailure(Call<ResponseBean> call, Throwable t) {
 
             }
@@ -180,6 +184,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             .into(textViewSimpleTarget);
 
                 }
+            }
+
+            @Override
+            public void onResponseNoData(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
+
             }
 
             @Override

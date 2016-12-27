@@ -15,7 +15,7 @@ import com.orhanobut.logger.Logger;
 
 public class TimerServices extends Service {
 
-    private static final int MILLIS_IN_FUTURE = 60 * 1000;
+    private static final int MILLIS_IN_FUTURE = 5 * 1000;
     private static final int COUNT_DOWN_INTERVAL = 900;
 
 
