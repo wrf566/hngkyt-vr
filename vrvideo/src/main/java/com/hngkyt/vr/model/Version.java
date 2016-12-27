@@ -1,4 +1,4 @@
-package com.hngkyt.vr.net.been;
+package com.hngkyt.vr.model;
 
 /**
  * Created by wrf on 2016/12/22.

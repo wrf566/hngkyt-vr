@@ -1,4 +1,4 @@
-package com.hngkyt.vr.net.been;
+package com.hngkyt.vr.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

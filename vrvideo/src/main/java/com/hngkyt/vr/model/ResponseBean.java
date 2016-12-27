@@ -1,4 +1,4 @@
-package com.hngkyt.vr.net.been;
+package com.hngkyt.vr.model;
 
 import com.google.gson.JsonObject;
 
