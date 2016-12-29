@@ -1,18 +1,29 @@
 package com.hngkyt.vr.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.GroupFragmentAdapter;
@@ -44,12 +55,68 @@ public class LocalMainActivity extends BaseActivity implements View.OnClickListe
     private ViewPager mViewPagerGroup;
     private TabLayout mTabLayoutGroup;
 
+    private static final int STORAGE_REQUEST_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         SystemClock.sleep(2000);
         super.onCreate(savedInstanceState);
 
+
+    }
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST_CODE);
+        } else {
+            initBanner();
+
+            initVideoChannel();
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initBanner();
+                initVideoChannel();
+            } else {
+                //用户勾选了不再询问
+                //提示用户手动打开权限
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Toast.makeText(this, "读写权限已被禁止", Toast.LENGTH_SHORT).show();
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(R.string.please_enter_the_authorization);
+                    builder.setMessage(R.string.must_get_camera_permission);
+
+                    builder.setPositiveButton("设置授权", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.setData(Uri.parse("package:" + getPackageName()));
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            setResult(RESULT_CANCELED);
+                            onBackPressed();
+                        }
+                    });
+                    builder.show();
+                }
+            }
+        }
 
     }
 
@@ -70,9 +137,15 @@ public class LocalMainActivity extends BaseActivity implements View.OnClickListe
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-        initBanner();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermission();
+        } else {
+            initBanner();
 
-        initVideoChannel();
+            initVideoChannel();
+        }
+
+
 
 
         mImageViewPersonalCenter = (ImageView) findViewById(R.id.imageview_main_personal_center);
@@ -129,20 +202,18 @@ public class LocalMainActivity extends BaseActivity implements View.OnClickListe
     }
 
 
+
     private void initBanner() {
         List<LocalBanner> localBannerList = new ArrayList<>();
 
 //
 
         LocalBanner localBanner1 = new LocalBanner();
-        localBanner1.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_EXTREME_SPORTS, "本田F1赛场比赛.mp4")
-                , new File(FILE_CATEGORY_EXTREME_SPORTS, "本田F1赛场比赛.jpg")));
+        localBanner1.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_EXTREME_SPORTS, "本田F1赛场比赛.mp4")));
         LocalBanner localBanner2 = new LocalBanner();
-        localBanner2.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_EXTREME_SPORTS, "花样跳伞.mp4")
-                , new File(FILE_CATEGORY_EXTREME_SPORTS, "花样跳伞.jpg")));
+        localBanner2.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_EXTREME_SPORTS, "花样跳伞.mp4")));
         LocalBanner localBanner3 = new LocalBanner();
-        localBanner3.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_LANDSCAPE, "楼观之路.mp4")
-                , new File(FILE_CATEGORY_LANDSCAPE, "楼观之路.jpg")));
+        localBanner3.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_LANDSCAPE, "楼观之路.mp4")));
 
         localBannerList.add(localBanner1);
         localBannerList.add(localBanner2);

@@ -12,7 +12,6 @@ import com.hngkyt.vr.R;
 import com.hngkyt.vr.activity.LocalVRVideoActivity;
 import com.hngkyt.vr.model.LocalBanner;
 import com.hngkyt.vr.model.LocalVideo;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class LocalBannerAdapter extends PagerAdapter {
     public LocalBannerAdapter(Context context, List<LocalBanner> localBannerList) {
         mContext = context;
         mLocalBannerList = localBannerList;
-        Logger.e("mLocalBannerList = "+mLocalBannerList);
 
     }
 

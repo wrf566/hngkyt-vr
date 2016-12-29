@@ -149,11 +149,13 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
             case R.id.radiobutton_personal_center_autoplay_next:
 
                 mSPUtils.putBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), false);
+                mSPUtils.putBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next), true);
 
                 break;
             case R.id.radiobutton_personal_center_loop:
 
                 mSPUtils.putBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), true);
+                mSPUtils.putBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next), false);
 
                 break;
 

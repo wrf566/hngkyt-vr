@@ -48,7 +48,8 @@
     <string name="download_now">立即下载</string>
     <string name="more_recommend">更多推荐</string>
     <string name="password_not_equals">两次输入的密码不一致</string>
-
+    <string name="please_enter_the_authorization">请授权!</string>
+    <string name="must_get_camera_permission">必须存储读写权限才能进行读取视频!</string>
 
     <string-array name="array_religions">
         <item>佛教</item>

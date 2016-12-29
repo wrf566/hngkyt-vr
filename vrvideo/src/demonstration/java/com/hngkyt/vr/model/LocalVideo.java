@@ -19,9 +19,8 @@ public class LocalVideo implements Parcelable {
     private String name;
 
 
-    public LocalVideo(File videoFile, File coverFile) {
+    public LocalVideo(File videoFile) {
         this.videoFile = videoFile;
-        this.coverFile = coverFile;
     }
 
     public File getVideoFile() {
@@ -33,7 +32,7 @@ public class LocalVideo implements Parcelable {
     }
 
     public File getCoverFile() {
-        return coverFile;
+        return new File(videoFile.getParentFile(),FileUtils.getFileNameNoExtension(videoFile)+".jpg");
     }
 
     public void setCoverFile(File coverFile) {
@@ -86,7 +85,7 @@ public class LocalVideo implements Parcelable {
     public String toString() {
         return "LocalVideo{" +
                 "videoFile=" + videoFile +
-                ", coverFile=" + coverFile +
+                ", coverFile=" + getCoverFile() +
                 ", categroyFile=" + getCategroyFile() +
                 ", name='" + getName() + '\'' +
                 '}';

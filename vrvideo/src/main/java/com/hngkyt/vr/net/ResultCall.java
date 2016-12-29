@@ -57,25 +57,26 @@ public class ResultCall<T> implements Callback<ResponseBean> {
 
         if (response.isSuccessful()) {
             ResponseBean responseBean = response.body();
-            if (isShow) {
-                ToastUtils.showShortToast(mContext, responseBean.getMsg());
-            }
-            JsonObject data = responseBean.getData();
-            if (data.size() > 0) {
-                Gson gson = new Gson();
-                T t = gson.fromJson(data.toString(), mClassOf);
-                if (mOnCallListener != null) {
-                    mOnCallListener.onResponse(call, response, t);
+            if (Integer.valueOf(responseBean.getCode()) == 0) {
+                if (isShow) {
+                    ToastUtils.showShortToast(mContext, responseBean.getMsg());
+                }
+                JsonObject data = responseBean.getData();
+                if (data.size() > 0) {
+                    Gson gson = new Gson();
+                    T t = gson.fromJson(data.toString(), mClassOf);
+                    if (mOnCallListener != null) {
+                        mOnCallListener.onResponse(call, response, t);
+                    }
+                } else {
+                    if (mOnCallListener != null) {
+                        mOnCallListener.onResponseNoData(call, response, null);
+                    }
                 }
             } else {
-                if (mOnCallListener != null) {
-                    mOnCallListener.onResponseNoData(call, response, null);
-                }
+                ToastUtils.showShortToast(mContext, responseBean.getMsg());
             }
-
         }
-
-
     }
 
     @Override

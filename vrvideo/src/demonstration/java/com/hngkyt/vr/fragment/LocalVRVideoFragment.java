@@ -79,8 +79,6 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
                     mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
                 }
                 mSeekBar.setProgress(0);
-                //                mVrVideoView.pauseRendering();
-                //                mVrVideoView.shutdown();
                 mVideoLoaderTask = new VideoLoaderTask();
                 mVideoLoaderTask.execute(mLocalVideo.getVideoFile().getAbsolutePath());
                 //第一次运行后进度条才能拖动
@@ -176,7 +174,10 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
     protected void initView(View view) {
         super.initView(view);
 
-        isAutoNext = !mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop));
+        isAutoNext = mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next),false);
+
+        Logger.e("isAutoNext = "+isAutoNext);
+
 
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
@@ -248,22 +249,15 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
 
     private List<LocalVideo> getLocalVideos(File categoryFile) {
         List<LocalVideo> localVideoList = new ArrayList<>();
-        File[] viodeFiles = categoryFile.listFiles(new FilenameFilter() {
+        File[] videoFiles = categoryFile.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".mp4");
             }
         });
-        File[] coverFiles = categoryFile.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
 
-                return name.toLowerCase().endsWith(".jpg");
-            }
-        });
-
-        for (int i = 0; i < viodeFiles.length; i++) {
-            localVideoList.add(new LocalVideo(viodeFiles[i], coverFiles[i]));
+        for (File videoFile : videoFiles) {
+            localVideoList.add(new LocalVideo(videoFile));
         }
         return localVideoList;
     }
@@ -441,7 +435,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         @Override
         public void onCompletion() {
             Logger.e("onCompletion");
-            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), true)) {
+            if (!isAutoNext) {
                 mVrVideoView.seekTo(0);
             } else {
                 isCompletion = true;
@@ -453,22 +447,18 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
                 int i = mLocalVideoList.indexOf(mLocalVideo);
                 if (i != mLocalVideoList.size() - 1) {
                     mLocalVideo = mLocalVideoList.get(i + 1);
-                    Logger.e("mLocalVideo = " + mLocalVideo);
                     mLocalVideoList.remove(mLocalVideo);
                     mLocalVideoRecommendAdapter.notifyDataSetChanged();
                     setVideoInfo();
 
+                    mVideoLoaderTask = null;
+                    mVrVideoView.seekTo(0);
+                    mCheckBoxPlay.setChecked(true);
 
-                    mSeekBar.setProgress(0);
-                    //                mVrVideoView.pauseRendering();
-                    //                mVrVideoView.shutdown();
-                    mVideoLoaderTask = new VideoLoaderTask();
-                    mVideoLoaderTask.execute(mLocalVideo.getVideoFile().getAbsolutePath());
+//                    mSeekBar.setProgress(0);
+//                    mVideoLoaderTask = new VideoLoaderTask();
+//                    mVideoLoaderTask.execute(mLocalVideo.getVideoFile().getAbsolutePath());
 
-
-                    //                    mVideoLoaderTask.cancel(true);
-                    //                    mVideoLoaderTask=null;//置空是第一次播放的标志，这里自动播放下一个每个视频都是第一次播放
-                    //                    mCheckBoxPlay.performClick();
                 }
 
             }
