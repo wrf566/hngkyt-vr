@@ -33,6 +33,19 @@ android {
 
     }
 
+    productFlavors{
+        demonstration{}
+        main{}
+    }
+
+    sourceSets {
+        demonstration {
+
+            java.srcDirs = ['src/demonstration/java']
+            res.srcDirs = ['src/demonstration/res']
+
+        }
+    }
 
     buildTypes {
         release {

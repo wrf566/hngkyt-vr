@@ -9,15 +9,14 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.fragment.VRVideoFragment;
-import com.hngkyt.vr.model.Video;
-import com.orhanobut.logger.Logger;
+import com.hngkyt.vr.fragment.LocalVRVideoFragment;
+import com.hngkyt.vr.model.LocalVideo;
 
 /**
  * Created by wrf on 2016/11/16.
  */
 
-public class VRVideoActivity extends BaseActivity {
+public class LocalVRVideoActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,27 +33,27 @@ public class VRVideoActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        Video video = getIntent().getParcelableExtra(Video.class.getCanonicalName());
+        LocalVideo localVideo = getIntent().getParcelableExtra(LocalVideo.class.getCanonicalName());
 
-        Logger.e("video = "+ video);
+//        Logger.e("localVideo = "+ localVideo);
 
 
         //当Activity被系统销毁的时候，回复状态要判断Fragment会不会为空，不然Fragment中onActivityCreated会执行两次
-        VRVideoFragment vrVideoFragment = (VRVideoFragment) mFragmentManager.findFragmentByTag(VRVideoFragment.class.getCanonicalName());
-        if (vrVideoFragment != null) {
+        LocalVRVideoFragment localVRVideoFragment = (LocalVRVideoFragment) mFragmentManager.findFragmentByTag(LocalVRVideoFragment.class.getCanonicalName());
+        if (localVRVideoFragment != null) {
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
             //            Logger.e("添加前 =" + mFragmentManager.getFragments().size());
             //attach、show、replace不清楚有什么区别效果都一样，都能达到恢复状态的效果
             //使用add会报错说已经存在这个fragment了，这是符合逻辑的本来就已经有了
-            fragmentTransaction.show(vrVideoFragment);
-            //fragmentTransaction.add(vrVideoFragment,VRVideoFragment.class.getCanonicalName());
-            //ragmentTransaction.attach(vrVideoFragment);
-            //fragmentTransaction.replace(R.id.framelayout_fragment,vrVideoFragment,VRVideoFragment.class.getCanonicalName());
+            fragmentTransaction.show(localVRVideoFragment);
+            //fragmentTransaction.add(localVRVideoFragment,VRVideoFragment.class.getCanonicalName());
+            //ragmentTransaction.attach(localVRVideoFragment);
+            //fragmentTransaction.replace(R.id.framelayout_fragment,localVRVideoFragment,VRVideoFragment.class.getCanonicalName());
             //           Logger.e("添加后 =" + mFragmentManager.getFragments().size());
 
             fragmentTransaction.commit();
         } else {
-            replaceFragment(VRVideoFragment.newInstance(video), VRVideoFragment.class.getCanonicalName());
+            replaceFragment(LocalVRVideoFragment.newInstance(localVideo), LocalVRVideoFragment.class.getCanonicalName());
         }
 
         showStatsBar();

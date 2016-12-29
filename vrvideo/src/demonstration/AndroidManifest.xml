@@ -26,15 +26,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity android:name="com.hngkyt.vr.activity.MainActivity"-->
-                  <!--android:theme="@style/AppTheme.Launcher"-->
-                  <!--android:screenOrientation="portrait">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+        <activity android:name="com.hngkyt.vr.activity.LocalMainActivity"
+                  android:theme="@style/AppTheme.Launcher"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.hngkyt.vr.activity.PersonalCenterActivity"
             android:screenOrientation="portrait"/>
@@ -50,7 +50,7 @@
                   android:screenOrientation="portrait"
 
         />
-        <activity android:name="com.hngkyt.vr.activity.VRVideoActivity"
+        <activity android:name="com.hngkyt.vr.activity.LocalVRVideoActivity"
         android:screenOrientation="portrait"
         />
         <activity android:name="com.hngkyt.vr.activity.MoreGroupActivity"

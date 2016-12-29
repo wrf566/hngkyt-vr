@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
 
-    public ActivityTestRule<MainActivity> mMainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<LocalMainActivity> mMainActivityActivityTestRule = new ActivityTestRule<>(LocalMainActivity.class);
 
 //    public void
 
