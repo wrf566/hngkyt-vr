@@ -6,7 +6,7 @@ import java.util.List;
  * Created by wrf on 2016/12/21.
  */
 
-public class VedioList {
+public class VideoList {
 
     /**
      * vedioCategoryName : 基督教

@@ -26,6 +26,7 @@ import com.hngkyt.vr.model.User;
 import com.hngkyt.vr.model.VedioList;
 import com.hngkyt.vr.model.Video;
 import com.hngkyt.vr.net.ResultCall;
+import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
@@ -77,20 +78,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
             //第一次运行
             if (mVideoLoaderTask == null) {
-                if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
-                    mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
-                } else {
-                    mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
-                }
-                mSeekBar.setProgress(0);
-//                mVrVideoView.pauseRendering();
-//                mVrVideoView.shutdown();
                 mVideoLoaderTask = new VideoLoaderTask();
                 mVideoLoaderTask.execute(mVideo.getVedioUrl());
-                //第一次运行后进度条才能拖动
-                mSeekBar.setEnabled(true);
-                mProgressBar.setVisibility(View.VISIBLE);
-                putPlaycount();
                 return;
             }
             //重新播放
@@ -126,7 +115,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-                Logger.e("onStopTrackingTouch");
+            Logger.e("onStopTrackingTouch");
             mProgressBar.setVisibility(View.VISIBLE);
             if (seekBar.getProgress() != seekBar.getMax()) {
                 isCompletion = false;
@@ -147,6 +136,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     };
     private VideoRecommendAdapter mVideoRecommendAdapter;
     private List<Video> mListVideo;
+    private boolean isAutoNext;
 
     public static VRVideoFragment newInstance(Video listBean) {
 
@@ -193,13 +183,11 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     }
 
-    private boolean isAutoNext;
-
     @Override
     protected void initView(View view) {
         super.initView(view);
 
-        isAutoNext =  !mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop));
+        isAutoNext = mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next), false);
 
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
@@ -244,18 +232,11 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         hideDefaultViews(mVrVideoView);
 
-//        initVrVideoView(view);
 
         setVideoInfo();
 
     }
 
-    private void initVrVideoView(View view){
-        mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
-        mVrVideoView.setEventListener(new ActivityEventListener());
-        mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
-        hideDefaultViews(mVrVideoView);
-    }
 
     /**
      * 获取视频详情
@@ -364,7 +345,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        Logger.e("onActivityCreated");
+        //        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
             Logger.e("当然不是空的啦");
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
@@ -376,7 +357,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-//        Logger.e("onSaveInstanceState");
+        //        Logger.e("onSaveInstanceState");
         savedInstanceState.putLong(STATE_CURRENT_POSITION, mVrVideoView.getCurrentPosition());
         savedInstanceState.putLong(STATE_VIDEO_DURATION, mVrVideoView.getDuration());
         savedInstanceState.putBoolean(STATE_IS_PLAY, mCheckBoxPlay.isChecked());
@@ -385,7 +366,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onResume() {
-//        Logger.e("onResume");
+        //        Logger.e("onResume");
         mVrVideoView.resumeRendering();
 
         super.onResume();
@@ -393,7 +374,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onPause() {
-//        Logger.e("onPause");
+        //        Logger.e("onPause");
         mVrVideoView.pauseRendering();
         //应用被遮盖要暂停
         mCheckBoxPlay.setChecked(false);
@@ -402,7 +383,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     public void onDestroy() {
-//        Logger.e("onDestory");
+        //        Logger.e("onDestory");
         mVrVideoView.shutdown();
         super.onDestroy();
 
@@ -412,7 +393,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_vrvideo_fullscreen:
-                mVrVideoView.setDisplayMode(2);
+                mVrVideoView.setDisplayMode(DISPLAYMODE_LANDSCAPE);
                 break;
             case R.id.imageview_vrvideo_back:
                 getActivity().onBackPressed();
@@ -422,7 +403,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 if (!mCheckBoxPlay.isChecked()) {
                     mCheckBoxPlay.performClick();
                 }
-                mVrVideoView.setDisplayMode(3);
+                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
 
                 break;
         }
@@ -431,13 +412,13 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Logger.e("onCreate");
+        //        Logger.e("onCreate");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        Logger.e("onDetach");
+        //        Logger.e("onDetach");
     }
 
 
@@ -451,10 +432,17 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onLoadSuccess() {
-            mProgressBar.setVisibility(View.GONE);
-            mSeekBar.setMax((int) mVrVideoView.getDuration());
-            mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));
             Logger.e("onLoadSuccess");
+            putPlaycount();//添加服务器播放数量
+            mProgressBar.setVisibility(View.GONE);
+            mSeekBar.setEnabled(true);//运行加载完后进度条才能拖动
+            mSeekBar.setMax((int) mVrVideoView.getDuration());//设置总的播放进度条
+            mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));//设置总的播放时间
+            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
+                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
+            } else {
+                mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
+            }
 
         }
 
@@ -463,6 +451,9 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onLoadError(String errorMessage) {
+            Logger.e("errorMessage = " + errorMessage);
+            mProgressBar.setVisibility(View.GONE);
+            ToastUtils.showShortToast(getActivity(), R.string.video_load_error);
         }
 
         @Override
@@ -502,7 +493,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         @Override
         public void onCompletion() {
             Logger.e("onCompletion");
-            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_loop), true)) {
+            if (!isAutoNext) {
                 mVrVideoView.seekTo(0);
             } else {
                 isCompletion = true;
@@ -514,22 +505,13 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
                 int i = mListVideo.indexOf(mVideo);
                 if (i != mListVideo.size() - 1) {
                     mVideo = mListVideo.get(i + 1);
-                    Logger.e("mVideo = "+mVideo);
+                    Logger.e("mVideo = " + mVideo);
                     mListVideo.remove(mVideo);
                     mVideoRecommendAdapter.notifyDataSetChanged();
                     setVideoInfo();
-
-
-                    mSeekBar.setProgress(0);
-                    //                mVrVideoView.pauseRendering();
-                    //                mVrVideoView.shutdown();
-                    mVideoLoaderTask = new VideoLoaderTask();
-                    mVideoLoaderTask.execute(mVideo.getVedioUrl());
-
-
-//                    mVideoLoaderTask.cancel(true);
-//                    mVideoLoaderTask=null;//置空是第一次播放的标志，这里自动播放下一个每个视频都是第一次播放
-//                    mCheckBoxPlay.performClick();
+                    mVideoLoaderTask = null;
+                    mVrVideoView.seekTo(0);
+                    mCheckBoxPlay.setChecked(true);
                 }
 
             }
@@ -561,6 +543,15 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * Helper class to manage threading.
      */
     class VideoLoaderTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mSeekBar.setProgress(0);
+            mProgressBar.setVisibility(View.VISIBLE);
+
+        }
+
         @Override
         protected Boolean doInBackground(String... urls) {
             try {
