@@ -43,6 +43,10 @@ dependencies {
     compile rootProject.ext.dependencies["bumptech_glide"]
 //    compile rootProject.ext.dependencies["com_elvishew_xlog"]
 
+    debugCompile rootProject.ext.dependencies["leakcanary_debug"]
+    releaseCompile rootProject.ext.dependencies["leakcanary_release"]
+    testCompile rootProject.ext.dependencies["leakcanary_test"]
+
     testCompile rootProject.ext.dependencies["junit"]
     testCompile rootProject.ext.dependencies["android_support_test_runner"]
     testCompile rootProject.ext.dependencies["hamcrest_integration"]

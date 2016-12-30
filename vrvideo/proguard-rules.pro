@@ -15,7 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-#-------通用的混淆策略
+#-------通用的混淆策略--------
 #指定压缩级别
 -optimizationpasses 5
 
@@ -50,6 +50,10 @@
 -keep public class * extends android.support.v4.app.Fragment
 -keep public class * extends android.app.Fragment
 
+#----------------自定义----------------
+#Json解析所以要保持model类
+-keep class com.hngkyt.vr.model.** { *; }
+
 # 保持测试相关的代码
 -dontnote junit.framework.**
 -dontnote junit.runner.**
@@ -57,7 +61,8 @@
 -dontwarn android.support.test.**
 -dontwarn org.junit.**
 
-#-------Google VR视频播放的SDK
+#-------Google VR视频播放的SDK-----------
+
 # Don't obfuscate any NDK/SDK code. This makes the debugging of stack traces in
 # in release builds easier.
 -keepnames class com.google.vr.ndk.** { *; }
@@ -86,10 +91,29 @@
     @com.google.vr.cardboard.annotations.UsedByReflection *;
 }
 
-#Glide
+#--------Glide-----------
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#下面这一句是要建立glide Module才使用，暂时项目中未用到
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+
+
+#--------retrofit2-----------
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on RoboVM on iOS. Will not be used at runtime.
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
+-keepattributes Exceptions
+#okio官网推荐这样做
+-dontwarn okio.**
+
+
+
