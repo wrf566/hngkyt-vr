@@ -42,8 +42,9 @@ public class CategoryFragment extends RecyclerViewFragment {
     protected void initView(View view) {
         super.initView(view);
         mCategoryFile = (File) getArguments().getSerializable(File.class.getCanonicalName());
-//        Logger.e("mCategoryFile = "+mCategoryFile);
-        setNoGroupAdapter(getLocalVideos());
+        if (mCategoryFile.exists()) {
+            setNoGroupAdapter(getLocalVideos());
+        }
 
     }
 
@@ -58,10 +59,11 @@ public class CategoryFragment extends RecyclerViewFragment {
                     return pathname.isDirectory();//MLGB 有点手机会读取到隐藏文件，所以干脆判断是不是文件夹
                 }
             });
-//            Logger.e("categoryFiles = "+categoryFiles.length);
+
+            //            Logger.e("categoryFiles = "+categoryFiles.length);
 
             for (int i = 0; i < categoryFiles.length; i++) {
-                Logger.e("categoryFiles[i] = "+categoryFiles[i]);
+                Logger.e("categoryFiles[i] = " + categoryFiles[i]);
                 videoList.addAll(Arrays.asList(getFiles(categoryFiles[i], ".mp4")));
             }
 
@@ -79,7 +81,7 @@ public class CategoryFragment extends RecyclerViewFragment {
             }
         }
 
-//        Logger.e("localVideoList = "+localVideoList);
+        //        Logger.e("localVideoList = "+localVideoList);
 
         return localVideoList;
     }

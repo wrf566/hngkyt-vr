@@ -70,7 +70,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Logger.e("isChecked = " + isChecked);
+            //            Logger.e("isChecked = " + isChecked);
 
             //第一次运行
             if (mVideoLoaderTask == null) {
@@ -82,7 +82,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
             //重新播放
             if (isCompletion) {
                 if (isChecked) {
-                    Logger.e("重新播放");
+                    //                    Logger.e("重新播放");
                     mVrVideoView.seekTo(0);
                     isCompletion = false;
                 }
@@ -112,7 +112,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Logger.e("onStopTrackingTouch");
+            //            Logger.e("onStopTrackingTouch");
             mProgressBar.setVisibility(View.VISIBLE);
             if (seekBar.getProgress() != seekBar.getMax()) {
                 isCompletion = false;
@@ -134,6 +134,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
     private LocalVideoRecommendAdapter mLocalVideoRecommendAdapter;
     private boolean isAutoNext;
     private List<LocalVideo> mLocalVideoList;
+    private int mDisplayMode;
 
     public static LocalVRVideoFragment newInstance(LocalVideo localVideo) {
 
@@ -147,7 +148,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
 
     @Override
     protected int intLayoutResId() {
-        Logger.e("VRVideoFragment");
+        //        Logger.e("VRVideoFragment");
         return R.layout.fragment_vrvideo;
     }
 
@@ -166,10 +167,12 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
     protected void initView(View view) {
         super.initView(view);
 
-        isAutoNext = mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next),false);
-
-        Logger.e("isAutoNext = "+isAutoNext);
-
+        isAutoNext = mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next), false);
+        if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
+            mDisplayMode = DISPLAYMODE_STEREO;
+        } else {
+            mDisplayMode = DISPLAYMODE_PORTRAIT;
+        }
 
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
@@ -235,7 +238,6 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
 
     }
 
-
     private List<LocalVideo> getLocalVideos(File categoryFile) {
         List<LocalVideo> localVideoList = new ArrayList<>();
         File[] videoFiles = categoryFile.listFiles(new FilenameFilter() {
@@ -251,7 +253,6 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         return localVideoList;
     }
 
-
     private void setAdapter(final List<LocalVideo> localVideoList) {
         if (mLocalVideoRecommendAdapter == null) {
             mLocalVideoRecommendAdapter = new LocalVideoRecommendAdapter(getActivity(), localVideoList);
@@ -262,12 +263,10 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-
     @Override
     public void onRefresh() {
         initRecommendListData();
     }
-
 
     /**
      * 隐藏默认的播放控制按钮
@@ -288,7 +287,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         super.onActivityCreated(savedInstanceState);
         //        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
-            Logger.e("当然不是空的啦");
+            //            Logger.e("当然不是空的啦");
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mSeekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
             mSeekBar.setProgress((int) savedInstanceState.getLong(STATE_CURRENT_POSITION));
@@ -334,20 +333,31 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_vrvideo_fullscreen:
-                mVrVideoView.setDisplayMode(DISPLAYMODE_LANDSCAPE);
+                mDisplayMode = DISPLAYMODE_LANDSCAPE;
+                if (!mCheckBoxPlay.isChecked()) {
+                    mCheckBoxPlay.performClick();
+                }
+                //第一次播放就不用设置播放模式，因为在onLoadSuccess中会调用该方法
+                if (mVideoLoaderTask != null) {
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_LANDSCAPE);
+                }
+                break;
+            case R.id.imageview_vrvideo_stereo:
+                mDisplayMode = DISPLAYMODE_STEREO;
+                if (mVideoLoaderTask != null) {
+                    Logger.e("转方向就可以了");
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
+                }
+                if (!mCheckBoxPlay.isChecked()) {
+                    mCheckBoxPlay.performClick();
+                }
                 break;
             case R.id.imageview_vrvideo_back:
                 getActivity().onBackPressed();
                 break;
-            case R.id.imageview_vrvideo_stereo:
-                //如果视频没有在播放那么播放
-                if (!mCheckBoxPlay.isChecked()) {
-                    mCheckBoxPlay.performClick();
-                }
-                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
-
-                break;
         }
+
+
     }
 
     @Override
@@ -361,7 +371,6 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         super.onDetach();
         //        Logger.e("onDetach");
     }
-
 
     /**
      * Listen to the important events from widget.
@@ -378,12 +387,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
             mSeekBar.setEnabled(true);//运行加载完后进度条才能拖动
             mSeekBar.setMax((int) mVrVideoView.getDuration());//设置总的播放进度条
             mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));
-            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
-                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
-            } else {
-                mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
-            }
-
+            mVrVideoView.setDisplayMode(mDisplayMode);
 
 
         }
@@ -434,7 +438,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
          */
         @Override
         public void onCompletion() {
-            Logger.e("onCompletion");
+            //            Logger.e("onCompletion");
             if (!isAutoNext) {
                 mVrVideoView.seekTo(0);
             } else {
@@ -443,7 +447,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
             }
 
             if (isAutoNext) {
-                Logger.e("自动下一个视频");
+                //                Logger.e("自动下一个视频");
                 int i = mLocalVideoList.indexOf(mLocalVideo);
                 if (i != mLocalVideoList.size() - 1) {
                     mLocalVideo = mLocalVideoList.get(i + 1);
@@ -465,18 +469,18 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
         @Override
         public void onDisplayModeChanged(int newDisplayMode) {
             super.onDisplayModeChanged(newDisplayMode);
-//            Logger.e("newDisplayMode = " + newDisplayMode);
+            //            Logger.e("newDisplayMode = " + newDisplayMode);
             mProgressBar.setVisibility(View.VISIBLE);
             switch (newDisplayMode) {
                 case DISPLAYMODE_PORTRAIT://竖屏
                     break;
                 case DISPLAYMODE_LANDSCAPE://普通全屏
+
                     break;
                 case DISPLAYMODE_STEREO://立体全屏
                     break;
-
             }
-            //            mProgressBar.setVisibility(View.VISIBLE);
+
         }
 
 
@@ -499,7 +503,7 @@ public class LocalVRVideoFragment extends RecyclerViewFragment implements View.O
             try {
 
                 VrVideoView.Options options = new VrVideoView.Options();
-//                options.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
+                //                options.inputFormat = VrVideoView.Options.FORMAT_DEFAULT;
                 Logger.e("在线视频URL = " + Uri.parse(urls[0]));
                 mVrVideoView.loadVideo(Uri.parse(urls[0]), options);
             } catch (IOException e) {

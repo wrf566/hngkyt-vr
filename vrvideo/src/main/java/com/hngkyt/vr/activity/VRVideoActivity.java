@@ -3,6 +3,7 @@ package com.hngkyt.vr.activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -18,10 +19,13 @@ import com.orhanobut.logger.Logger;
  */
 
 public class VRVideoActivity extends BaseActivity {
+    private PowerManager.WakeLock wakeLock;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        cpuAwake();
 
     }
 
@@ -30,13 +34,29 @@ public class VRVideoActivity extends BaseActivity {
         return R.layout.include_framelayout_fragment;
     }
 
+    private void cpuAwake() {
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                getLocalClassName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wakeLock.acquire();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wakeLock.release();
+    }
 
     @Override
     protected void initView() {
-
         Video video = getIntent().getParcelableExtra(Video.class.getCanonicalName());
 
-        Logger.e("video = "+ video);
+        Logger.e("video = " + video);
 
 
         //当Activity被系统销毁的时候，回复状态要判断Fragment会不会为空，不然Fragment中onActivityCreated会执行两次

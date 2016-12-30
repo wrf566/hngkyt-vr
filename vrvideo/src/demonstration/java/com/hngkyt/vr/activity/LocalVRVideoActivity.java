@@ -3,6 +3,7 @@ package com.hngkyt.vr.activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -21,7 +22,7 @@ public class LocalVRVideoActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        cpuAwake();
     }
 
     @Override
@@ -29,6 +30,26 @@ public class LocalVRVideoActivity extends BaseActivity {
         return R.layout.include_framelayout_fragment;
     }
 
+        private PowerManager.WakeLock mWakeLock;
+    private void cpuAwake(){
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                getLocalClassName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWakeLock.acquire();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mWakeLock.release();
+
+    }
 
     @Override
     protected void initView() {

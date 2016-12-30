@@ -27,8 +27,8 @@
             
             <ImageView
                 android:id="@+id/imageview_vrvideo_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/back_white"/>
             
             <Space
@@ -38,8 +38,8 @@
 
             <ImageView
                 android:id="@+id/imageview_vrvideo_fullscreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/fullscreen"/>
         </LinearLayout>
         

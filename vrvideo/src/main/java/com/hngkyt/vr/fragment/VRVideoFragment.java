@@ -136,6 +136,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     private VideoRecommendAdapter mVideoRecommendAdapter;
     private List<Video> mListVideo;
     private boolean isAutoNext;
+    private int mDisplayMode;
+
 
     public static VRVideoFragment newInstance(Video listBean) {
 
@@ -187,7 +189,11 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         super.initView(view);
 
         isAutoNext = mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.radiobutton_personal_center_autoplay_next), false);
-
+        if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
+            mDisplayMode = DISPLAYMODE_STEREO;
+        } else {
+            mDisplayMode = DISPLAYMODE_PORTRAIT;
+        }
         mFrameLayoutController = (FrameLayout) view.findViewById(R.id.framelayout_vrvideo_controller);
         mCheckBoxPlay = (CheckBox) view.findViewById(R.id.checkbox_vrvideo_play);
 
@@ -217,6 +223,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         mSeekBar.setEnabled(false);
 
         mVideo = getArguments().getParcelable(Video.class.getCanonicalName());
+        Logger.e("mVideo = "+mVideo);
 
         //这里要单独获取视频详情是因为，用户点击了播放，添加了播放次数然后回到视频列表页面，再点击同样一个视频。
         //由于回到视频列表，列表中的视频数据还是旧的，所以要单独拉取。
@@ -225,7 +232,6 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
         mVrVideoView.setEventListener(new ActivityEventListener());
-
         mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
 
 
@@ -281,7 +287,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * 初始化推荐列表数据
      */
     private void initRecommendListData() {
-        Call<ResponseBean> videoDetailCall = mBaseActivity.mRequestService.getVedios(mVideo.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
+        Call<ResponseBean> videoDetailCall = mBaseActivity.mRequestService.getVedios(mVideo.getVedioCategoryPId(), VideoSortFragment.SORT_BY_TIME);
 
         ResultCall<VideoList> resultCall = new ResultCall<>(getActivity(), VideoList.class, false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
@@ -392,18 +398,27 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageview_vrvideo_fullscreen:
-                mVrVideoView.setDisplayMode(DISPLAYMODE_LANDSCAPE);
-                break;
-            case R.id.imageview_vrvideo_back:
-                getActivity().onBackPressed();
-                break;
-            case R.id.imageview_vrvideo_stereo:
-                //如果视频没有在播放那么播放
+                mDisplayMode = DISPLAYMODE_LANDSCAPE;
                 if (!mCheckBoxPlay.isChecked()) {
                     mCheckBoxPlay.performClick();
                 }
-                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
-
+                //第一次播放就不用设置播放模式，因为在onLoadSuccess中会调用该方法
+                if (mVideoLoaderTask != null) {
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_LANDSCAPE);
+                }
+                break;
+            case R.id.imageview_vrvideo_stereo:
+                mDisplayMode = DISPLAYMODE_STEREO;
+                if (mVideoLoaderTask != null) {
+                    Logger.e("转方向就可以了");
+                    mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
+                }
+                if (!mCheckBoxPlay.isChecked()) {
+                    mCheckBoxPlay.performClick();
+                }
+                break;
+            case R.id.imageview_vrvideo_back:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -437,11 +452,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             mSeekBar.setEnabled(true);//运行加载完后进度条才能拖动
             mSeekBar.setMax((int) mVrVideoView.getDuration());//设置总的播放进度条
             mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));//设置总的播放时间
-            if (mBaseActivity.mSPUtils.getBoolean(String.valueOf(R.id.switch_personal_center_stereo), true)) {
-                mVrVideoView.setDisplayMode(DISPLAYMODE_STEREO);
-            } else {
-                mVrVideoView.setDisplayMode(DISPLAYMODE_PORTRAIT);
-            }
+            mVrVideoView.setDisplayMode(mDisplayMode);
+
 
         }
 
