@@ -7,7 +7,7 @@ import android.view.View;
 import com.hngkyt.vr.R;
 import com.hngkyt.vr.adapter.LocalVideoMoreChannelAdapter;
 import com.hngkyt.vr.decoration.VideoChannelDecoration;
-import com.hngkyt.vr.model.Categroy;
+import com.hngkyt.vr.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,24 +31,24 @@ public class LocalMoreChannelFragment extends RecyclerViewFragment {
     }
 
     private void initData() {
-        List<Categroy> categroyList = new ArrayList<>();
+        List<Category> categoryList = new ArrayList<>();
 
         for (int i = 0; i < IDS.length; i++) {
-            Categroy categroy = new Categroy();
-            categroy.setName(NAMES[i]);
-            categroy.setDrawableId(IDS[i]);
-            categroyList.add(categroy);
+            Category category = new Category();
+            category.setName(NAMES[i]);
+            category.setDrawableId(IDS[i]);
+            categoryList.add(category);
         }
-        setAdapter(categroyList);
+        setAdapter(categoryList);
 
     }
 
-    private void setAdapter(List<Categroy> categroyList) {
+    private void setAdapter(List<Category> categoryList) {
         if (mVideoMoreChannelAdapter == null) {
-            mVideoMoreChannelAdapter = new LocalVideoMoreChannelAdapter(getActivity(), categroyList);
+            mVideoMoreChannelAdapter = new LocalVideoMoreChannelAdapter(getActivity(), categoryList);
             mRecyclerView.setAdapter(mVideoMoreChannelAdapter);
         } else {
-            mVideoMoreChannelAdapter.setCategroyList(categroyList);
+            mVideoMoreChannelAdapter.setCategoryList(categoryList);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }

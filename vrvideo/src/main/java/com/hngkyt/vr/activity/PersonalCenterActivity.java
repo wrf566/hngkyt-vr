@@ -224,7 +224,7 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 Version version = (Version) o;
-                version.setVesionCode(999999);//仅供测试
+//                version.setVesionCode(999999);//仅供测试
                 if (version.getVesionCode() > AppUtils.getAppVersionCode(PersonalCenterActivity.this)) {
                     initDownloadDialog(version);
                 }

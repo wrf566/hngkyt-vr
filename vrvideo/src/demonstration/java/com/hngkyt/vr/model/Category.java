@@ -4,7 +4,7 @@ package com.hngkyt.vr.model;
  * Created by wrf on 2016/12/29.
  */
 
-public class Categroy {
+public class Category {
 
     private String name;
     private int drawableId;
@@ -27,7 +27,7 @@ public class Categroy {
 
     @Override
     public String toString() {
-        return "Categroy{" +
+        return "Category{" +
                 "name='" + name + '\'' +
                 ", drawableId=" + drawableId +
                 '}';

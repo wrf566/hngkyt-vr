@@ -45,9 +45,10 @@ public class LocalMainActivity extends BaseActivity implements View.OnClickListe
 
     public static final File FILE_ROOT = new File(Environment.getExternalStorageDirectory() + File.separator + "VRVideo");
     private static final int TYPE_HOME = 1;
-    private static final int[] BANNERS = {R.drawable.lgt, R.drawable.sc, R.drawable.ts, R.drawable.lgt, R.drawable.sc};
+    private static final int[] BANNERS = {R.drawable.vrfc, R.drawable.sc, R.drawable.ts, R.drawable.lgt, R.drawable.vrfc,R.drawable.sc,};
     private static final File FILE_CATEGORY_EXTREME_SPORTS = new File(FILE_ROOT, "极限运动");
     private static final File FILE_CATEGORY_LANDSCAPE = new File(FILE_ROOT, "风景名胜");
+    public static final File FILE_CATEGORY_HOUSE = new File(FILE_ROOT, "房产");
 
     //c a b c a
     private ImageView mImageViewPersonalCenter;
@@ -214,10 +215,13 @@ public class LocalMainActivity extends BaseActivity implements View.OnClickListe
         localBanner2.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_EXTREME_SPORTS, "花样跳伞.mp4")));
         LocalBanner localBanner3 = new LocalBanner();
         localBanner3.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_LANDSCAPE, "楼观之路.mp4")));
+        LocalBanner localBanner4 = new LocalBanner();
+        localBanner4.setLocalVideo(new LocalVideo(new File(FILE_CATEGORY_HOUSE, "VR带你看房.mp4")));
 
         localBannerList.add(localBanner1);
         localBannerList.add(localBanner2);
         localBannerList.add(localBanner3);
+        localBannerList.add(localBanner4);
         localBannerList.add(0, localBannerList.get(localBannerList.size() - 1));
         localBannerList.add(localBannerList.get(1));//因为第一个已经是刚刚添加的了，所以要从第二个开始添加
 

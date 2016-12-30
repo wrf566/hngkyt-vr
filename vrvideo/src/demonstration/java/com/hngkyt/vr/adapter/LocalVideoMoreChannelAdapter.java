@@ -1,6 +1,7 @@
 package com.hngkyt.vr.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.model.Categroy;
+import com.hngkyt.vr.activity.LocalMainActivity;
+import com.hngkyt.vr.activity.LocalVRVideoActivity;
+import com.hngkyt.vr.model.Category;
+import com.hngkyt.vr.model.LocalVideo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -27,12 +32,12 @@ public class LocalVideoMoreChannelAdapter extends RecyclerView.Adapter<LocalVide
 
     private Context mContext;
 
-    private List<Categroy> mCategroyList;
+    private List<Category> mCategoryList;
 
 
-    public LocalVideoMoreChannelAdapter(Context context, List<Categroy> categroyList) {
+    public LocalVideoMoreChannelAdapter(Context context, List<Category> categoryList) {
         mContext = context;
-        mCategroyList = categroyList;
+        mCategoryList = categoryList;
     }
 
 
@@ -44,14 +49,26 @@ public class LocalVideoMoreChannelAdapter extends RecyclerView.Adapter<LocalVide
     }
 
     @Override
-    public void onBindViewHolder(VideoChannelHolder holder, int position) {
-        Categroy categroy = mCategroyList.get(position);
+    public void onBindViewHolder(final VideoChannelHolder holder,  int position) {
+        Category category = mCategoryList.get(position);
 
 
-        holder.mButtonChannel.setText(categroy.getName());
+        holder.mButtonChannel.setText(category.getName());
+        holder.mButtonChannel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.getAdapterPosition()==0){
+                    LocalVideo localVideo = new LocalVideo(new File(LocalMainActivity.FILE_CATEGORY_HOUSE,"VR带你看房.mp4"));
+                    Intent intent = new Intent(mContext, LocalVRVideoActivity.class);
+                    intent.putExtra(LocalVideo.class.getCanonicalName(), localVideo);
+                    mContext.startActivity(intent);
+
+                }
+            }
+        });
 
         Glide.with(mContext)
-                .load(categroy.getDrawableId())
+                .load(category.getDrawableId())
                 .asBitmap()
                 .into(new ButtonSimpleTarget(holder.mButtonChannel));
 
@@ -59,7 +76,7 @@ public class LocalVideoMoreChannelAdapter extends RecyclerView.Adapter<LocalVide
 
     @Override
     public int getItemCount() {
-        return mCategroyList.size();
+        return mCategoryList.size();
     }
 
     static class VideoChannelHolder extends RecyclerView.ViewHolder {
@@ -72,8 +89,8 @@ public class LocalVideoMoreChannelAdapter extends RecyclerView.Adapter<LocalVide
         }
     }
 
-    public void setCategroyList(List<Categroy> categroyList) {
-        mCategroyList = categroyList;
+    public void setCategoryList(List<Category> categoryList) {
+        mCategoryList = categoryList;
         notifyDataSetChanged();
     }
     /**
