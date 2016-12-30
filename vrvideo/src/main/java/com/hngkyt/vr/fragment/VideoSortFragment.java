@@ -10,7 +10,7 @@ import com.hngkyt.vr.decoration.VideoItemDecoration;
 import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.model.VideoGroupList;
 import com.hngkyt.vr.model.ResponseBean;
-import com.hngkyt.vr.model.VedioList;
+import com.hngkyt.vr.model.VideoList;
 import com.hngkyt.vr.model.Video;
 
 import java.util.List;
@@ -56,13 +56,13 @@ public class VideoSortFragment extends RecyclerViewFragment {
     private void getVideoList() {
         Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.getVedios(mVideoList.getId(), sortby);
 
-        ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class,false);
+        ResultCall<VideoList> resultCall = new ResultCall<>(getActivity(), VideoList.class,false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                VedioList vedioList = (VedioList) o;
-                if (vedioList.getVedioList() != null) {
-                    setAdapter(vedioList.getVedioList());
+                VideoList videoList = (VideoList) o;
+                if (videoList.getVedioList() != null) {
+                    setAdapter(videoList.getVedioList());
                 }
 
             }

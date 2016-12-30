@@ -190,6 +190,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Glide.with(MainActivity.this)
                             .load(imgUrl)
                             .asBitmap()
+                            .placeholder(R.mipmap.ic_launcher)
                             .into(textViewSimpleTarget);
 
                 }

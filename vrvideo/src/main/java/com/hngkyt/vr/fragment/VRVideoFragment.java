@@ -23,7 +23,7 @@ import com.hngkyt.vr.adapter.VideoRecommendAdapter;
 import com.hngkyt.vr.decoration.VideoRecommeneItemDecotation;
 import com.hngkyt.vr.model.ResponseBean;
 import com.hngkyt.vr.model.User;
-import com.hngkyt.vr.model.VedioList;
+import com.hngkyt.vr.model.VideoList;
 import com.hngkyt.vr.model.Video;
 import com.hngkyt.vr.net.ResultCall;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
@@ -74,7 +74,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Logger.e("isChecked = " + isChecked);
+//            Logger.e("isChecked = " + isChecked);
 
             //第一次运行
             if (mVideoLoaderTask == null) {
@@ -85,7 +85,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             //重新播放
             if (isCompletion) {
                 if (isChecked) {
-                    Logger.e("重新播放");
+//                    Logger.e("重新播放");
                     mVrVideoView.seekTo(0);
                     isCompletion = false;
                 }
@@ -115,7 +115,6 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Logger.e("onStopTrackingTouch");
             mProgressBar.setVisibility(View.VISIBLE);
             if (seekBar.getProgress() != seekBar.getMax()) {
                 isCompletion = false;
@@ -159,8 +158,8 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         } else {
             userId = userInfo.getId();
         }
-        Logger.e("mVideo.getId() = " + mVideo.getId());
-        Logger.e("userId =  " + userId);
+//        Logger.e("mVideo.getId() = " + mVideo.getId());
+//        Logger.e("userId =  " + userId);
         Call<ResponseBean> responseBeanCall = mBaseActivity.mRequestService.playAmont(mVideo.getId(), userId);
         ResultCall<String> resultCall = new ResultCall<>(getActivity(), String.class, false);
         responseBeanCall.enqueue(resultCall);
@@ -168,7 +167,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
     @Override
     protected int intLayoutResId() {
-        Logger.e("VRVideoFragment");
+//        Logger.e("VRVideoFragment");
         return R.layout.fragment_vrvideo;
     }
 
@@ -282,17 +281,17 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
      * 初始化推荐列表数据
      */
     private void initRecommendListData() {
-        Call<ResponseBean> vedioDetailCall = mBaseActivity.mRequestService.getVedios(mVideo.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
+        Call<ResponseBean> videoDetailCall = mBaseActivity.mRequestService.getVedios(mVideo.getVedioCategoryId(), VideoSortFragment.SORT_BY_TIME);
 
-        ResultCall<VedioList> resultCall = new ResultCall<>(getActivity(), VedioList.class, false);
+        ResultCall<VideoList> resultCall = new ResultCall<>(getActivity(), VideoList.class, false);
         resultCall.setOnCallListener(new ResultCall.OnCallListener() {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
-                VedioList vedioList = (VedioList) o;
-                if (vedioList.getVedioList() != null) {
-                    mListVideo = vedioList.getVedioList();
+                VideoList videoList = (VideoList) o;
+                if (videoList.getVedioList() != null) {
+                    mListVideo = videoList.getVedioList();
                     mListVideo.remove(mVideo);//这里要把自己排除掉
-                    setAdapter(vedioList.getVedioList());
+                    setAdapter(videoList.getVedioList());
                 }
             }
 
@@ -307,7 +306,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
             }
         });
-        vedioDetailCall.enqueue(resultCall);
+        videoDetailCall.enqueue(resultCall);
 
     }
 
@@ -347,7 +346,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         super.onActivityCreated(savedInstanceState);
         //        Logger.e("onActivityCreated");
         if (savedInstanceState != null) {
-            Logger.e("当然不是空的啦");
+//            Logger.e("当然不是空的啦");
             mVrVideoView.seekTo(savedInstanceState.getLong(STATE_CURRENT_POSITION));
             mSeekBar.setMax((int) savedInstanceState.getLong(STATE_VIDEO_DURATION));
             mSeekBar.setProgress((int) savedInstanceState.getLong(STATE_CURRENT_POSITION));
@@ -432,7 +431,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onLoadSuccess() {
-            Logger.e("onLoadSuccess");
+//            Logger.e("onLoadSuccess");
             putPlaycount();//添加服务器播放数量
             mProgressBar.setVisibility(View.GONE);
             mSeekBar.setEnabled(true);//运行加载完后进度条才能拖动
@@ -492,7 +491,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
          */
         @Override
         public void onCompletion() {
-            Logger.e("onCompletion");
+//            Logger.e("onCompletion");
             if (!isAutoNext) {
                 mVrVideoView.seekTo(0);
             } else {
@@ -501,7 +500,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
             }
 
             if (isAutoNext) {
-                Logger.e("自动下一个视频");
+//                Logger.e("自动下一个视频");
                 int i = mListVideo.indexOf(mVideo);
                 if (i != mListVideo.size() - 1) {
                     mVideo = mListVideo.get(i + 1);
@@ -523,7 +522,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         @Override
         public void onDisplayModeChanged(int newDisplayMode) {
             super.onDisplayModeChanged(newDisplayMode);
-            Logger.e("newDisplayMode = " + newDisplayMode);
+//            Logger.e("newDisplayMode = " + newDisplayMode);
             switch (newDisplayMode) {
                 case DISPLAYMODE_PORTRAIT://竖屏
                     break;
