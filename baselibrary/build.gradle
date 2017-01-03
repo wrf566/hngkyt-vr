@@ -41,12 +41,12 @@ dependencies {
     compile rootProject.ext.dependencies["retrofit2_converter_gson"]
     compile rootProject.ext.dependencies["retrofit2_converter_scalars"]
     compile rootProject.ext.dependencies["bumptech_glide"]
-//    compile rootProject.ext.dependencies["com_elvishew_xlog"]
+    compile rootProject.ext.dependencies["tencent_bugly"]
 
     debugCompile rootProject.ext.dependencies["leakcanary_debug"]
     releaseCompile rootProject.ext.dependencies["leakcanary_release"]
-    testCompile rootProject.ext.dependencies["leakcanary_test"]
 
+    testCompile rootProject.ext.dependencies["leakcanary_test"]
     testCompile rootProject.ext.dependencies["junit"]
     testCompile rootProject.ext.dependencies["android_support_test_runner"]
     testCompile rootProject.ext.dependencies["hamcrest_integration"]

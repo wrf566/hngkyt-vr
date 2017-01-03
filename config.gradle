@@ -46,6 +46,8 @@ ext {
             "leakcanary_release"          : 'com.squareup.leakcanary:leakcanary-android-no-op:1.5',
             "leakcanary_debug"            : 'com.squareup.leakcanary:leakcanary-android:1.5',
             "leakcanary_test"             : 'com.squareup.leakcanary:leakcanary-android-no-op:1.5',
+            //Tencent_bugly
+            "tencent_bugly"               : 'com.tencent.bugly:crashreport:latest.release',
 
             "bumptech_glide"              : 'com.github.bumptech.glide:glide:3.7.0'
 

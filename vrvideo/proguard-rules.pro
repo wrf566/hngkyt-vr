@@ -115,5 +115,6 @@
 #okio官网推荐这样做
 -dontwarn okio.**
 
-
-
+#--------Bugly-----------
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

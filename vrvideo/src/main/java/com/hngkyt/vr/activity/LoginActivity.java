@@ -26,6 +26,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -102,14 +103,13 @@ public class LoginActivity extends TitleBarActivity {
                 startActivityForResult(forgetPasswordIntent, REQUEST_CODE_FORGET_PASSWORD);
                 break;
             case R.id.imageview_login_wechat:
-
+                thirdPartLogin(Wechat.NAME);
                 break;
             case R.id.imageview_login_qq:
-                login(QQ.NAME);
+                thirdPartLogin(QQ.NAME);
                 break;
             case R.id.imageview_login_sina:
-                login(SinaWeibo.NAME);
-
+                thirdPartLogin(SinaWeibo.NAME);
                 break;
             case R.id.button_login_login:
                 login();
@@ -176,7 +176,7 @@ public class LoginActivity extends TitleBarActivity {
 
     }
 
-    public void login(String platform) {
+    public void thirdPartLogin(String platform) {
 
         Platform plat = ShareSDK.getPlatform(platform);
         if (plat == null) {
@@ -197,6 +197,7 @@ public class LoginActivity extends TitleBarActivity {
                     msg.what = MSG_AUTH_COMPLETE;
                     msg.arg2 = action;
                     msg.obj = new Object[]{plat.getName(), res};
+                    Logger.e("msg = "+msg);
                     mLoginHandler.sendMessage(msg);
                 }
             }
@@ -207,6 +208,7 @@ public class LoginActivity extends TitleBarActivity {
                     msg.what = MSG_AUTH_ERROR;
                     msg.arg2 = action;
                     msg.obj = t;
+                    Logger.e("msg = "+msg);
                     mLoginHandler.sendMessage(msg);
                 }
                 t.printStackTrace();
@@ -218,6 +220,7 @@ public class LoginActivity extends TitleBarActivity {
                     msg.what = MSG_AUTH_CANCEL;
                     msg.arg2 = action;
                     msg.obj = plat;
+                    Logger.e("msg = "+msg);
                     mLoginHandler.sendMessage(msg);
                 }
             }

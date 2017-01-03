@@ -7,6 +7,7 @@ import com.hzgktyt.vr.baselibrary.utils.Utils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,7 +26,7 @@ public class VRApplication extends Application {
 
         if (initLeakCanary())
             return;
-
+        initBugly();
         initLogger();
         Utils.init(this);
         initRetrofit2();
@@ -62,4 +63,9 @@ public class VRApplication extends Application {
 
 
     }
+
+    private void initBugly(){
+        CrashReport.initCrashReport(getApplicationContext(), "6d1f71dd7d", BuildConfig.BUGLY);
+    }
+
 }

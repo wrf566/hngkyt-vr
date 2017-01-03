@@ -52,6 +52,7 @@ android {
             minifyEnabled true
             shrinkResources true
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "BUGLY", "false"
             buildConfigField "String", "AUTHORITY", '"123.57.7.159:8080/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -60,6 +61,7 @@ android {
             minifyEnabled false
             shrinkResources false
             buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "BUGLY", "true"
             buildConfigField "String", "AUTHORITY", '"123.57.7.159:8080/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
