@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hngkyt.vr.R;
-import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.model.User;
 import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.net.ResultCall;
 import com.hzgktyt.vr.baselibrary.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.PlatformDb;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
@@ -177,6 +178,7 @@ public class LoginActivity extends TitleBarActivity {
     }
 
     public void thirdPartLogin(String platform) {
+        Logger.e("platform = "+platform);
 
         Platform plat = ShareSDK.getPlatform(platform);
         if (plat == null) {
@@ -187,19 +189,41 @@ public class LoginActivity extends TitleBarActivity {
             plat.removeAccount(true);
             return;
         }
-
+        plat.authorize();
         //使用SSO授权，通过客户单授权
         plat.SSOSetting(false);
         plat.setPlatformActionListener(new PlatformActionListener() {
             public void onComplete(Platform plat, int action, HashMap<String, Object> res) {
+
+                //用户资源都保存到res
+                //通过打印res数据看看有哪些数据是你想要的
                 if (action == Platform.ACTION_USER_INFOR) {
+                    PlatformDb platDB = plat.getDb();//获取数平台数据DB
+                    //通过DB获取各种数据
+                    Logger.e("platDB.getToken() = "+platDB.getToken());
+                    Logger.e("platDB.getUserGender() = "+platDB.getUserGender());
+                    Logger.e("platDB.getUserIcon() = "+platDB.getUserIcon());
+                    Logger.e("platDB.getUserId() = "+platDB.getUserId());
+                    Logger.e("platDB.getUserName() = "+platDB.getUserName());
+
+
+                    mUser = new User();
+                    mUser.setFaceImgUrl(platDB.getUserIcon());
+                    mUser.setUserName(platDB.getUserName());
+                    Logger.e("mUser =  " + mUser);
                     Message msg = new Message();
                     msg.what = MSG_AUTH_COMPLETE;
                     msg.arg2 = action;
-                    msg.obj = new Object[]{plat.getName(), res};
-                    Logger.e("msg = "+msg);
+                    msg.obj = mUser;
                     mLoginHandler.sendMessage(msg);
+
+
+
+
+
                 }
+
+
             }
 
             public void onError(Platform plat, int action, Throwable t) {
@@ -246,24 +270,30 @@ public class LoginActivity extends TitleBarActivity {
             switch (msg.what) {
                 case MSG_AUTH_CANCEL: {
                     // 取消
-                    Toast.makeText(mLoginActivity, "canceled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mLoginActivity, R.string.login_cancel, Toast.LENGTH_SHORT).show();
                 }
                 break;
                 case MSG_AUTH_ERROR: {
                     // 失败
                     Throwable t = (Throwable) msg.obj;
                     String text = "caught error: " + t.getMessage();
-                    Toast.makeText(mLoginActivity, text, Toast.LENGTH_SHORT).show();
+                    Logger.e("授权登陆失败信息 = "+text);
+                    Toast.makeText(mLoginActivity, R.string.login_failed, Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
                 break;
                 case MSG_AUTH_COMPLETE: {
                     // 成功
-                    Object[] objs = (Object[]) msg.obj;
-                    String plat = (String) objs[0];
+//                    Object[] objs = (Object[]) msg.obj;
+//                    String plat = (String) objs[0];
 
-                    Logger.e("plat = " + plat);
-
+//                    Logger.e("plat = " + plat);
+                    User user = (User) msg.obj;
+                    mLoginActivity.saveUserInfo(user);
+                    Intent intent = new Intent();
+                    intent.putExtra(User.class.getCanonicalName(), user);
+                    mLoginActivity.setResult(RESULT_OK, intent);
+                    mLoginActivity.onBackPressed();
                     //                    @SuppressWarnings("unchecked")
                     //                    HashMap<String, Object> res = (HashMap<String, Object>) objs[1];
                     //                    if (loginListener != null && loginListener.onLogin(plat, res)) {

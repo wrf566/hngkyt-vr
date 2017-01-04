@@ -3,6 +3,8 @@ package com.hngkyt.vr.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,12 +20,15 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.hngkyt.vr.R;
+import com.hngkyt.vr.model.ResponseBean;
+import com.hngkyt.vr.model.User;
+import com.hngkyt.vr.model.Version;
 import com.hngkyt.vr.net.DownloadTask;
 import com.hngkyt.vr.net.ResultCall;
-import com.hngkyt.vr.model.User;
-import com.hngkyt.vr.model.ResponseBean;
-import com.hngkyt.vr.model.Version;
 import com.hzgktyt.vr.baselibrary.utils.AppUtils;
 import com.orhanobut.logger.Logger;
 
@@ -208,12 +213,42 @@ public class PersonalCenterActivity extends TitleBarActivity implements RadioGro
         if (resultCode == RESULT_OK) {
             if (REQUEST_CODE == requestCode) {
                 mUser = data.getParcelableExtra(User.class.getCanonicalName());
+                Logger.e("mUser = "+mUser);
                 mTextViewUsername.setText(mUser.getUserName());
+                Glide.with(this)
+                        .load(mUser.getFaceImgUrl())
+                        .asBitmap()
+                        .placeholder(R.drawable.profile_picture)
+                        .into(new TextViewSimpleTarget(mTextViewUsername));
+
+
             }
         }
 
     }
 
+
+    /**
+     * 这个类用于加载大分类中的图片
+     */
+    private class TextViewSimpleTarget extends SimpleTarget<Bitmap> {
+
+
+
+        private TextView mTextView;
+
+        TextViewSimpleTarget(TextView textview) {
+            this.mTextView = textview;
+        }
+
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+            mTextView.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(), bitmap), null, null);
+
+        }
+
+
+    }
     /**
      * 检测版本
      */
