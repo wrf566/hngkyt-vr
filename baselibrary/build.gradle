@@ -50,6 +50,7 @@ dependencies {
     testCompile rootProject.ext.dependencies["junit"]
     testCompile rootProject.ext.dependencies["android_support_test_runner"]
     testCompile rootProject.ext.dependencies["hamcrest_integration"]
+//    testCompile rootProject.ext.dependencies["android_support_test_uiautomator"]
     testCompile 'org.mockito:mockito-core:2.2.22'
 
 }

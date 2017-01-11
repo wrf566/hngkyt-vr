@@ -2,26 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/relativelayout_item_video"
                 android:layout_width="match_parent"
-                android:layout_height="175dp" >
-
-    <ImageView
-        android:scaleType="fitXY"
-        android:id="@+id/imageview_item_video_cover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+                android:layout_height="175dp">
 
     <TextView
-        android:layout_alignRight="@id/imageview_item_video_cover"
-        android:layout_alignLeft="@id/imageview_item_video_cover"
+        android:id="@+id/textview_item_video_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorAccent"
+        android:padding="5dp"
+        android:text="@string/pay"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_22px"/>
+
+    <ImageView
+        android:id="@+id/imageview_item_video_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
+    <TextView
         android:id="@+id/textview_item_video_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/imageview_item_video_cover"
         android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/imageview_item_video_cover"
         android:background="@color/white_transparent_70"
         android:gravity="center"
+        android:maxLines="1"
         android:padding="10dp"
         android:text="岳麓书院"
-        android:maxLines="1"
         android:textColor="@color/text1"
         android:textSize="@dimen/text_34px"/>
 

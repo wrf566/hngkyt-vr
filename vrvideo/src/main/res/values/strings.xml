@@ -53,6 +53,9 @@
     <string name="video_load_error">视频加载出错</string>
     <string name="login_cancel">授权登陆已取消</string>
     <string name="login_failed">授权登陆失败</string>
+    <string name="played_list">付费视频列表</string>
+    <string name="pay">付费</string>
+    <string name="more_videos">更多视频</string>
 
     <string-array name="array_religions">
         <item>佛教</item>

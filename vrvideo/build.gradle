@@ -61,7 +61,7 @@ android {
             minifyEnabled false
             shrinkResources false
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            buildConfigField "boolean", "BUGLY", "true"
+            buildConfigField "boolean", "BUGLY", "false"
             buildConfigField "String", "AUTHORITY", '"123.57.7.159:8080/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -78,4 +78,6 @@ dependencies {
     compile rootProject.ext.dependencies["google_protobuf_nano"]
     compile 'com.google.vr:sdk-videowidget:1.10.0'
     compile project(':loginsdk')
+
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }

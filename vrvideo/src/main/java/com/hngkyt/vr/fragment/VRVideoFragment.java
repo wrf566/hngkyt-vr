@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.vr.sdk.widgets.video.VrVideoEventListener;
 import com.google.vr.sdk.widgets.video.VrVideoView;
 import com.hngkyt.vr.R;
@@ -69,6 +70,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
     private TextView mTextViewName;
     private TextView mTextViewPlayCounts;
     private TextView mTextViewReleaseTime;
+    private ImageView mImageViewCover;
 
 
     private CompoundButton.OnCheckedChangeListener playChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -202,6 +204,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 
 
         mTextViewName = (TextView) view.findViewById(R.id.textview_vrvideo_name);
+        mImageViewCover = (ImageView) view.findViewById(R.id.imageview_vrvideo_cover);
         mTextViewPlayCounts = (TextView) view.findViewById(R.id.textview_vrvideo_play_counts);
         mTextViewReleaseTime = (TextView) view.findViewById(R.id.textview_vrvideo_release_time);
 
@@ -228,7 +231,12 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
         //这里要单独获取视频详情是因为，用户点击了播放，添加了播放次数然后回到视频列表页面，再点击同样一个视频。
         //由于回到视频列表，列表中的视频数据还是旧的，所以要单独拉取。
         getVideoDetail();
-
+        //设置封面图
+        Glide.with(getActivity())
+                .load(mVideo.getVedioImgUrl())
+                .asBitmap()
+                .placeholder(R.mipmap.ic_launcher)
+                .into(mImageViewCover);
 
         mVrVideoView = (VrVideoView) view.findViewById(R.id.vrvideoview_vrvideo);
         mVrVideoView.setEventListener(new ActivityEventListener());
@@ -449,6 +457,7 @@ public class VRVideoFragment extends RecyclerViewFragment implements View.OnClic
 //            Logger.e("onLoadSuccess");
             putPlaycount();//添加服务器播放数量
             mProgressBar.setVisibility(View.GONE);
+            mImageViewCover.setVisibility(View.GONE);
             mSeekBar.setEnabled(true);//运行加载完后进度条才能拖动
             mSeekBar.setMax((int) mVrVideoView.getDuration());//设置总的播放进度条
             mTextViewTotaltime.setText(DateUtils.formatElapsedTime(mVrVideoView.getDuration() / 1000));//设置总的播放时间

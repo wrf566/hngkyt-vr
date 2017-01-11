@@ -24,13 +24,12 @@ import com.hngkyt.vr.adapter.GroupFragmentAdapter;
 import com.hngkyt.vr.fragment.MoreChannelFragment;
 import com.hngkyt.vr.fragment.VideoChannelFragment;
 import com.hngkyt.vr.fragment.VideoNewestChannelFragment;
-import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.model.BannerList;
 import com.hngkyt.vr.model.ResponseBean;
 import com.hngkyt.vr.model.VideoChannelList;
+import com.hngkyt.vr.net.ResultCall;
 import com.hngkyt.vr.view.InfiniteViewPager;
 import com.hzgktyt.vr.baselibrary.utils.ScreenUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+//            getWindow().setNavigationBarColor(Color.TRANSPARENT);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
@@ -141,7 +140,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VideoChannelList VideoChannelList = (VideoChannelList) o;
 
-                Logger.e("VideoChannelList = " + VideoChannelList);
+//                Logger.e("VideoChannelList = " + VideoChannelList);
 
                 List<com.hngkyt.vr.model.VideoChannelList.VedioChannel> vedioCategoryListBeanListBeanList = VideoChannelList.getVedioCategoryList();
                 if (vedioCategoryListBeanListBeanList == null) {

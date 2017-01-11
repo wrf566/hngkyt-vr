@@ -10,6 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/video_height"
         android:layout_alignParentTop="true"/>
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/imageview_vrvideo_cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/video_height"/>
     <FrameLayout
         android:id="@+id/framelayout_vrvideo_controller"
         android:layout_width="match_parent"

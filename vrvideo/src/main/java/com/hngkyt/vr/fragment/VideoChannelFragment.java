@@ -1,7 +1,6 @@
 package com.hngkyt.vr.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,7 +14,7 @@ import com.hngkyt.vr.model.Video;
 import com.hngkyt.vr.model.VideoChannelList;
 import com.hngkyt.vr.model.VideoGroupList;
 import com.hngkyt.vr.net.ResultCall;
-import com.orhanobut.logger.Logger;
+import com.hngkyt.vr.view.FooterGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,8 @@ public class VideoChannelFragment extends RecyclerViewFragment {
 
     }
 
+
+
     private void getVideoDataList() {
         Call<ResponseBean> categoryVediosCall = mBaseActivity.mRequestService.getCategoryVedios(mVedioChannel.getId());
 
@@ -64,7 +65,7 @@ public class VideoChannelFragment extends RecyclerViewFragment {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VideoGroupList videoGroupList = (VideoGroupList) o;
-                Logger.e("videoGroupList = " + videoGroupList);
+//                Logger.e("videoGroupList = " + videoGroupList);
 
                 List<VideoGroupList.VideoList> videoGroupListVedioList = videoGroupList.getVedioList();
 
@@ -82,7 +83,7 @@ public class VideoChannelFragment extends RecyclerViewFragment {
                         } else {
                             videoList = videoGroupList.getVedioList().get(0).getList();
                         }
-                        Logger.e("videoList = " + videoList);
+//                        Logger.e("videoList = " + videoList);
                         setNoGroupAdapter(videoList);
                         break;
                 }
@@ -108,12 +109,13 @@ public class VideoChannelFragment extends RecyclerViewFragment {
     private void setNoGroupAdapter(List<Video> videoList) {
         if (mVideoItemAdapter == null) {
             mVideoItemAdapter = new VideoItemAdapter(getActivity(), videoList);
+            mVideoItemAdapter.setFooterVisibility(true);
             mRecyclerView.setAdapter(mVideoItemAdapter);
             mRecyclerView.removeItemDecoration(mVideoGroupDecoration);//这里要加不然分割会重叠
             mRecyclerView.addItemDecoration(new VideoItemDecoration(ITEM_SPACE));
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
+            mRecyclerView.setLayoutManager(new FooterGridLayoutManager(getActivity(),mVideoItemAdapter, SPAN_COUNT));
         } else {
-            mVideoItemAdapter.setListBeanList(videoList);
+            mVideoItemAdapter.setVideoList(videoList);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }

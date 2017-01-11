@@ -10,11 +10,10 @@ import android.view.ViewGroup;
 
 import com.hngkyt.vr.adapter.VideoItemAdapter;
 import com.hngkyt.vr.decoration.VideoItemDecoration;
-import com.hngkyt.vr.net.ResultCall;
+import com.hngkyt.vr.model.ResponseBean;
 import com.hngkyt.vr.model.Video;
 import com.hngkyt.vr.model.VideoGroupList;
-import com.hngkyt.vr.model.ResponseBean;
-import com.orhanobut.logger.Logger;
+import com.hngkyt.vr.net.ResultCall;
 
 import java.util.List;
 
@@ -138,7 +137,7 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
             @Override
             public void onResponse(Call<ResponseBean> call, Response<ResponseBean> response, Object o) {
                 VideoGroupList videoGroupList = (VideoGroupList) o;
-                Logger.e("videoGroupList = " + videoGroupList);
+//                Logger.e("videoGroupList = " + videoGroupList);
                 List<VideoGroupList.VideoList> categoryVediosVedioList = videoGroupList.getVedioList();
                 VideoGroupList.VideoList videoList = categoryVediosVedioList.get(0);
                 setAdapter(videoList.getList());
@@ -164,7 +163,7 @@ public class VideoNewestChannelFragment extends RecyclerViewFragment {
             mRecyclerView.setAdapter(mVideoItemAdapter);
 
         }else{
-            mVideoItemAdapter.setListBeanList(listBeen);
+            mVideoItemAdapter.setVideoList(listBeen);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }

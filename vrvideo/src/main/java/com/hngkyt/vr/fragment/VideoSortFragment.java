@@ -85,7 +85,7 @@ public class VideoSortFragment extends RecyclerViewFragment {
             mVideoItemAdapter = new VideoItemAdapter(getActivity(), listBeen);
             mRecyclerView.setAdapter(mVideoItemAdapter);
         } else {
-            mVideoItemAdapter.setListBeanList(listBeen);
+            mVideoItemAdapter.setVideoList(listBeen);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }
